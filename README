@@ -2,6 +2,7 @@ First go at ASN.1 parser for Haskell.
 
 Compile and see for yourself what it does.
 
+Invoke like this: "./asn1tests LDAP.asn1 LDAPMessage"
 
 ---
 COMPILING
@@ -9,6 +10,4 @@ COMPILING
 
 This code was tested with:
 
-GHC 6.2
-
-After that run obtained binary to see some processing on included LDAP spec
+GHC 6.6.1 (previously: 6.4.2, 6.2)
