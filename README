@@ -1,0 +1,14 @@
+First go at ASN.1 parser for Haskell.
+
+Compile and see for yourself what it does.
+
+
+---
+COMPILING
+---
+
+This code was tested with:
+
+GHC 6.2
+
+After that run obtained binary to see some processing on included LDAP spec
