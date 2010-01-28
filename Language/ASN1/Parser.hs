@@ -1,9 +1,10 @@
-module ASN1Parser where
+{-# LANGUAGE DeriveDataTypeable #-}
+module Language.ASN1.Parser where
 {-
- ASN.1 Parser for Haskell (C) Dmitry Astapov 2003
+ ASN.1 Parser for Haskell (C) Dmitry Astapov 2003-2010
 
  This software is distibuted under the terms of GPL license
- See www.gnu.org for more information
+ See LICENSE for more information
 
  Based on the ASN.1 grammar for JavaCC:
 /*
@@ -29,7 +30,7 @@ import Text.ParserCombinators.Parsec
 import qualified Text.ParserCombinators.Parsec.Token as P
 import Text.ParserCombinators.Parsec.Language
 
-import System(exitFailure)
+import System.Exit (exitFailure)
 import Data.Generics
 
 data Module = Module { module_id::ModuleIdentifier
@@ -77,48 +78,22 @@ parseASN1FromFile fname =
 parseASN1 source = 
   parse asn1Input "" source
 
-{-
-  private static String usefulTypes optional  = { 
-        "GraphicString",  "NumericString", "PrintableString",
-	"TeletexString", "T61String", "VideotexString", "IA5String",
-	"VisibleString", "ISO646String", "GeneralizedTime", "UniversalString", "BMPString" };
-}
--}
-
-{-
-SKIP :
-{
-  " "
-| "\t"
-| "\n"
-| "\r"
-}
--}
 
 objectIdentifier =
   do { reserved "OBJECT" ; reserved "IDENTIFIER" }
--- <OBJECT_IDENTIFIER_TKN: "OBJECT" ( optional (" ","\n","\t","\r") )? "IDENTIFIER">
 
 data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
 stringConst allowedSet marker = 
   do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst body) } 
 
 bstring = stringConst "01" 'B' <?> "bstring"
--- <BSTRING_TKN: "\'" ( optional ("0"-"1") )* "\'B">
 
 hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
--- <HSTRING_TKN: "\'" ( optional ("0"-"9","A"-"F","a"-"f") )* "\'H">
 
 cstring = 
   do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst s) } <?> "cstring"
--- <CSTRING_TKN: "\"" ( ~ optional ("\"")  )* "\"" >
 
 numberERange = natural
-{-  do { c <- oneOf "123456789"
-     ; cs <- many (oneOf "0123456789") 
-     ; trace ("numberERange "++(c:cs)) (return ( )) } <?> "numberERange"
--}
--- <NUMBER_ERANGE_TKN:  optional ("1"-"9") ( optional ("0"-"9") )*>
 
 lcaseFirstIdent = do { c <- lower 
                      ; cs <- many (alphaNum <|> char '-') 
@@ -404,18 +379,7 @@ namedNumber =
      <?> "NamedNumber"
 
 signedNumber = integer
-{-
-  do { sign <- option "" ( char '-' )
-     ; body <- choice $ map try [ do char '0'
-                                     whitespace
-                                     return "0"
-                      , do numberERange
-                        
-                      ]
-     ; return $ read (sign ++ body)
-     }
      <?> "SignedNumber"
--}
 
 data SetOrSeq = SetT | SequenceT deriving (Eq,Ord,Show, Typeable, Data)
 setOrSeq = choice $ map try [ reserved "SET" >> return SetT
@@ -710,27 +674,9 @@ builtinValue =
      }
      <?> "BuiltinValue"
 
-compoundValue =
-  do { braces objIdComponentList
---   ; do { objIdComponentList <|> skip_to_matching_brace }
-     }
+compoundValue = braces objIdComponentList
      <?> "CompoundValue"
 
-{-JAVACODE
-void skip_to_matching_brace() {
-  Token tok;
-  int nesting = 1;
-  while (true) {
-    tok = getToken(1);
-    if (tok.kind == LEFTBRACE_TKN) nesting++;
-    if (tok.kind == RIGHTBRACE_TKN) {
-      nesting--;
-         if (nesting == 0) break;
-    }
-    tok = getnextToken;
-  }
-}
--}
 
 booleanValue =
   choice [ reserved "TRUE" >> return True
