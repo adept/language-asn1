@@ -1,13 +1,9 @@
-First go at ASN.1 parser for Haskell.
+Unsophisticated ASN.1 parser for Haskell.
 
-Compile and see for yourself what it does.
+Should cover a pretty large subset of ITU-T Rec. X.680 | ISO/IEC 8824-1
 
-Invoke like this: "./asn1tests LDAP.asn1 LDAPMessage"
+This is unfinished work, so beware - here be dragons!
 
----
-COMPILING
----
+Test code could be run like this:
 
-This code was tested with:
-
-GHC 6.6.1 (previously: 6.4.2, 6.2)
+  TestASN1Parser LDAP.asn1
