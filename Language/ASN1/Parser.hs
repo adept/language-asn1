@@ -139,7 +139,7 @@ tagDefault =
      }
      <?> "tagDefault"
 
-data ModuleIdentifier = ModuleIdentifier ModuleReference [ObjIdComponent] deriving (Eq,Ord,Show, Typeable, Data)
+data ModuleIdentifier = ModuleIdentifier ModuleReference OID deriving (Eq,Ord,Show, Typeable, Data)
 data ModuleReference = ModuleReference String 
                      | UndefinedModuleReference 
                        deriving (Eq,Ord,Show, Typeable, Data)
@@ -150,7 +150,7 @@ moduleIdentifier =
      }
      <?> "moduleIdentifier"
 
-assignedIdentifier = objectIdentifierValue
+assignedIdentifier = oid
                      <?> "assignedIdentifier"
 
 data ModuleBody = ModuleBody { module_exports::[[ExportedSymbol]]
@@ -657,7 +657,7 @@ data BuiltinValue = BooleanValue Bool
                   | HexString StringConst
                   | BinaryString StringConst
                   | CharString StringConst
-                  | CompoundValue [ObjIdComponent]
+                  | CompoundValue OID
                   | UndefinedBuiltinValue deriving (Eq,Ord,Show, Typeable, Data)
                       
 builtinValue =
@@ -674,7 +674,7 @@ builtinValue =
      }
      <?> "BuiltinValue"
 
-compoundValue = braces objIdComponentList
+compoundValue = oid
      <?> "CompoundValue"
 
 
@@ -698,24 +698,16 @@ namedValue =
      }
      <?> "NamedValue"
 
-objectIdentifierValue =
-  do {
-    braces objIdComponentList
-     }
-     <?> "ObjectIdentifierValue"
+oid = braces (many1 oidComponent)
+     <?> "OID"
 
-objIdComponentList =
-  do {
-      many1 objIdComponent
-     }
-     <?> "ObjIdComponentList"
-
-data ObjIdComponent = ObjIdNumberForm Integer | ObjIdNameAndNumberForm NamedNumber deriving (Eq,Ord,Show, Typeable, Data)
-objIdComponent =
+type OID = [OIDComponent]
+data OIDComponent = ObjIdNumberForm Integer | ObjIdNameAndNumberForm NamedNumber deriving (Eq,Ord,Show, Typeable, Data)
+oidComponent =
   choice [ numberForm >>= return . ObjIdNumberForm
          , nameAndNumberForm >>= return . ObjIdNameAndNumberForm
          ]
-  <?> "ObjIdComponent"
+  <?> "OIDComponent"
 
 numberForm = number <?> "NumberForm"
 
