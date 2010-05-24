@@ -37,7 +37,7 @@ import Control.Applicative ((<$>))
 data Module = Module { module_id::ModuleIdentifier
                      , module_oid :: Maybe OID
                      , default_tag_type::TagType
-                     , module_body::ModuleBody
+                     , module_body::Maybe ModuleBody
                      } deriving (Eq,Ord,Show, Typeable, Data)
 data GlobalType = GlobalT TheType | GlobalDMT DefinedMacroType  deriving (Eq,Ord,Show, Typeable, Data)
 data TheType = TheType { type_id::Type
@@ -119,12 +119,12 @@ asn1Input =
 
 moduleDefinition = 
   do { id <- moduleIdentifier   
-     ; oid_ <- option Nothing (Just <$> oid)
+     ; oid_ <- optMaybe oid
      ; reserved "DEFINITIONS"
      ; td <- option UndefinedTagType tagDefault
      ; reserved "::="
      ; reserved "BEGIN" 
-     ; body <- moduleBody
+     ; body <- optMaybe moduleBody
      ; reserved "END"  
      ; return (Module id oid_ td body)
      }
@@ -177,7 +177,7 @@ exports =
 
 imports = 
   do { reserved "IMPORTS"  
-     ; endBy (many1 symbolsFromModule) semi
+     ; (many1 symbolsFromModule) `endBy` semi
      }
      <?> "Imports"
 
@@ -851,6 +851,7 @@ displayHint =
      }
      <?> "DisplayHint"
 
+optMaybe p = option Nothing (Just <$> p)
 
 -----------------------------------------------------------
 -- Tokens
