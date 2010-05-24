@@ -142,12 +142,10 @@ tagDefault =
      }
      <?> "tagDefault"
 
-data ModuleIdentifier = ModuleIdentifier ModuleReference OID deriving (Eq,Ord,Show, Typeable, Data)
-data ModuleReference = ModuleReference String 
-                     | UndefinedModuleReference 
-                       deriving (Eq,Ord,Show, Typeable, Data)
+data ModuleIdentifier = ModuleIdentifier (Maybe ModuleReference) OID deriving (Eq,Ord,Show, Typeable, Data)
+data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
 moduleIdentifier = 
-  do { ref <- moduleReference
+  do { ref <- optMaybe moduleReference
      ; id <- option [] assignedIdentifier
      ; return (ModuleIdentifier ref id)
      }
@@ -294,7 +292,7 @@ theType =
 
 definedType =
   do {
-     ; mref <- option UndefinedModuleReference (try moduleReferenceAndDot)
+     ; mref <- optMaybe (try moduleReferenceAndDot)
      ; typeref <- typereference
      ; return (Defined mref typeref)
      }
@@ -324,7 +322,7 @@ data Type = IntegerT [NamedNumber]
           | Boolean
           | Null
           | External
-          | Defined ModuleReference TypeReference
+          | Defined (Maybe ModuleReference) TypeReference
             deriving (Eq,Ord,Show, Typeable, Data)
 parseType =
   do {
@@ -643,10 +641,10 @@ theValue =
      }
      <?> "Value"
 
-data DefinedValue = DefinedValue ModuleReference TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
+data DefinedValue = DefinedValue (Maybe ModuleReference) TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 definedValue =
   do {
-     ; mref <- option UndefinedModuleReference ( moduleReferenceAndDot )  
+     ; mref <- optMaybe moduleReferenceAndDot
      ; id <- theIdentifier
      ; return (DefinedValue mref id)
      }
