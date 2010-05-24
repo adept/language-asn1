@@ -300,7 +300,7 @@ definedType =
 moduleReferenceAndDot = 
   do { 
      ; mref <- moduleReference 
-     ; reserved "." 
+     ; char '.'
      ; return (mref)
      }
 
