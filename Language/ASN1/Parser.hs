@@ -172,7 +172,7 @@ exports =
 
 imports = 
   do { reserved "IMPORTS"  
-     ; (many1 symbolsFromModule) `endBy` semi
+     ; (many1 $ try symbolsFromModule) `endBy` semi
      }
      <?> "Imports"
 
