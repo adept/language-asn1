@@ -33,6 +33,8 @@ import Text.ParserCombinators.Parsec.Language
 import System.Exit (exitFailure)
 import Data.Generics
 import Control.Applicative ((<$>))
+import Control.Monad (when)
+import Data.Char (isUpper)
 
 data Module = Module { module_id::ModuleIdentifier
                      , module_oid :: Maybe OID
@@ -96,16 +98,14 @@ cstring =
 
 numberERange = natural
 
-lcaseFirstIdent = do { c <- lower 
-                     ; cs <- many (alphaNum <|> char '-') 
-                     ; whiteSpace 
-                     ; return (c:cs)
+lcaseFirstIdent = do { i <- identifier
+                     ; when (isUpper $ head i) $ unexpected "uppercase letter"
+                     ; return i
                      }
 
-ucaseFirstIdent = do { c <-upper 
-                     ; cs <- many (alphaNum <|> char '-') 
-                     ; whiteSpace 
-                     ; return (c:cs)
+ucaseFirstIdent = do { i <- identifier
+                     ; when (not . isUpper $ head i) $ unexpected "lowercase letter"
+                     ; return i
                      }
 
 asn1Input = 
