@@ -713,7 +713,7 @@ numberForm = number <?> "NumberForm"
 
 nameAndNumberForm =
   do { id <- theIdentifier  
-     ; v <- option UndefinedNV $ braces $ choice [ numberForm >>= return . Number
+     ; v <- option UndefinedNV $ parens $ choice [ numberForm >>= return . Number
                                                  , definedValue >>= return . DefinedVal
                                                  ]
      ; return (NamedNumber (NumberName id) v)
