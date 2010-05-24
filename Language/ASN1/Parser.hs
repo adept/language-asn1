@@ -864,6 +864,23 @@ asn1Style
     , identStart     = alphaNum
     , identLetter = alphaNum <|> oneOf "_-#"
     , caseSensitive = True
+    , reservedNames = [ "ABSENT", "ACCESS", "ANY", "APPLICATION"
+                      , "BEGIN", "BIT", "BOOLEAN", "BY"
+                      , "CHOICE", "COMPONENT", "COMPONENTS"
+                      , "DEFAULT", "DEFINED", "DEFINITIONS", "DEFVAL", "DESCRIPTION", "DISPLAY-HINT"
+                      , "END", "ENUMERATED", "EXPLICIT", "EXPORTS", "EXTERNAL"
+                      , "FALSE", "FROM"
+                      , "IDENTIFIER", "IMPLICIT", "IMPORTS", "INCLUDES" , "INDEX" , "INTEGER"
+                      , "MACRO" , "MAX" , "MIN" , "MINUS-INFINITY"
+                      , "NULL"
+                      , "OBJECT" , "OBJECT-TYPE" , "OCTET" , "OF" , "OPTIONAL"
+                      , "PLUS-INFINITY" , "PRESENT" , "PRIVATE" 
+                      , "REAL" , "REFERENCE"
+                      , "SEQUENCE" , "SET" , "SIZE" , "STATUS" , "STRING" , "SYNTAX"
+                      , "TAGS" , "TEXTUAL-CONVENTION" , "TRUE"
+                      , "UNIVERSAL"
+                      , "WITH" ]
+    , reservedOpNames = [ "::=" ]
     }
 
 asn1            = P.makeTokenParser asn1Style
