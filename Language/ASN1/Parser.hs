@@ -646,7 +646,7 @@ theValue =
 data DefinedValue = DefinedValue (Maybe ModuleReference) TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 definedValue =
   do {
-     ; mref <- optMaybe moduleReferenceAndDot
+     ; mref <- optMaybe $ try moduleReferenceAndDot
      ; id <- theIdentifier
      ; return (DefinedValue mref id)
      }
