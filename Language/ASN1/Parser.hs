@@ -856,6 +856,8 @@ displayHint =
 asn1Style
   = emptyDef
     { commentLine = "--"
+    , commentStart = "/*"
+    , commentEnd = "*/"
     , nestedComments = False
     , identStart     = alphaNum
     , identLetter = alphaNum <|> oneOf "_-#"
