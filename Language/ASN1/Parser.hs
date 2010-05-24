@@ -45,11 +45,10 @@ data TheType = TheType { type_id::Type
                        }
                deriving (Eq,Ord,Show, Typeable, Data)
 newtype TypeName = TypeName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-data NamedNumber = NamedNumber { number_name::NumberName
-                               , named_number::NumberValue 
+data NamedNumber = NamedNumber { number_name::TheIdentifier
+                               , number_value::NumberOrDefinedValue
                                } deriving (Eq,Ord,Show, Typeable, Data)
-newtype NumberName = NumberName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-data NumberValue = Number Integer | DefinedVal DefinedValue | UndefinedNV deriving (Eq,Ord,Show, Typeable, Data)
+type NumberOrDefinedValue = Either Integer DefinedValue
 data ElementType = NamedElementType { element_name::TypeName
                                     , element_body::TheType
                                     , element_presence::ElementPresence
@@ -372,12 +371,15 @@ namedNumberList = commaSep1 namedNumber
 
 namedNumber =
   do { id <- theIdentifier
-     ; v <- parens $ choice [ signedNumber >>= return . Number
-                            , definedValue >>= return . DefinedVal
-                            ]
-     ; return  (NamedNumber (NumberName id) v)
+     ; v <- parens numberOrDefinedValue
+     ; return (NamedNumber id v)
      }
      <?> "NamedNumber"
+
+numberOrDefinedValue = 
+  choice [ Left <$> signedNumber
+         , Right <$> definedValue
+         ]
 
 signedNumber = integer
      <?> "SignedNumber"
@@ -703,23 +705,21 @@ oid = braces (many1 oidComponent)
      <?> "OID"
 
 type OID = [OIDComponent]
-data OIDComponent = ObjIdNumberForm Integer | ObjIdNameAndNumberForm NamedNumber deriving (Eq,Ord,Show, Typeable, Data)
+data OIDComponent = ObjIdDefinedValue DefinedValue | ObjIdNumber Integer | ObjIdNamedNumber NamedNumber | ObjIdName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 oidComponent =
-  choice [ numberForm >>= return . ObjIdNumberForm
-         , nameAndNumberForm >>= return . ObjIdNameAndNumberForm
+  choice [ ObjIdNamedNumber <$> try namedNumber
+         , ObjIdName . TheIdentifier <$> try reservedOIDIdentifier
+         , ObjIdNumber <$> number
+         , ObjIdDefinedValue <$> definedValue
          ]
   <?> "OIDComponent"
 
-numberForm = number <?> "NumberForm"
-
-nameAndNumberForm =
-  do { id <- theIdentifier  
-     ; v <- option UndefinedNV $ parens $ choice [ numberForm >>= return . Number
-                                                 , definedValue >>= return . DefinedVal
-                                                 ]
-     ; return (NamedNumber (NumberName id) v)
-     }
-     <?> "NameAndNumberForm"
+reservedOIDIdentifier = do
+  i <- choice $ map (try.symbol) $ [ "itu-t", "ccitt", "iso", "joint-iso-itu-t", "joint-iso-ccitt"
+                                   , "recommendation", "question", "administration", "network-operator"
+                                   , "identified-organization", "standard", "member-body"] ++ map (:[]) ['a'..'z']
+  notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
+  return i
 
 binaryString = bstring <?> "BinaryString"
 hexString = hstring  <?> "HexString"
