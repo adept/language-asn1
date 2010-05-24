@@ -637,7 +637,7 @@ valueAssignment =
      <?> "ValueAssignment"
 
 data TheValue = BuiltinV BuiltinValue
-              | DefinedV DefinedValue
+              | DefinedV DefinedValue -- TODO: add ValueFromObject here
               | UndefinedV deriving (Eq,Ord,Show, Typeable, Data)
 theValue = 
   do {
