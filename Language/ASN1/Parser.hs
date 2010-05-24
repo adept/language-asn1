@@ -32,8 +32,10 @@ import Text.ParserCombinators.Parsec.Language
 
 import System.Exit (exitFailure)
 import Data.Generics
+import Control.Applicative ((<$>))
 
 data Module = Module { module_id::ModuleIdentifier
+                     , module_oid :: Maybe OID
                      , default_tag_type::TagType
                      , module_body::ModuleBody
                      } deriving (Eq,Ord,Show, Typeable, Data)
@@ -117,13 +119,14 @@ asn1Input =
 
 moduleDefinition = 
   do { id <- moduleIdentifier   
+     ; oid_ <- option Nothing (Just <$> oid)
      ; reserved "DEFINITIONS"
      ; td <- option UndefinedTagType tagDefault
      ; reserved "::="
      ; reserved "BEGIN" 
      ; body <- moduleBody
      ; reserved "END"  
-     ; return (Module id td body)
+     ; return (Module id oid_ td body)
      }
      <?> "moduleDefinition"
 
