@@ -141,17 +141,15 @@ tagDefault =
      }
      <?> "tagDefault"
 
-data ModuleIdentifier = ModuleIdentifier (Maybe ModuleReference) OID deriving (Eq,Ord,Show, Typeable, Data)
+data ModuleIdentifier = ModuleIdentifier (Maybe ModuleReference) (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
 moduleIdentifier = 
   do { ref <- optMaybe moduleReference
-     ; id <- option [] assignedIdentifier
+     ; id <- optMaybe assignedIdentifier
+     ; when ( ref == Nothing && id == Nothing) $ unexpected "Empty module identifier, please provide author with sample file"
      ; return (ModuleIdentifier ref id)
      }
      <?> "moduleIdentifier"
-
-assignedIdentifier = oid
-                     <?> "assignedIdentifier"
 
 data ModuleBody = ModuleBody { module_exports::[[ExportedSymbol]]
                              , module_imports::[[SymbolsFromModule]]
@@ -186,6 +184,12 @@ symbolsFromModule =
      ; return (SymbolsFromModule ss id)
      }
      <?> "SymbolsFromModule"
+
+data AssignedIdentifier = AssignedIdentifierOID OID | AssignedIdentifierDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
+assignedIdentifier = 
+  choice [ AssignedIdentifierOID <$> try oid
+         , AssignedIdentifierDefinedValue <$> definedValue
+         ]
 
 data TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
 
