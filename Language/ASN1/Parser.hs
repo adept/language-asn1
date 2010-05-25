@@ -35,6 +35,7 @@ import Data.Generics
 import Control.Applicative ((<$>))
 import Control.Monad (when)
 import Data.Char (isUpper)
+import Data.List (isInfixOf)
 
 data Module = Module { module_id::ModuleIdentifier
                      , module_oid :: Maybe OID
@@ -108,13 +109,30 @@ ucaseFirstIdent = do { i <- identifier
                      ; return i
                      }
 
-asn1Input = 
-  do { whiteSpace
-     ; modules <- many1 moduleDefinition
-     ; eof
-     ; return modules
-     } 
-     <?> "asn1Input"
+asn1Input = do
+  fixupComments
+  whiteSpace
+  modules <- many1 moduleDefinition
+  eof
+  return modules
+  <?> "asn1Input"
+
+-- Parsec machinery (Token parser) is incapable of handling complex commenting 
+-- conditions like "comment ends on next '--' or on newline". Which is why all
+-- line comments are turned into block comments and Token parser is instructed
+-- to handle only block comments.
+fixupComments = do
+  inp <- getInput
+  setInput $ unlines $ map fixup $ lines inp
+  where 
+    fixup l
+      | "--" `isInfixOf` l && unterminated = l ++ " --"
+      | otherwise = l
+      where
+        unterminated = checkUnterm False l
+        checkUnterm p []             = p
+        checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
+        checkUnterm p (_:rest)       = checkUnterm p rest
 
 moduleDefinition = 
   do { id <- moduleIdentifier   
@@ -916,9 +934,8 @@ optMaybe p = option Nothing (Just <$> p)
 -----------------------------------------------------------
 asn1Style
   = emptyDef
-    { commentLine = "--"
-    , commentStart = "/*"
-    , commentEnd = "*/"
+    { commentStart = "--"
+    , commentEnd = "--"
     , nestedComments = False
     , identStart     = alphaNum
     , identLetter = alphaNum <|> oneOf "_-#"
