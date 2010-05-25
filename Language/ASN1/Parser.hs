@@ -153,7 +153,7 @@ moduleDefinition =
      ; reserved "DEFINITIONS"
      ; td <- tagDefault
      ; ei <- option False ( reserved "EXTENSIBILITY" >> reserved "IMPLIED" >> return True )
-     ; reserved "::="
+     ; reservedOp "::="
      ; reserved "BEGIN" 
      ; body <- optMaybe moduleBody
      ; reserved "END"  
@@ -278,7 +278,7 @@ macroDefinition =
                    , typereference >>= return . TypeReferenceMDT
                    ]
      ; reserved "MACRO"
-     ; reserved "::="  
+     ; reservedOp "::="  
      ; reserved "BEGIN"
      ; body <- macroBody
      ; reserved "END"
@@ -317,7 +317,7 @@ macroReference =
 -- Dubuisson 9.1.2
 typeAssignment =
   do { t1 <- typereference
-     ; reserved "::=" 
+     ; reservedOp "::=" 
      ; t2 <- theType
      ; return (TypeAssignment t1 t2)
      }
@@ -591,7 +591,7 @@ anyType =
 -- Dubuisson, 9.1.2
 objectClassAssignment = do
   ref <- objectclassreference
-  reserved "::="
+  reservedOp "::="
   c <- objectClass
   return $ ObjectClassAssignment ref c
 
@@ -736,7 +736,7 @@ definedObjectClass =
 objectAssignment = do
   or <- objectreference 
   doc <- definedObjectClass 
-  reserved "::=" 
+  reservedOp "::=" 
   o <- object
   return $ ObjectAssignment or doc o
 
@@ -876,7 +876,7 @@ singleTypeConstraint = constraint <?> "SingleTypeConstraint"
 
 multipleTypeConstraints =
   do {
-      braces(  do { optional (  reserved "...," ) 
+      braces(  do { optional (  reservedOp "..." >> reservedOp "," ) 
                   ; typeConstraints
                   }
             )
@@ -920,7 +920,7 @@ presenceConstraint =
 valueAssignment =
   do { id <- theIdentifier
      ; t <- theType 
-     ; reserved "::="  
+     ; reservedOp "::="  
      ; id2 <- option UndefinedIdentifier $ do { i <- theIdentifier
                                               ; optional $ symbol ":" 
                                               ; return i
@@ -1126,7 +1126,7 @@ snmpIndexPart =
 typeOrValueList =
   do {
       typeOrValue 
-     ; many ( do {reserved "," ; typeOrValue} )
+     ; many ( do {reservedOp "," ; typeOrValue} )
      }
      <?> "TypeOrValueList"
 
@@ -1196,7 +1196,7 @@ asn1Style
                         "TAGS", "TeletexString", "TRUE", "TYPE-IDENTIFIER", "UNION", "UNIQUE", "UNIVERSAL",
                         "UniversalString", "UTCTime", "UTF8String", "VideotexString", "VisibleString",
                         "WITH" ]
-    , reservedOpNames = [ "::=" ]
+    , reservedOpNames = [ "::=", ",", "...", "!" ]
     }
 
 asn1            = P.makeTokenParser asn1Style
@@ -1205,6 +1205,7 @@ whiteSpace      = P.whiteSpace asn1
 symbol          = P.symbol asn1
 identifier      = P.identifier asn1
 reserved        = P.reserved asn1
+reservedOp      = P.reservedOp asn1
 decimal         = P.decimal asn1
 charLiteral     = P.charLiteral asn1
 stringLiteral   = P.stringLiteral asn1
