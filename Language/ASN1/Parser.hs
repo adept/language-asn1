@@ -258,12 +258,13 @@ data Assignment = MacroDefinition { macro_def_type::MacroDefinitionType
                                   } 
                 -- TODO: | ValueSetTypeAssignment
                 | ObjectClassAssignment ObjectClassReference ObjectClass
-                -- TODO: | ObjectAssignment
+                | ObjectAssignment ObjectReference DefinedObjectClass Object
                 -- TODO: | ObjectSetAssignment 
                 -- TODO: | ParameterizedAssignment
                   deriving (Eq,Ord,Show, Typeable, Data)
 assignment = 
   choice $ map try [ macroDefinition
+                   , objectAssignment
                    , valueAssignment
                    , typeAssignment
                    , objectClassAssignment
@@ -680,16 +681,57 @@ definedObjectClass =
           ocref <- objectclassreference
           return $ ExternalObjectClassReference mref ocref
 
+-- 
+objectAssignment = do
+  or <- objectreference 
+  doc <- definedObjectClass 
+  reserved "::=" 
+  o <- object
+  return $ ObjectAssignment or doc o
+
 -- Dubuisson, 15.2.2, TODO
-{-
-data Object = Object deriving (Eq,Ord,Show, Typeable, Data)
+data Object = ObjectDefn [FieldSetting]
+            deriving (Eq,Ord,Show, Typeable, Data)
 object =
-  choice [ -- TODO: objectDefn
+  choice [ objectDefn
          -- TODO: , definedObject
          -- TODO: , objectFromObject
          -- TODO: , parametrizedObject
          ]
--} 
+ 
+objectDefn = 
+  choice [ ObjectDefn <$> defaultSyntax 
+           -- TODO: , definedSyntax
+         ]
+  where
+    defaultSyntax = braces $ commaSep fieldSetting
+    
+data FieldSetting = FieldSetting PrimitiveFieldName Setting
+                  deriving (Eq,Ord,Show, Typeable, Data)
+fieldSetting = do
+  pfn <- primitiveFieldName
+  s <- setting
+  return $ FieldSetting pfn s
+
+data Setting = TypeSetting Type | ValueSetting Value | ObjectSetting Object
+             deriving (Eq,Ord,Show, Typeable, Data)
+setting = 
+  choice [ TypeSetting <$> theType
+         , ValueSetting <$> value
+         -- TODO: , valueSet
+         , ObjectSetting <$> object
+         -- TODO: , objectSet
+         ]
+  
+data PrimitiveFieldName = PrimTFR TypeFieldReference | PrimVFR ValueFieldReference | PrimOFR ObjectFieldReference
+                        deriving (Eq,Ord,Show, Typeable, Data)
+primitiveFieldName =
+  choice [ PrimTFR <$> try typefieldreference
+         , PrimOFR <$> objectfieldreference           
+         , PrimVFR <$> valuefieldreference
+         -- TODO: , valuesetfieldreference
+         -- TODO: , objectsetfieldreference
+         ]
 
 -- unchecked, 15.7.2
 type SubtypeSpec = [SubtypeValueSet]
@@ -948,6 +990,9 @@ valuefieldreference = char '&' >> lcaseFirstIdent >>= return . ValueFieldReferen
 newtype ObjectFieldReference = ObjectFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 objectfieldreference = char '&' >> lcaseFirstIdent >>= return . ObjectFieldReference
 
+newtype ObjectReference = ObjectReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectreference = lcaseFirstIdent >>= return . ObjectReference
+
 
 data DefinedMacroType = TextualConventionDMT TextualConventionMacroType | SnmpObjectDMT SnmpObjectTypeMacroType deriving (Eq,Ord,Show, Typeable, Data)
 definedMacroType =
@@ -1107,6 +1152,7 @@ charLiteral     = P.charLiteral asn1
 stringLiteral   = P.stringLiteral asn1
 comma           = P.comma asn1
 colon           = P.colon asn1
+commaSep        = P.commaSep asn1
 commaSep1       = P.commaSep1 asn1
 semiSep1        = P.semiSep1 asn1
 braces          = P.braces asn1
