@@ -54,10 +54,10 @@ data NamedNumber = NamedNumber { number_name::TheIdentifier
 type NumberOrDefinedValue = Either Integer DefinedValue
 data ElementType = NamedElementType { element_name::TypeName
                                     , element_body::Type
-                                    , element_presence::Maybe ElementPresence
+                                    , element_presence::Maybe ValueOptionality
                                     } 
                  | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
-data ElementPresence = Optional | Default TheValue  deriving (Eq,Ord,Show, Typeable, Data)
+data ValueOptionality = OptionalValue | DefaultValue TheValue  deriving (Eq,Ord,Show, Typeable, Data)
 data NamedValue = NamedValue { value_name::ValueName
                              , named_value::TheValue
                              } deriving (Eq,Ord,Show, Typeable, Data)
@@ -500,8 +500,8 @@ elementType =
            , do { id <- option UndefinedIdentifier (try theIdentifier)
                 ; t <- theType
                 ; presence <- optionMaybe $ choice 
-                  [ reserved "OPTIONAL" >> return Optional
-                  , reserved "DEFAULT" >> theValue >>= return . Default 
+                  [ reserved "OPTIONAL" >> return OptionalValue
+                  , reserved "DEFAULT" >> theValue >>= return . DefaultValue
                   ] 
                 ; return (NamedElementType (TypeName id) t presence)
                 }
