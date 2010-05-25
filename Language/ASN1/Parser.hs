@@ -46,7 +46,7 @@ import Data.List (isInfixOf)
 
 data Module = Module { module_id::ModuleIdentifier
                      , module_oid :: Maybe OID
-                     , default_tag_type::TagType
+                     , default_tag_type::Maybe TagDefault
                      , module_body::Maybe ModuleBody
                      } deriving (Eq,Ord,Show, Typeable, Data)
 data GlobalType = GlobalT Type | GlobalDMT DefinedMacroType  deriving (Eq,Ord,Show, Typeable, Data)
@@ -150,7 +150,7 @@ moduleDefinition =
   do { id <- moduleIdentifier   
      ; oid_ <- optMaybe oid
      ; reserved "DEFINITIONS"
-     ; td <- option UndefinedTagType tagDefault
+     ; td <- tagDefault
      ; reserved "::="
      ; reserved "BEGIN" 
      ; body <- optMaybe moduleBody
@@ -159,17 +159,23 @@ moduleDefinition =
      }
      <?> "moduleDefinition"
 
-data TagType = Explicit | Implicit | UndefinedTagType deriving (Eq,Ord,Show, Typeable, Data)
-tagType = choice [ reserved "EXPLICIT" >> return Explicit
-                 , reserved "IMPLICIT" >> return Implicit
-                 ]
+data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
+data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
+tagType = 
+  optionMaybe $
+  choice [ reserved "EXPLICIT" >> return Explicit
+         , reserved "IMPLICIT" >> return Implicit
+         ]
 
-tagDefault = 
-  do { t <- tagType
-     ; reserved "TAGS"  
-     ; return t
-     }
-     <?> "tagDefault"
+tagDefault = optionMaybe td <?> "tagDefault"
+  where td = do 
+          t <- choice [ reserved "EXPLICIT" >> return ExplicitTags
+                      , reserved "IMPLICIT" >> return ImplicitTags
+                      , reserved "AUTOMATIC" >> return AutomaticTags
+                      ]
+          reserved "TAGS"  
+          return t
+  
 
 data ModuleIdentifier = ModuleIdentifier (Maybe ModuleReference) (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
@@ -332,7 +338,7 @@ data BuiltinType = IntegerT [NamedNumber]
           | SequenceOf SizeConstraint Type
           | Choice [ElementType]
           | Selection TheIdentifier Type
-          | Tagged Tag TagType Type
+          | Tagged Tag (Maybe TagType) Type
           | Any TheIdentifier
           | Enumerated [NamedNumber]
           | OctetString 
@@ -548,7 +554,7 @@ selectionType =
 
 taggedType =
   do { t <- tag
-     ; tt <- option UndefinedTagType tagType
+     ; tt <- tagType
      ; typ <- theType
      ; return (Tagged t tt typ)
      }
