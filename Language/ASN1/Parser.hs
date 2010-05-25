@@ -41,9 +41,9 @@ data Module = Module { module_id::ModuleIdentifier
                      , default_tag_type::TagType
                      , module_body::Maybe ModuleBody
                      } deriving (Eq,Ord,Show, Typeable, Data)
-data GlobalType = GlobalT TheType | GlobalDMT DefinedMacroType  deriving (Eq,Ord,Show, Typeable, Data)
-data TheType = TheType { type_id::Type
-                       , subtype::SubtypeSpec
+data GlobalType = GlobalT Type | GlobalDMT DefinedMacroType  deriving (Eq,Ord,Show, Typeable, Data)
+data Type = Type { type_id::BuiltinType
+                       , subtype::Maybe SubtypeSpec
                        }
                deriving (Eq,Ord,Show, Typeable, Data)
 newtype TypeName = TypeName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
@@ -52,10 +52,10 @@ data NamedNumber = NamedNumber { number_name::TheIdentifier
                                } deriving (Eq,Ord,Show, Typeable, Data)
 type NumberOrDefinedValue = Either Integer DefinedValue
 data ElementType = NamedElementType { element_name::TypeName
-                                    , element_body::TheType
+                                    , element_body::Type
                                     , element_presence::Maybe ElementPresence
                                     } 
-                 | ComponentsOf TheType deriving (Eq,Ord,Show, Typeable, Data)
+                 | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
 data ElementPresence = Optional | Default TheValue  deriving (Eq,Ord,Show, Typeable, Data)
 data NamedValue = NamedValue { value_name::ValueName
                              , named_value::TheValue
@@ -212,12 +212,12 @@ data Assignment = MacroDefinition { macro_def_type::MacroDefinitionType
                                   , macro_body::MacroBody
                                   }
                 | ValueAssignment { value_ref::TheIdentifier
-                                  , value_ref_type::GlobalType
+                                  , value_ref_type::Type
                                   , assigned_value_ref::TheIdentifier
                                   , assigned_value::BuiltinValue
                                   }
                 | TypeAssignment  { type_ref::TypeReference
-                                  , assigned_type::GlobalType
+                                  , assigned_type::Type
                                   } 
                   deriving (Eq,Ord,Show, Typeable, Data)
 assignment = 
@@ -270,29 +270,106 @@ macroReference =
      }
      <?> "MacroReference"
 
+-- Dubuisson 9.1.2
 typeAssignment =
   do { t1 <- typereference
      ; reserved "::=" 
-     ; t2 <- globalType
+     ; t2 <- theType
      ; return (TypeAssignment t1 t2)
      }
      <?> "TypeAssignment"
 
-globalType =
-  choice [ theType >>= return . GlobalT
-         , definedMacroType >>= return . GlobalDMT
-         ]
-  <?> "GlobalType"
+-- Dubuisson 9.1.2
+-- ConstrainedType is merged in other parsers: "Type Constraint" alternative is encoded here,
+-- and TypeWithConstraint in implemented in Set/Sequence parsers
+theType :: Parser Type
+theType = do
+  t <- builtinType <|> referencedType
+  c <- optionMaybe constraint
+  return (Type t c)
+  <?> "Type"
 
-theType :: Parser TheType
-theType =
-  do { -- put try before choice if anything
-     ; t <- parseType
-     ; subt <- option [] (subtypeSpec)
-     ; return (TheType t subt)
+data BuiltinType = IntegerT [NamedNumber]
+          | BitString [NamedNumber]
+          | Set [ElementType]
+          | Sequence [ElementType]
+          | SetOf SizeConstraint Type
+          | SequenceOf SizeConstraint Type
+          | Choice [ElementType]
+          | Selection TheIdentifier Type
+          | Tagged Tag TagType Type
+          | Any TheIdentifier
+          | Enumerated [NamedNumber]
+          | OctetString 
+          | ObjectIdentifier
+          | Real
+          | Boolean
+          | Null
+          | External
+          | Defined (Maybe ModuleReference) TypeReference
+          | BMPString
+          | GeneralString
+          | GraphicString
+          | IA5String
+          | ISO646String
+          | NumericString
+          | PrintableString
+          | TeletexString
+          | T61String
+          | UniversalString
+          | UTF8String
+          | VideotexString
+          | VisibleString
+          | CharacterString
+          | GeneralizedTime
+          | UTCTime
+            deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Dubuisson 9.1.2
+builtinType =
+  do {
+      choice $ map try [ integerType >>= return . IntegerT             -- OK
+                       , bitStringType >>= return . BitString         -- OK
+                       , setOrSequenceType                            -- OK
+                       , setOrSequenceOfType                          -- OK
+                       , choiceType >>= return . Choice               -- OK
+                       , taggedType                                   -- OK
+                       , anyType >>= return . Any                     
+                       , enumeratedType >>= return . Enumerated       -- OK
+                       , octetString >> return OctetString            -- OK
+                       , objectIdentifier >> return ObjectIdentifier  -- OK
+                       , reserved "REAL" >> return Real         -- OK
+                       , reserved "BOOLEAN" >> return Boolean   -- OK
+                       , reserved "NULL" >> return Null         -- OK
+                       , reserved "EXTERNAL" >> return External -- OK
+                       , characterStringType
+                       -- TODO: , embeddedPDVType
+                       -- TODO: , instanceOfType
+                       -- TODO: , objectClassFieldType
+                       -- TODO: , relativeOIDType
+                       ]
      }
-     <?> "Type"
+     <?> "BuiltinType"
 
+embeddedPDVType = undefined
+instanceOfType = undefined
+objectClassFieldType = undefined
+relativeOIDType = undefined
+typeFromObject = undefined
+valueSetFromObjects = undefined
+objectDescriptor = undefined
+
+-- Dubuisson 9.1.2
+referencedType = 
+  definedType <|> usefulType <|> selectionType {- <|> typeFromObject <|> valueSetFromObjects -} 
+  <?> "ReferencedType"
+
+-- Dubuisson 11.15.2
+usefulType = 
+  choice [ reserved "GeneralizedTime" >> return GeneralizedTime
+         , reserved "UTCTime" >> return UTCTime
+         ]
+  
 definedType =
   do {
      ; mref <- optMaybe (try moduleReferenceAndDot)
@@ -308,46 +385,23 @@ moduleReferenceAndDot =
      ; return (mref)
      }
 
-data Type = IntegerT [NamedNumber]
-          | BitString [NamedNumber]
-          | Set [ElementType]
-          | Sequence [ElementType]
-          | SetOf SizeConstraint TheType
-          | SequenceOf SizeConstraint TheType
-          | Choice [ElementType]
-          | Selection TheIdentifier TheType
-          | Tagged Tag TagType TheType
-          | Any TheIdentifier
-          | Enumerated [NamedNumber]
-          | OctetString 
-          | ObjectIdentifier
-          | Real
-          | Boolean
-          | Null
-          | External
-          | Defined (Maybe ModuleReference) TypeReference
-            deriving (Eq,Ord,Show, Typeable, Data)
-parseType =
-  do {
-      choice $ map try [ integrType >>= return . IntegerT
-                       , bitStringType >>= return . BitString
-                       , setOrSequenceType
-                       , setOrSequenceOfType
-                       , choiceType >>= return . Choice
-                       , selectionType
-                       , taggedType
-                       , anyType >>= return . Any
-                       , enumeratedType >>= return . Enumerated
-                       , octetString >> return OctetString
-                       , objectIdentifier >> return ObjectIdentifier
-                       , reserved "REAL" >> return Real
-                       , reserved "BOOLEAN" >> return Boolean
-                       , reserved "NULL" >> return Null
-                       , reserved "EXTERNAL" >> return External
-                       , definedType
-                       ]
-     }
-     <?> "BuiltinType"
+-- Dubuisson 11.13
+characterStringType = 
+  choice [ reserved "BMPString" >> return BMPString
+         , reserved "GeneralString" >> return GeneralString
+         , reserved "GraphicString" >> return GraphicString
+         , reserved "IA5String" >> return IA5String 
+         , reserved "ISO646String" >> return ISO646String
+         , reserved "NumericString" >> return NumericString 
+         , reserved "PrintableString" >> return PrintableString
+         , reserved "TeletexString" >> return TeletexString 
+         , reserved "T61String" >> return T61String
+         , reserved "UniversalString" >> return UniversalString 
+         , reserved "UTF8String" >> return UTF8String
+         , reserved "VideotexString" >> return VideotexString 
+         , reserved "VisibleString" >> return VisibleString 
+         , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
+         ]
 
 octetString = 
   do { reserved "OCTET" ; reserved "STRING" }
@@ -358,7 +412,7 @@ enumeratedType =
      }
      <?> "EnumeratedType"
 
-integrType =
+integerType =
   do { reserved "INTEGER"
      ; option [] $ braces namedNumberList
      }
@@ -435,7 +489,7 @@ elementType =
                 }
            ]
 
-componentsType :: Parser TheType
+componentsType :: Parser Type
 componentsType =
   do {
      ; reserved "COMPONENTS"
@@ -490,8 +544,9 @@ anyType =
 
 type SubtypeSpec = [SubtypeValueSet]
 
-subtypeSpec :: Parser SubtypeSpec
-subtypeSpec = parens subtypeValueSetList
+-- unchecked, 15.7.2
+constraint :: Parser SubtypeSpec
+constraint = parens subtypeValueSetList
               <?> "SubtypeSpec"
 
 subtypeValueSetList = sepBy1 subtypeValueSet (symbol "|") <?> "SubtypeValueSetList"
@@ -501,7 +556,7 @@ data ValueRangeElement = MinValue | MaxValue | UndefinedValue | Value TheValue d
 data SubtypeValueSet = ValueRange { range_from::ValueRangeElement
                                   , range_to::ValueRangeElement
                                   }
-                     | ContainedSubType TheType
+                     | ContainedSubType Type
                      | PermittedAlphabet SubtypeSpec
                      | SizeConstr SizeConstraint
                      | SingleTypeConstraint SubtypeSpec 
@@ -550,21 +605,21 @@ valueRange =
      }
      <?> "ValueRange"
 
+-- Dubuisson 13.5.2
 sizeConstraint :: Parser SizeConstraint
 sizeConstraint =
   do {
      ; reserved "SIZE" 
-     ; spec <- subtypeSpec 
+     ; spec <- constraint
      ; return (SizeConstraint spec)
      }
      <?> "SizeConstraint"
 
-permittedAlphabet :: Parser SubtypeSpec
-permittedAlphabet =
-  do { reserved "FROM" 
-     ; subtypeSpec >>= return
-     }
-     <?> "PermittedAlphabet"
+-- Dubuisson, 13.6.2
+permittedAlphabet = do
+  reserved "FROM" 
+  constraint
+  <?> "PermittedAlphabet"
 
 innerTypeConstraints =
   do { reserved "WITH" 
@@ -578,7 +633,7 @@ innerTypeConstraints =
      }
      <?> "InnerTypeConstraints"
 
-singleTypeConstraint = subtypeSpec <?> "SingleTypeConstraint"
+singleTypeConstraint = constraint <?> "SingleTypeConstraint"
 
 multipleTypeConstraints =
   do {
@@ -595,13 +650,13 @@ typeConstraints = commaSep1 namedConstraint <?> "TypeConstraints"
 data NamedConstraint = NamedConstraint TheIdentifier Constraint  deriving (Eq,Ord,Show, Typeable, Data)
 namedConstraint =
   do { id <- option UndefinedIdentifier theIdentifier
-     ; c <- constraint
+     ; c <- otherConstraint
      ; return (NamedConstraint id c)
      }
      <?> "NamedConstraint"
 
 data Constraint = Constraint ValueConstraint PresenceConstraint deriving (Eq,Ord,Show, Typeable, Data)
-constraint = 
+otherConstraint = 
   do { vc <- option UndefinedVC (valueConstraint)  
      ; pc <- option UndefinedContraint (presenceConstraint)
      ; return (Constraint vc pc)
@@ -609,7 +664,7 @@ constraint =
      <?> "Constraint"
 
 data ValueConstraint = DefinedVC SubtypeSpec | UndefinedVC deriving (Eq,Ord,Show, Typeable, Data)
-valueConstraint = subtypeSpec >>= return . DefinedVC <?> "ValueConstraint"
+valueConstraint = constraint >>= return . DefinedVC <?> "ValueConstraint"
 
 data PresenceConstraint = PresentConstraint 
                         | AbsentConstraint 
@@ -625,7 +680,7 @@ presenceConstraint =
 
 valueAssignment =
   do { id <- theIdentifier
-     ; t <- globalType 
+     ; t <- theType 
      ; reserved "::="  
      ; id2 <- option UndefinedIdentifier $ do { i <- theIdentifier
                                               ; optional $ symbol ":" 
@@ -754,7 +809,7 @@ definedMacroName =
      }
      <?> "DefinedMacroName"
 
-data SnmpObjectTypeMacroType = SnmpObjectTypeMacroType TheType SnmpAccess SnmpStatus SnmpDescr SnmpRefer SnmpIndex TheValue
+data SnmpObjectTypeMacroType = SnmpObjectTypeMacroType Type SnmpAccess SnmpStatus SnmpDescr SnmpRefer SnmpIndex TheValue
                                deriving (Eq,Ord,Show, Typeable, Data)
 snmpObjectTypeMacroType =
   do { reserved "OBJECT-TYPE" 
@@ -814,7 +869,7 @@ typeOrValueList =
      }
      <?> "TypeOrValueList"
 
-data TypeOrValue = T TheType | V TheValue deriving (Eq,Ord,Show, Typeable, Data)
+data TypeOrValue = T Type | V TheValue deriving (Eq,Ord,Show, Typeable, Data)
 typeOrValue =
   do {
       choice $ map try [ theType >>= return . T
@@ -829,7 +884,7 @@ snmpDefValPart =
      }
      <?> "SnmpDefValPart"
 
-data TextualConventionMacroType = TextualConventionMacroType DisplayHint SnmpStatus SnmpDescr SnmpRefer TheType
+data TextualConventionMacroType = TextualConventionMacroType DisplayHint SnmpStatus SnmpDescr SnmpRefer Type
                                   deriving (Eq,Ord,Show, Typeable, Data)
 data DisplayHint = DisplayHint StringConst 
                  | UndefinedDisplayHint 
