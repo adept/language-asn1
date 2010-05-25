@@ -671,7 +671,7 @@ data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectCla
                         | AbstractSyntax
                         deriving (Eq,Ord,Show, Typeable, Data)
 definedObjectClass =
-  choice [ externalObjectClassReference
+  choice [ try externalObjectClassReference
          , objectclassreference >>= return . LocalObjectClassReference
          , reserved "TYPE-IDENTIFIER" >> return TypeIdentifier
          , reserved "ABSTRACT-SYNTAX" >> return AbstractSyntax
