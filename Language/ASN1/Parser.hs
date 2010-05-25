@@ -622,6 +622,7 @@ data FieldSpec = TypeField TypeFieldReference (Maybe TypeOptionality)
                deriving (Eq,Ord,Show, Typeable, Data)
 data TypeOptionality = OptionalType | DefaultType Type deriving (Eq,Ord,Show, Typeable, Data)
 data ObjectOptionality = OptionalObject | DefaultObject Object deriving (Eq,Ord,Show, Typeable, Data)
+data ObjectSetOptionality = OptionalObjectSet | DefaultObjectSet {- TODO: ObjectSet -} deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Dubuisson, 15.2.2
 field = try fixedTypeValueField
@@ -669,8 +670,14 @@ objectOptionality = optionMaybe $
 objectSetField = do
   ref <- objectsetfieldreference 
   c <- definedObjectClass
-  -- TODO : oo <- objectSetOptionality
+  oo <- objectSetOptionality
   return $ ObjectSetField ref c -- oo
+
+objectSetOptionality = optionMaybe $
+  choice [ reserved "OPTIONAL" >> return OptionalObjectSet
+         -- TODO: , reserved "DEFAULT" >> objectSet >>= return . DefaultObjectSet
+         ] 
+  
 
 -- Dubuisson, 9.3.2
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
