@@ -339,7 +339,7 @@ data BuiltinType = IntegerT [NamedNumber]
           | Sequence [ElementType]
           | SetOf SizeConstraint Type
           | SequenceOf SizeConstraint Type
-          | Choice [ElementType]
+          | Choice AlternativeTypeLists
           | Selection TheIdentifier Type
           | Tagged Tag (Maybe TagType) Type
           | Any TheIdentifier
@@ -511,11 +511,88 @@ setOrSequenceOfType =
      }
      <?> "SetOrSequenceOfType"
 
-choiceType =
-  do { reserved "CHOICE"
-     ; braces elementTypeList
-     }
-     <?> "ChoiceType"
+-- Dubuisson 12.6.2
+choiceType = reserved "CHOICE" >> braces alternativeTypeLists
+             <?> "ChoiceType"
+
+data AlternativeTypeLists = SimpleAlternativeTypeList [NamedType] 
+                          | AlternativeTypeListWithExtension [NamedType] (Maybe ExceptionIdentification) (Maybe [NamedType])
+                          deriving (Eq,Ord,Show, Typeable, Data)
+alternativeTypeLists = 
+  choice [ try complex
+         , SimpleAlternativeTypeList <$> alternativeTypeList 
+         ]
+  where
+    complex = do
+      r <- alternativeTypeList
+      char ','; whiteSpace
+      ex <- extensionAndException
+      add <- extensionAdditionAlternatives
+      optionalExtensionMarker
+      return $ AlternativeTypeListWithExtension r ex add
+
+-- rootAlternativeTypeList is inlined since it has only one production
+
+extensionAdditionAlternatives = optionMaybe (char ',' >> whiteSpace >> extensionAdditionAlternativesList)
+
+extensionAdditionAlternativesList = 
+  choice [ extensionAdditionAlternative
+         , do l <- extensionAdditionAlternativesList; char ','; whiteSpace; return l
+         , extensionAdditionAlternative
+         ]
+
+-- FIXME: should I wrap in additional datatype here?
+extensionAdditionAlternative =
+  choice [ extensionAdditionGroupAlternatives
+         , namedType >>= return . (:[])
+         ]
+
+extensionAdditionGroupAlternatives = do
+  reserved "[[" 
+  l <- alternativeTypeList 
+  reserved "]]"
+  return l
+  
+alternativeTypeList = namedType `sepBy1` comma'
+  where
+    comma' = try $ do
+      comma
+      notFollowedBy (whiteSpace >> char '.')
+
+data NamedType = NamedType TheIdentifier Type deriving (Eq,Ord,Show, Typeable, Data)
+namedType = do
+  i <- theIdentifier
+  t <- theType
+  return $ NamedType i t
+
+-- {{{ Dubuisson 12.9.2
+extensionAndException = do
+  symbol "..."
+  exceptionSpec
+  
+optionalExtensionMarker = optional $ extensionEndMarker
+
+extensionEndMarker = char ',' >> whiteSpace >> symbol "..."
+
+exceptionSpec = 
+  optionMaybe ( char '!' >> whiteSpace >> exceptionIdentification )
+                
+data ExceptionIdentification = ExceptionNumber Integer
+                             | ExceptionValue DefinedValue
+                             | ExceptionTypeAndValue Type Value
+                             deriving (Eq,Ord,Show, Typeable, Data)
+exceptionIdentification =
+  choice [ ExceptionNumber <$> signedNumber 
+         , ExceptionValue <$> definedValue
+         , typeAndValue
+         ]
+  where
+    typeAndValue = do
+      t <- theType
+      reserved ":"
+      v <- value
+      return $ ExceptionTypeAndValue t v
+-- }}}  
 
 elementTypeList = commaSep1 elementType
                   <?> "ElementTypeList"
