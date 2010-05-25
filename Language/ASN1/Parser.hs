@@ -34,7 +34,7 @@ import System.Exit (exitFailure)
 import Data.Generics
 import Control.Applicative ((<$>))
 import Control.Monad (when)
-import Data.Char (isUpper)
+import Data.Char (isUpper, isAlpha)
 import Data.List (isInfixOf)
 
 data Module = Module { module_id::ModuleIdentifier
@@ -108,6 +108,11 @@ ucaseFirstIdent = do { i <- identifier
                      ; when (not . isUpper $ head i) $ unexpected "lowercase letter"
                      ; return i
                      }
+
+ucaseIdent = do { i <- identifier
+                ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
+                ; return i
+                }
 
 asn1Input = do
   fixupComments
