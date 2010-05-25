@@ -618,19 +618,42 @@ objectClassDefn = do
 data FieldSpec = TypeField TypeFieldReference (Maybe TypeOptionality) 
                | FixedTypeValueField ValueFieldReference Type Bool {-unique or not-} (Maybe ValueOptionality)
                | ObjectField ObjectFieldReference DefinedObjectClass (Maybe ObjectOptionality)
-               | ObjectSetField ObjectSetFieldReference DefinedObjectClass -- TODO : (Maybe ObjectSetOptionality)
+               | ObjectSetField ObjectSetFieldReference DefinedObjectClass (Maybe ObjectSetOptionality)
+               | FixedTypeValueSetField ValueSetFieldReference Type (Maybe ValueSetOptionality)
                deriving (Eq,Ord,Show, Typeable, Data)
 data TypeOptionality = OptionalType | DefaultType Type deriving (Eq,Ord,Show, Typeable, Data)
 data ObjectOptionality = OptionalObject | DefaultObject Object deriving (Eq,Ord,Show, Typeable, Data)
 data ObjectSetOptionality = OptionalObjectSet | DefaultObjectSet {- TODO: ObjectSet -} deriving (Eq,Ord,Show, Typeable, Data)
+data ValueSetOptionality = OptionalValueSet | DefaultValueSet {- TODO: ValueSet -} deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Dubuisson, 15.2.2
-field = try fixedTypeValueField
-        -- TODO: <|> variableTypeValueFieldSpec
-        -- TODO: <|> fixedTypeValueSetFieldSpec
-        -- TODO: <|> variableTypeValueSetFieldSpec
-        <|> try objectField
+{-
+Table 15.1 says:
+If the field name   and if it is followed by   then the field of the
+starts with                                    object contains
+--------------------------------------------------------------------
+&Upper-case       nothing                     a type
+
+&lower-case       a type or a type reference  a fixed-type value
+                  (Upper-case)
+
+&lower-case       a type field (&Upper-case)  a variable-type value
+
+&Upper-case       a type or a type reference  a fixed-type value set
+                  (Upper-case)
+
+&Upper-case       a type field (&Upper-case)  a variable-type value set
+&lower-case       a class name (UPPER-CASES)  an information object
+&Upper-case       a class name (UPPER-CASES)  an information object set
+-}
+
+-- Warning: ORDER IS IMPORTAND HERE
+field = try objectField
         <|> try objectSetField
+        <|> try fixedTypeValueField
+        -- TODO: <|> variableTypeValueField
+        <|> try fixedTypeValueSetField
+        -- TODO: <|> variableTypeValueSetField
         <|> typeField
         <?> "Field"
         
@@ -654,6 +677,19 @@ fixedTypeValueField = do
   <?> "FixedTypeValueField"
 
 -- Dubuisson, 15.2.2
+fixedTypeValueSetField = do
+  ref <- valuesetfieldreference 
+  t <- theType
+  o <- valueSetOptionality
+  return $ FixedTypeValueSetField ref t o
+  
+valueSetOptionality =
+  optionMaybe $
+  choice [ reserved "OPTIONAL" >> return OptionalValueSet
+         -- , reserved "DEFAULT" >> valueSet >>= return . DefaultValueSet
+         ] 
+  
+-- Dubuisson, 15.2.2
 objectField = do
   ref <- objectfieldreference
   c <- definedObjectClass
@@ -671,7 +707,7 @@ objectSetField = do
   ref <- objectsetfieldreference 
   c <- definedObjectClass
   oo <- objectSetOptionality
-  return $ ObjectSetField ref c -- oo
+  return $ ObjectSetField ref c oo
 
 objectSetOptionality = optionMaybe $
   choice [ reserved "OPTIONAL" >> return OptionalObjectSet
@@ -993,6 +1029,7 @@ data TheIdentifier = TheIdentifier String
 theIdentifier = lcaseFirstIdent >>= return . TheIdentifier <?> "identifier"
 moduleReference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
 typereference = ucaseFirstIdent >>= return . TypeReference <?> "typereference"
+
 newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 typefieldreference = char '&' >> ucaseFirstIdent >>= return . TypeFieldReference <?> "typefieldreference"
 
@@ -1010,6 +1047,9 @@ objectreference = lcaseFirstIdent >>= return . ObjectReference
 
 newtype ObjectSetFieldReference = ObjectSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 objectsetfieldreference = char '&' >> ucaseFirstIdent >>= return . ObjectSetFieldReference
+
+newtype ValueSetFieldReference = ValueSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+valuesetfieldreference = char '&' >> ucaseFirstIdent >>= return . ValueSetFieldReference
 
 
 data DefinedMacroType = TextualConventionDMT TextualConventionMacroType | SnmpObjectDMT SnmpObjectTypeMacroType deriving (Eq,Ord,Show, Typeable, Data)
