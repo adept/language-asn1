@@ -868,22 +868,19 @@ asn1Style
     , identStart     = alphaNum
     , identLetter = alphaNum <|> oneOf "_-#"
     , caseSensitive = True
-    , reservedNames = [ "ABSENT", "ACCESS", "ANY", "APPLICATION"
-                      , "BEGIN", "BIT", "BOOLEAN", "BY"
-                      , "CHOICE", "COMPONENT", "COMPONENTS"
-                      , "DEFAULT", "DEFINED", "DEFINITIONS", "DEFVAL", "DESCRIPTION", "DISPLAY-HINT"
-                      , "END", "ENUMERATED", "EXPLICIT", "EXPORTS", "EXTERNAL"
-                      , "FALSE", "FROM"
-                      , "IDENTIFIER", "IMPLICIT", "IMPORTS", "INCLUDES" , "INDEX" , "INTEGER"
-                      , "MACRO" , "MAX" , "MIN" , "MINUS-INFINITY"
-                      , "NULL"
-                      , "OBJECT" , "OBJECT-TYPE" , "OCTET" , "OF" , "OPTIONAL"
-                      , "PLUS-INFINITY" , "PRESENT" , "PRIVATE" 
-                      , "REAL" , "REFERENCE"
-                      , "SEQUENCE" , "SET" , "SIZE" , "STATUS" , "STRING" , "SYNTAX"
-                      , "TAGS" , "TEXTUAL-CONVENTION" , "TRUE"
-                      , "UNIVERSAL"
-                      , "WITH" ]
+    , reservedNames = [ "ABSENT", "ABSTRACT-SYNTAX", "ALL", "APPLICATION", "AUTOMATIC", "BEGIN",
+                        "BIT", "BMPString", "BOOLEAN", "BY", "CHARACTER", "CHOICE", "CLASS", "COMPONENT",
+                        "COMPONENTS", "CONSTRAINED", "CONTAINING" , "DEFAULT", "DEFINITIONS", "EMBEDDED",
+                        "ENCODED" , "END", "ENUMERATED", "EXCEPT", "EXPLICIT", "EXPORTS", "EXTENSIBILITY",
+                        "EXTERNAL", "FALSE", "FROM", "GeneralizedTime", "GeneralString", "GraphicString",
+                        "IA5String", "IDENTIFIER", "IMPLICIT", "IMPLIED", "IMPORTS", "INCLUDES", "INSTANCE",
+                        "INTEGER", "INTERSECTION", "ISO646String", "MAX", "MIN", "MINUS-INFINITY",
+                        "NULL", "NumericString", "OBJECT", "ObjectDescriptor", "OCTET", "OF", "OPTIONAL",
+                        "PATTERN" , "PDV", "PLUS-INFINITY", "PRESENT", "PrintableString", "PRIVATE",
+                        "REAL", "RELATIVE-OID", "SEQUENCE", "SET", "SIZE", "STRING", "SYNTAX", "T61String",
+                        "TAGS", "TeletexString", "TRUE", "TYPE-IDENTIFIER", "UNION", "UNIQUE", "UNIVERSAL",
+                        "UniversalString", "UTCTime", "UTF8String", "VideotexString", "VisibleString",
+                        "WITH" ]
     , reservedOpNames = [ "::=" ]
     }
 
