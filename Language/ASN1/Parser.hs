@@ -937,8 +937,8 @@ asn1Style
     { commentStart = "--"
     , commentEnd = "--"
     , nestedComments = False
-    , identStart     = alphaNum
-    , identLetter = alphaNum <|> oneOf "_-#"
+    , identStart     = letter
+    , identLetter = alphaNum <|> oneOf "-"
     , caseSensitive = True
     , reservedNames = [ "ABSENT", "ABSTRACT-SYNTAX", "ALL", "APPLICATION", "AUTOMATIC", "BEGIN",
                         "BIT", "BMPString", "BOOLEAN", "BY", "CHARACTER", "CHOICE", "CLASS", "COMPONENT",
