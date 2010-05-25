@@ -47,6 +47,7 @@ import Data.List (isInfixOf)
 data Module = Module { module_id::ModuleIdentifier
                      , module_oid :: Maybe OID
                      , default_tag_type::Maybe TagDefault
+                     , extensibility_implied :: Bool
                      , module_body::Maybe ModuleBody
                      } deriving (Eq,Ord,Show, Typeable, Data)
 data GlobalType = GlobalT Type | GlobalDMT DefinedMacroType  deriving (Eq,Ord,Show, Typeable, Data)
@@ -151,11 +152,12 @@ moduleDefinition =
      ; oid_ <- optMaybe oid
      ; reserved "DEFINITIONS"
      ; td <- tagDefault
+     ; ei <- option False ( reserved "EXTENSIBILITY" >> reserved "IMPLIED" >> return True )
      ; reserved "::="
      ; reserved "BEGIN" 
      ; body <- optMaybe moduleBody
      ; reserved "END"  
-     ; return (Module id oid_ td body)
+     ; return (Module id oid_ td ei body)
      }
      <?> "moduleDefinition"
 
