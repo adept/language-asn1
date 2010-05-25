@@ -24,6 +24,13 @@ module Language.ASN1.Parser where
  *  Please let me know if you use this grammar: i'm using it to develop ASN.1/IDL compiler
  *  
  */
+
+ JavaCC parser was semi-automatically converted into Parsec parser, and resulting
+ code is being checked against the "ASN.1, Communication between Heterogeneous Systems" 
+ by Olivier Dubuisson.
+
+ This is work in progress, so there could be bug lurking. Definitions checked against the book
+ are annotated with comments referencing to the appropriate book chapter
 -}
 
 import Text.ParserCombinators.Parsec
