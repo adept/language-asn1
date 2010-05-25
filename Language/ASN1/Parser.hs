@@ -499,13 +499,15 @@ elementType =
            [ componentsType >>= return . ComponentsOf
            , do { id <- option UndefinedIdentifier (try theIdentifier)
                 ; t <- theType
-                ; presence <- optionMaybe $ choice 
-                  [ reserved "OPTIONAL" >> return OptionalValue
-                  , reserved "DEFAULT" >> theValue >>= return . DefaultValue
-                  ] 
+                ; presence <- optionMaybe $ valueOptionality
                 ; return (NamedElementType (TypeName id) t presence)
                 }
            ]
+           
+valueOptionality = 
+  choice [ reserved "OPTIONAL" >> return OptionalValue
+         , reserved "DEFAULT" >> theValue >>= return . DefaultValue
+         ] 
 
 componentsType :: Parser Type
 componentsType =
