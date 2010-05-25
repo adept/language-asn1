@@ -503,12 +503,12 @@ elementType =
            [ componentsType >>= return . ComponentsOf
            , do { id <- option UndefinedIdentifier (try theIdentifier)
                 ; t <- theType
-                ; presence <- optionMaybe $ valueOptionality
+                ; presence <- valueOptionality
                 ; return (NamedElementType (TypeName id) t presence)
                 }
            ]
            
-valueOptionality = 
+valueOptionality = optionMaybe $
   choice [ reserved "OPTIONAL" >> return OptionalValue
          , reserved "DEFAULT" >> theValue >>= return . DefaultValue
          ] 
