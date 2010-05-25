@@ -65,9 +65,9 @@ data ElementType = NamedElementType { element_name::TypeName
                                     , element_presence::Maybe ValueOptionality
                                     } 
                  | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
-data ValueOptionality = OptionalValue | DefaultValue TheValue  deriving (Eq,Ord,Show, Typeable, Data)
+data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
 data NamedValue = NamedValue { value_name::ValueName
-                             , named_value::TheValue
+                             , named_value::Value
                              } deriving (Eq,Ord,Show, Typeable, Data)
 newtype ValueName = ValueName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
@@ -531,7 +531,7 @@ elementType =
            
 valueOptionality = optionMaybe $
   choice [ reserved "OPTIONAL" >> return OptionalValue
-         , reserved "DEFAULT" >> theValue >>= return . DefaultValue
+         , reserved "DEFAULT" >> value >>= return . DefaultValue
          ] 
 
 componentsType :: Parser Type
@@ -701,7 +701,7 @@ constraint = parens subtypeValueSetList
 
 subtypeValueSetList = sepBy1 subtypeValueSet (symbol "|") <?> "SubtypeValueSetList"
 
-data ValueRangeElement = MinValue | MaxValue | UndefinedValue | Value TheValue deriving (Eq,Ord,Show, Typeable, Data)
+data ValueRangeElement = MinValue | MaxValue | UndefinedValue | Value Value deriving (Eq,Ord,Show, Typeable, Data)
 
 data SubtypeValueSet = ValueRange { range_from::ValueRangeElement
                                   , range_to::ValueRangeElement
@@ -731,14 +731,10 @@ containedSubtype =
      }
      <?> "ContainedSubtype"
 
-singleValue =
-  do {
-      theValue
-     }
-     <?> "SingleValue"
+singleValue = value <?> "SingleValue"
 
 valueRange =
-  do { from <- choice [ theValue >>= return . Value
+  do { from <- choice [ value >>= return . Value
                       , do reserved "MIN"
                            return MinValue
                       ]
@@ -746,7 +742,7 @@ valueRange =
                                         dot
                                         dot
                                         optional (symbol "<") 
-                                        choice [ theValue >>= return . Value
+                                        choice [ value >>= return . Value
                                                , do reserved "MAX"
                                                     return MaxValue
                                                ]
@@ -841,10 +837,10 @@ valueAssignment =
      }
      <?> "ValueAssignment"
 
-data TheValue = BuiltinV BuiltinValue
+data Value = BuiltinV BuiltinValue
               | DefinedV DefinedValue -- TODO: add ValueFromObject here
               | UndefinedV deriving (Eq,Ord,Show, Typeable, Data)
-theValue = 
+value = 
   do {
      ; choice [ builtinValue >>= return . BuiltinV
               , definedValue >>= return . DefinedV
@@ -905,7 +901,7 @@ nullValue = reserved "NULL"
 namedValue =
   do {
      ; id <- option UndefinedIdentifier ( try theIdentifier )
-     ; v <- theValue
+     ; v <- value
      ; return (NamedValue (ValueName id) v)
      }
      <?> "NamedValue"
@@ -971,7 +967,7 @@ definedMacroName =
      }
      <?> "DefinedMacroName"
 
-data SnmpObjectTypeMacroType = SnmpObjectTypeMacroType Type SnmpAccess SnmpStatus SnmpDescr SnmpRefer SnmpIndex TheValue
+data SnmpObjectTypeMacroType = SnmpObjectTypeMacroType Type SnmpAccess SnmpStatus SnmpDescr SnmpRefer SnmpIndex Value
                                deriving (Eq,Ord,Show, Typeable, Data)
 snmpObjectTypeMacroType =
   do { reserved "OBJECT-TYPE" 
@@ -1031,18 +1027,18 @@ typeOrValueList =
      }
      <?> "TypeOrValueList"
 
-data TypeOrValue = T Type | V TheValue deriving (Eq,Ord,Show, Typeable, Data)
+data TypeOrValue = T Type | V Value deriving (Eq,Ord,Show, Typeable, Data)
 typeOrValue =
   do {
       choice $ map try [ theType >>= return . T
-                       , theValue >>= return . V
+                       , value >>= return . V
                        ]
      }
      <?> "TypeOrValue"
 
 snmpDefValPart =
   do { reserved "DEFVAL"  
-     ; braces theValue
+     ; braces value
      }
      <?> "SnmpDefValPart"
 
