@@ -226,10 +226,9 @@ theSymbol =
                   , definedMacroName >>= return . DefinedMacroNameSymbol
                   ]
 
-assignmentList = 
-  do { sepBy1 assignment (optional semi)
-     }
-     <?> "assignmentList"
+-- Dubuisson 9.1.2
+assignmentList = sepBy1 assignment (optional semi) <?> "assignmentList"
+
 
 data Assignment = MacroDefinition { macro_def_type::MacroDefinitionType
                                   , macro_body::MacroBody
