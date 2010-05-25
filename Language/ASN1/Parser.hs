@@ -618,18 +618,19 @@ objectClassDefn = do
 data FieldSpec = TypeField TypeFieldReference (Maybe TypeOptionality) 
                | FixedTypeValueField ValueFieldReference Type Bool {-unique or not-} (Maybe ValueOptionality)
                | ObjectField ObjectFieldReference DefinedObjectClass (Maybe ObjectOptionality)
+               | ObjectSetField ObjectSetFieldReference DefinedObjectClass -- TODO : (Maybe ObjectSetOptionality)
                deriving (Eq,Ord,Show, Typeable, Data)
 data TypeOptionality = OptionalType | DefaultType Type deriving (Eq,Ord,Show, Typeable, Data)
 data ObjectOptionality = OptionalObject | DefaultObject {- TODO: Object -} deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Dubuisson, 15.2.2
-field = try typeField
-        <|> fixedTypeValueField
+field = try fixedTypeValueField
         -- TODO: <|> variableTypeValueFieldSpec
         -- TODO: <|> fixedTypeValueSetFieldSpec
         -- TODO: <|> variableTypeValueSetFieldSpec
-        <|> objectField
-        -- TODO: <|> objectSetFieldSpec  
+        <|> try objectField
+        <|> try objectSetField
+        <|> typeField
         <?> "Field"
         
 -- Dubuisson, 15.2.2
@@ -663,6 +664,13 @@ objectOptionality = optionMaybe $
   choice [ reserved "OPTIONAL" >> return OptionalObject
          -- , reserved "DEFAULT" >> object >>= return . DefaultObject
          ] 
+
+-- Dubuisson, 15.2.2
+objectSetField = do
+  ref <- objectsetfieldreference 
+  c <- definedObjectClass
+  -- TODO : oo <- objectSetOptionality
+  return $ ObjectSetField ref c -- oo
 
 -- Dubuisson, 9.3.2
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
@@ -992,6 +1000,9 @@ objectfieldreference = char '&' >> lcaseFirstIdent >>= return . ObjectFieldRefer
 
 newtype ObjectReference = ObjectReference String deriving (Eq,Ord,Show, Typeable, Data)
 objectreference = lcaseFirstIdent >>= return . ObjectReference
+
+newtype ObjectSetFieldReference = ObjectSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectsetfieldreference = char '&' >> ucaseFirstIdent >>= return . ObjectSetFieldReference
 
 
 data DefinedMacroType = TextualConventionDMT TextualConventionMacroType | SnmpObjectDMT SnmpObjectTypeMacroType deriving (Eq,Ord,Show, Typeable, Data)
