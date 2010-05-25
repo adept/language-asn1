@@ -108,12 +108,12 @@ cstring =
 numberERange = natural
 
 lcaseFirstIdent = do { i <- identifier
-                     ; when (isUpper $ head i) $ unexpected "uppercase letter"
+                     ; when (isUpper $ head i) $ unexpected "uppercase first letter"
                      ; return i
                      }
 
 ucaseFirstIdent = do { i <- identifier
-                     ; when (not . isUpper $ head i) $ unexpected "lowercase letter"
+                     ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
                      ; return i
                      }
 
