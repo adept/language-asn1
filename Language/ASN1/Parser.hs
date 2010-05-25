@@ -214,7 +214,7 @@ assignedIdentifier =
          , AssignedIdentifierDefinedValue <$> definedValue
          ]
 
-data TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
+newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
 
 data TheSymbol = TypeReferenceSymbol TypeReference
                | TheIdentifierSymbol TheIdentifier
