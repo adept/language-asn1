@@ -241,11 +241,17 @@ data Assignment = MacroDefinition { macro_def_type::MacroDefinitionType
                 | TypeAssignment  { type_ref::TypeReference
                                   , assigned_type::Type
                                   } 
+                -- TODO: | ValueSetTypeAssignment
+                | ObjectClassAssignment ObjectClassReference ObjectClass
+                -- TODO: | ObjectAssignment
+                -- TODO: | ObjectSetAssignment 
+                -- TODO: | ParameterizedAssignment
                   deriving (Eq,Ord,Show, Typeable, Data)
 assignment = 
-  choice $ map try [ macroDefinition >>= return
-                   , valueAssignment >>= return
-                   , typeAssignment >>= return
+  choice $ map try [ macroDefinition
+                   , valueAssignment
+                   , typeAssignment
+                   , objectClassAssignment
                    ]
 
 data MacroDefinitionType = DefinedMacroNameMDT DefinedMacroName 
@@ -566,6 +572,111 @@ anyType =
      }
      <?> "AnyType"
 
+-- Dubuisson, 9.1.2
+objectClassAssignment = do
+  ref <- objectclassreference
+  reserved "::="
+  c <- objectClass
+  return $ ObjectClassAssignment ref c
+
+-- Dubuisson, 15.2.2
+data ObjectClass = ObjectClassDefn [FieldSpec] | DefinedObjectClassDefn DefinedObjectClass deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Dubuisson, 15.2.2
+objectClass = 
+  choice [ definedObjectClass >>= return . DefinedObjectClassDefn
+         , objectClassDefn 
+         -- , parametrizedObjectClass
+         ]
+  <?> "ObjectClass"
+
+parametrizedObjectClass = undefined
+
+-- Dubuisson, 15.2.2
+objectClassDefn = do
+  reserved "CLASS"
+  ObjectClassDefn <$> (braces $ commaSep1 field)
+  -- TODO : withSyntaxSpec  
+  
+-- Dubuisson, 15.2.2, TODO
+data FieldSpec = TypeField TypeFieldReference (Maybe TypeOptionality) 
+               | FixedTypeValueField ValueFieldReference Type Bool {-unique or not-} (Maybe ValueOptionality)
+               | ObjectField ObjectFieldReference DefinedObjectClass (Maybe ObjectOptionality)
+               deriving (Eq,Ord,Show, Typeable, Data)
+data TypeOptionality = OptionalType | DefaultType Type deriving (Eq,Ord,Show, Typeable, Data)
+data ObjectOptionality = OptionalObject | DefaultObject {- TODO: Object -} deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Dubuisson, 15.2.2
+field = try typeField
+        <|> fixedTypeValueField
+        -- TODO: <|> variableTypeValueFieldSpec
+        -- TODO: <|> fixedTypeValueSetFieldSpec
+        -- TODO: <|> variableTypeValueSetFieldSpec
+        <|> objectField
+        -- TODO: <|> objectSetFieldSpec  
+        <?> "Field"
+        
+-- Dubuisson, 15.2.2
+typeField = do
+  ref <- typefieldreference
+  optionality <- optionMaybe $ 
+                 choice [ reserved "OPTIONAL" >> return OptionalType
+                        , reserved "DEFAULT" >> theType >>= return . DefaultType
+                        ]
+  return $ TypeField ref optionality
+  <?> "TypeField"
+
+-- Dubuisson, 15.2.2
+fixedTypeValueField = do
+  ref <- valuefieldreference
+  t <- theType
+  u <- option False (reserved "UNIQUE" >> return True)
+  vo <- valueOptionality
+  return $ FixedTypeValueField ref t u vo
+  <?> "FixedTypeValueField"
+
+-- Dubuisson, 15.2.2
+objectField = do
+  ref <- objectfieldreference
+  c <- definedObjectClass
+  oo <- objectOptionality
+  return $ ObjectField ref c oo
+  
+-- Dubuisson, 15.2.2
+objectOptionality = optionMaybe $
+  choice [ reserved "OPTIONAL" >> return OptionalObject
+         -- , reserved "DEFAULT" >> object >>= return . DefaultObject
+         ] 
+
+-- Dubuisson, 9.3.2
+data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
+                        | LocalObjectClassReference ObjectClassReference
+                        | TypeIdentifier
+                        | AbstractSyntax
+                        deriving (Eq,Ord,Show, Typeable, Data)
+definedObjectClass =
+  choice [ externalObjectClassReference
+         , objectclassreference >>= return . LocalObjectClassReference
+         , reserved "TYPE-IDENTIFIER" >> return TypeIdentifier
+         , reserved "ABSTRACT-SYNTAX" >> return AbstractSyntax
+         ]
+  where externalObjectClassReference = do
+          mref <- moduleReferenceAndDot
+          ocref <- objectclassreference
+          return $ ExternalObjectClassReference mref ocref
+
+-- Dubuisson, 15.2.2, TODO
+{-
+data Object = Object deriving (Eq,Ord,Show, Typeable, Data)
+object =
+  choice [ -- TODO: objectDefn
+         -- TODO: , definedObject
+         -- TODO: , objectFromObject
+         -- TODO: , parametrizedObject
+         ]
+-} 
+
+-- unchecked, 15.7.2
 type SubtypeSpec = [SubtypeValueSet]
 
 -- unchecked, 15.7.2
@@ -814,6 +925,18 @@ data TheIdentifier = TheIdentifier String
 theIdentifier = lcaseFirstIdent >>= return . TheIdentifier <?> "identifier"
 moduleReference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
 typereference = ucaseFirstIdent >>= return . TypeReference <?> "typereference"
+newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+typefieldreference = char '&' >> ucaseFirstIdent >>= return . TypeFieldReference <?> "typefieldreference"
+
+newtype ObjectClassReference = ObjectClassReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectclassreference = ucaseIdent >>= return . ObjectClassReference
+
+newtype ValueFieldReference = ValueFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+valuefieldreference = char '&' >> lcaseFirstIdent >>= return . ValueFieldReference
+
+newtype ObjectFieldReference = ObjectFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectfieldreference = char '&' >> lcaseFirstIdent >>= return . ObjectFieldReference
+
 
 data DefinedMacroType = TextualConventionDMT TextualConventionMacroType | SnmpObjectDMT SnmpObjectTypeMacroType deriving (Eq,Ord,Show, Typeable, Data)
 definedMacroType =
