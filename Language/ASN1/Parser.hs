@@ -183,10 +183,10 @@ data BuiltinType = TheInteger [NamedNumber]
                  | BitString [NamedNumber]
                    -- SEQUENCE variants
                  | EmptySequence
-                 | EmptyExtendableSequence
+                 | EmptyExtendableSequence (Maybe ExceptionIdentification)
                  | Sequence ComponentTypeLists
                  | EmptySet
-                 | EmptyExtendableSet
+                 | EmptyExtendableSet (Maybe ExceptionIdentification)
                  | Set ComponentTypeLists
                  | SetOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
                  | SequenceOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
@@ -501,19 +501,19 @@ enumerationItem =
 -- {{ Section 12.2, "The constructor SEQUENCE"
 sequenceType = 
   choice [ try $ EmptySequence <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
-         , try $ EmptyExtendableSequence <$ ( reserved "SEQUENCE" >> braces ( extensionAndException >> optionalExtensionMarker ) )
+         , try $ EmptyExtendableSequence <$> ( reserved "SEQUENCE" *> braces (extensionAndException <* optionalExtensionMarker) )
          , Sequence <$> (reserved "SEQUENCE" *> braces componentTypeLists)
          ]
 
 data ComponentTypeLists = SimpleComponentTypeList [ComponentType]
-                        | ComplexComponentTypeListsAdditionsAtStart (Maybe [[ComponentType]]) [ComponentType]
-                        | ComplexComponentTypeListsAdditionsAtEnd [ComponentType] (Maybe [[ComponentType]])
-                        | ComplexComponentTypeListsAdditionsInTheMiddle [ComponentType] (Maybe [[ComponentType]]) [ComponentType]
+                        | ComplexComponentTypeListsAdditionsAtStart (Maybe ExceptionIdentification) (Maybe [[ComponentType]]) [ComponentType]
+                        | ComplexComponentTypeListsAdditionsAtEnd [ComponentType] (Maybe ExceptionIdentification) (Maybe [[ComponentType]])
+                        | ComplexComponentTypeListsAdditionsInTheMiddle [ComponentType] (Maybe ExceptionIdentification) (Maybe [[ComponentType]]) [ComponentType]
                         deriving (Eq,Ord,Show, Typeable, Data)
 componentTypeLists = 
-  choice [ ComplexComponentTypeListsAdditionsAtStart <$> (extensionAndException *> extensionsAdditions) <*> (optionalExtensionMarker *> comma *> componentTypeList)
-         , try $ ComplexComponentTypeListsAdditionsAtEnd <$> componentTypeList <*> (comma *> extensionAndException *> extensionsAdditions) <* optionalExtensionMarker
-         , try $ ComplexComponentTypeListsAdditionsInTheMiddle <$> componentTypeList <*> (comma *> extensionAndException *> extensionsAdditions) <*> (optionalExtensionMarker *> comma *> componentTypeList)
+  choice [ ComplexComponentTypeListsAdditionsAtStart <$> extensionAndException <*> extensionsAdditions <*> (optionalExtensionMarker *> comma *> componentTypeList)
+         , try $ ComplexComponentTypeListsAdditionsAtEnd <$> componentTypeList <*> (comma *> extensionAndException) <*> extensionsAdditions <* optionalExtensionMarker
+         , try $ ComplexComponentTypeListsAdditionsInTheMiddle <$> componentTypeList <*> (comma *> extensionAndException) <*> extensionsAdditions <*> (optionalExtensionMarker *> comma *> componentTypeList)
          , SimpleComponentTypeList <$> componentTypeList
          ]
   
@@ -560,7 +560,7 @@ namedType = NamedType <$> identifier <*> theType
 -- {{ Section 12.3, "The constructor SET"
 setType = 
   choice [ try $ EmptySet <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
-         , try $ EmptyExtendableSet <$ ( reserved "SET" >> braces ( extensionAndException >> optionalExtensionMarker ) )
+         , try $ EmptyExtendableSet <$> ( reserved "SET" *> braces ( extensionAndException <* optionalExtensionMarker ) )
          , Set <$> (reserved "SET" *> braces componentTypeLists)
          ]
 -- TODO: values
