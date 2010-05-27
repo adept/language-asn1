@@ -99,10 +99,7 @@ fixupComments = do
         checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
         checkUnterm p (_:rest)       = checkUnterm p rest
 -- }
-newtype TypeName = TypeName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-data NamedNumber = NamedNumber { number_name::TheIdentifier
-                               , number_value::NumberOrDefinedValue
-                               } deriving (Eq,Ord,Show, Typeable, Data)
+newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 type NumberOrDefinedValue = Either Integer DefinedValue
 data ElementType = NamedElementType { element_name::TypeName
                                     , element_body::Type
@@ -113,7 +110,7 @@ data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Sho
 data NamedValue = NamedValue { value_name::ValueName
                              , named_value::Value
                              } deriving (Eq,Ord,Show, Typeable, Data)
-newtype ValueName = ValueName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
+newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
 
 
@@ -129,17 +126,17 @@ hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
 cstring = 
   do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst s) } <?> "cstring"
 
-lcaseFirstIdent = do { i <- identifier
+lcaseFirstIdent = do { i <- parsecIdent
                      ; when (isUpper $ head i) $ unexpected "uppercase first letter"
                      ; return i
                      }
 
-ucaseFirstIdent = do { i <- identifier
+ucaseFirstIdent = do { i <- parsecIdent
                      ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
                      ; return i
                      }
 
-ucaseIdent = do { i <- identifier
+ucaseIdent = do { i <- parsecIdent
                 ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
                 ; return i
                 }
@@ -190,9 +187,9 @@ data BuiltinType = IntegerT [NamedNumber]
                  | SetOf SizeConstraint Type
                  | SequenceOf SizeConstraint Type
                  | Choice AlternativeTypeLists
-                 | Selection TheIdentifier Type
+                 | Selection Identifier Type
                  | Tagged Tag (Maybe TagType) Type
-                 | Any TheIdentifier
+                 | Any Identifier
                  | Enumerated [NamedNumber]
                  | OctetString 
                  | ObjectIdentifier
@@ -256,6 +253,7 @@ data Value = BooleanValue Bool
            | PlusInfinity
            | MinusInfinity
            | SignedNumber Integer
+           | IdentifiedIntegerValue Identifier
            | HexString StringConst
            | BinaryString StringConst
            | CharString StringConst
@@ -329,12 +327,12 @@ definitiveIdentifier =
   <?> "DefinitiveIdentifier"
 
 data DefinitiveOIDComponent = DefinitiveOIDNumber Integer 
-                            | DefinitiveOIDNamedNumber TheIdentifier Integer
-                            | DefinitiveOIDName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
+                            | DefinitiveOIDNamedNumber Identifier Integer
+                            | DefinitiveOIDName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 definitiveOIDComponent =
   choice [ DefinitiveOIDNumber <$> number
-         , try $ DefinitiveOIDNamedNumber <$> theIdentifier <*> parens number
-         , DefinitiveOIDName . TheIdentifier <$> reservedOIDIdentifier
+         , try $ DefinitiveOIDNamedNumber <$> identifier <*> parens number
+         , DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
          ]
   <?> "DefinitiveObjectIdComponent"
 
@@ -614,8 +612,8 @@ alternativeTypeList = namedType `sepBy1` comma'
       comma
       notFollowedBy (whiteSpace >> char '.')
 
-data NamedType = NamedType TheIdentifier Type deriving (Eq,Ord,Show, Typeable, Data)
-namedType = NamedType <$> theIdentifier <*> theType
+data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
+namedType = NamedType <$> identifier <*> theType
 
 -- {{{ Dubuisson 12.9.2
 extensionAndException = do
@@ -652,7 +650,7 @@ elementTypeList = commaSep1 elementType
 elementType =
   choice $ map try 
            [ componentsType >>= return . ComponentsOf
-           , do { id <- option UndefinedIdentifier (try theIdentifier)
+           , do { id <- option UndefinedIdentifier (try identifier)
                 ; t <- theType
                 ; presence <- valueOptionality
                 ; return (NamedElementType (TypeName id) t presence)
@@ -676,7 +674,7 @@ componentsType =
 
 
 selectionType =
-  do { id <- theIdentifier;
+  do { id <- identifier;
      ; symbol "<"
      ; t <- theType
      ; return (Selection id t)
@@ -713,7 +711,7 @@ theClass = choice [ reserved "UNIVERSAL" >> return Universal
            
 anyType =
   do { reserved "ANY"
-     ; option UndefinedIdentifier (  do {reserved "DEFINED"  ;  reserved "BY"  ; theIdentifier  } ) 
+     ; option UndefinedIdentifier (  do {reserved "DEFINED"  ;  reserved "BY"  ; identifier  } ) 
      }
      <?> "AnyType"
 
@@ -1000,9 +998,9 @@ multipleTypeConstraints =
 type TypeConstraints = [NamedConstraint]
 typeConstraints = commaSep1 namedConstraint <?> "TypeConstraints"
 
-data NamedConstraint = NamedConstraint TheIdentifier Constraint  deriving (Eq,Ord,Show, Typeable, Data)
+data NamedConstraint = NamedConstraint Identifier Constraint  deriving (Eq,Ord,Show, Typeable, Data)
 namedConstraint =
-  do { id <- option UndefinedIdentifier theIdentifier
+  do { id <- option UndefinedIdentifier identifier
      ; c <- otherConstraint
      ; return (NamedConstraint id c)
      }
@@ -1052,7 +1050,7 @@ nullValue = reserved "NULL"
 
 namedValue =
   do {
-     ; id <- option UndefinedIdentifier ( try theIdentifier )
+     ; id <- option UndefinedIdentifier ( try identifier )
      ; v <- value
      ; return (NamedValue (ValueName id) v)
      }
@@ -1062,10 +1060,10 @@ oid = braces (many1 oidComponent)
      <?> "OID"
 
 type OID = [OIDComponent]
-data OIDComponent = ObjIdDefinedValue DefinedValue | ObjIdNumber Integer | ObjIdNamedNumber NamedNumber | ObjIdName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
+data OIDComponent = ObjIdDefinedValue DefinedValue | ObjIdNumber Integer | ObjIdNamedNumber NamedNumber | ObjIdName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 oidComponent =
   choice [ ObjIdNamedNumber <$> try namedNumber
-         , ObjIdName . TheIdentifier <$> try reservedOIDIdentifier
+         , ObjIdName . Identifier <$> try reservedOIDIdentifier
          , ObjIdNumber <$> number
          , ObjIdDefinedValue <$> definedValue
          ]
@@ -1087,10 +1085,10 @@ binaryString = bstring <?> "BinaryString"
 hexString = hstring  <?> "HexString"
 characterStringValue = cstring <?> "CharacteStringValue"
 number = natural <?> "number"
-data TheIdentifier = TheIdentifier String 
+data Identifier = Identifier String 
                    | UndefinedIdentifier
                      deriving (Eq,Ord,Show, Typeable, Data)
-theIdentifier = lcaseFirstIdent >>= return . TheIdentifier <?> "identifier"
+identifier = lcaseFirstIdent >>= return . Identifier <?> "identifier"
 
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
 modulereference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
@@ -1166,7 +1164,7 @@ asn1            = P.makeTokenParser asn1Style
             
 whiteSpace      = P.whiteSpace asn1
 symbol          = P.symbol asn1
-identifier      = P.identifier asn1
+parsecIdent     = P.identifier asn1
 reserved        = P.reserved asn1
 reservedOp      = P.reservedOp asn1
 comma           = P.comma asn1
