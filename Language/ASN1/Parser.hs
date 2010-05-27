@@ -1137,3 +1137,7 @@ semi            = P.semi asn1
 natural         = P.natural asn1
 integer         = P.integer asn1
 dot             = P.dot asn1
+
+-- Local Variables: 
+-- outline-regexp:"-- [{]\+"
+-- End:
