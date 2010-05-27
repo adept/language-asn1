@@ -39,7 +39,7 @@ module Language.ASN1.Parser (
  by Olivier Dubuisson.
 
  This is work in progress, so there could be bug lurking. Definitions checked against the book
- are annotated with comments referencing to the appropriate book chapter
+ are annotated with comments referencing to the appropriate book chapter and/or section.
 -}
 
 import Text.ParserCombinators.Parsec
@@ -117,7 +117,7 @@ newtype ValueName = ValueName TheIdentifier deriving (Eq,Ord,Show, Typeable, Dat
 data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
 
 
--- { Dubuisson, chapter 8.1, "Lexical tokens in ASN.1"
+-- { Chapter 8.1, "Lexical tokens in ASN.1"
 data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
 stringConst allowedSet marker = 
   do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst body) } 
@@ -145,8 +145,8 @@ ucaseIdent = do { i <- identifier
                 }
 -- }
 
--- { Dubuisson, chapter 9, "Modules and assignments"
--- {{ Dubuisson, section 9.1, "Assignments"
+-- { Chapter 9, "Modules and assignments"
+-- {{ Section 9.1, "Assignments"
 assignmentList = (assignment `sepBy1` (optional semi)) <?> "assignmentList"
 
 
@@ -306,7 +306,7 @@ taggedValue = value
 
 valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
 -- }} end of section 9.1
--- {{ Dubuisson, section 9.2, "Module structure"
+-- {{ Section 9.2, "Module structure"
 data Module = Module { module_id::ModuleIdentifier
                      , default_tag_type::Maybe TagDefault
                      , extensibility_implied :: Bool
@@ -388,7 +388,7 @@ theSymbol =
    parametrizedDesignation = optional (char '{' >> whiteSpace >> char '}')
 -- }} end of section 9.2
 
--- {{ Dubuisson, section 9.3, "Local and external references"   
+-- {{ Section 9.3, "Local and external references"   
 
 -- definedType is used only in BuiltinType. See BuiltinType for constructors.
 -- I also took libery of reusing simpleDefinedType from chapter 17 for the first two
@@ -434,6 +434,9 @@ definedObjectSet =
          , LocalObjectSetReference <$> objectsetreference
          ] <?> "DefinedObjectSet"
 -- }} end of section 9.3
+-- } end of chapter 9
+-- { Chapter 10, "Basic types"
+-- {{ 
 simpleDefinedType = 
   choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
          , LocalTypeReference <$> typereference
@@ -459,14 +462,6 @@ tagDefault = optionMaybe td <?> "tagDefault"
   
 
 newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
-
-
--- Dubuisson 9.1.2
-
-
--- Dubuisson 9.1.2
-
--- Dubuisson 9.1.2
 
 
 embeddedPDVType = undefined
