@@ -101,12 +101,11 @@ fixupComments = do
 -- }
 newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 type NumberOrDefinedValue = Either Integer DefinedValue
-data ElementType = NamedElementType { element_name::TypeName
-                                    , element_body::Type
-                                    , element_presence::Maybe ValueOptionality
+data ElementType = NamedElementType { _element_name::TypeName
+                                    , _element_body::Type
+                                    , _element_presence::Maybe ValueOptionality
                                     } 
-                 | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
-data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
+                 | ComponentsOf_ Type deriving (Eq,Ord,Show, Typeable, Data)
 data NamedValue = NamedValue { value_name::ValueName
                              , named_value::Value
                              } deriving (Eq,Ord,Show, Typeable, Data)
@@ -180,10 +179,13 @@ data Type = Type { type_id::BuiltinType
 theType = Type <$> ( builtinType <|> referencedType ) <*> optionMaybe constraint
           <?> "Type"
 
-data BuiltinType = IntegerT [NamedNumber]
+data BuiltinType = TheInteger [NamedNumber]
                  | BitString [NamedNumber]
                  | Set [ElementType]
-                 | Sequence [ElementType]
+                   -- SEQUENCE variants
+                 | EmptySequence
+                 | EmptyExtendableSequence
+                 | Sequence ComponentTypeLists
                  | SetOf SizeConstraint Type
                  | SequenceOf SizeConstraint Type
                  | Choice AlternativeTypeLists
@@ -222,6 +224,7 @@ data BuiltinType = IntegerT [NamedNumber]
 builtinType =
   choice $ map try [ integerType
                    , BitString <$> bitStringType
+                   , try $ sequenceType
                    , setOrSequenceType
                    , setOrSequenceOfType
                    , Choice <$> choiceType
@@ -253,7 +256,6 @@ data Value = BooleanValue Bool
            | PlusInfinity
            | MinusInfinity
            | SignedNumber Integer
-           | IdentifiedIntegerValue Identifier
            | HexString StringConst
            | BinaryString StringConst
            | CharString StringConst
@@ -261,6 +263,7 @@ data Value = BooleanValue Bool
              -- ReferencedValue constructors:
            | DefinedV DefinedValue
              -- TODO: | ValueFromObject ...
+           | IntegerOrEnumeratedIdentifiedValue Identifier
            deriving (Eq,Ord,Show, Typeable, Data)
 
     
@@ -272,9 +275,8 @@ builtinValue =
   choice $ map try [ booleanValue >>= return . BooleanValue -- ok
                    , NullValue <$ reserved "NULL" -- ok
                    , specialRealValue -- is this RealValue?
-                     -- Two cases of IntegerValue: SignedNumber and IdentifiedIntegerValue
+                     -- Integer identified by 'identifier' is described below
                    , SignedNumber <$> signedNumber -- ok
-                   , IdentifiedIntegerValue <$> identifier -- ok
                    , hexString >>= return . HexString
                    , binaryString >>= return . BinaryString
                    , characterStringValue >>= return . CharString -- ok
@@ -295,6 +297,11 @@ builtinValue =
                      -- TODO: setOfValue
                      -- TODO: taggedValue
                      -- From ReferencedValue:
+                     --   TODO
+                     -- Two types could have values denoted by a simple identified. Without semantical analysis
+                     -- it is impossible to tell them apart. So they are captured by this single catch-all case below
+                   , IntegerOrEnumeratedIdentifiedValue <$> identifier -- ok
+
                    ]
 
 referencedValue = 
@@ -385,7 +392,7 @@ theSymbol =
                   -- TODO: , ValueReferenceSymbol <$> valuereference
                   ] ) <* parametrizedDesignation
  where
-   parametrizedDesignation = optional (char '{' >> whiteSpace >> char '}')
+   parametrizedDesignation = optional (lexeme (char '{') >> lexeme (char '}'))
 -- }} end of section 9.2
 
 -- {{ Section 9.3, "Local and external references"   
@@ -447,7 +454,7 @@ booleanValue =
 -- parsers for type and value are inlined into builinType and builtinValue
 -- }} end of section 10.2
 -- {{ Section 10.3, "INTEGER type"
-integerType = IntegerT <$> (reserved "INTEGER" *> option [] (braces namedNumberList))
+integerType = TheInteger <$> (reserved "INTEGER" *> option [] (braces namedNumberList))
   
 namedNumberList = commaSep1 namedNumber
 
@@ -460,6 +467,63 @@ namedNumber =
          ]
   <?> "NamedNumber"
 -- }} end of section 10.3
+-- { Chapter 12, "Constructed types, tagging, extensibility rules"
+-- {{ Section 12.2, "The constructor SEQUENCE"
+sequenceType = 
+  choice [ try $ EmptySequence <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
+         , try $ EmptyExtendableSequence <$ ( reserved "SEQUENCE" >> braces ( extensionAndException >> optionalExtensionMarker ) )
+         , Sequence <$> (reserved "SEQUENCE" *> braces componentTypeLists)
+         ]
+
+data ComponentTypeLists = SimpleComponentTypeList [ComponentType]
+                        | ComplexComponentTypeListsAdditionsAtStart (Maybe [[ComponentType]]) [ComponentType]
+                        | ComplexComponentTypeListsAdditionsAtEnd [ComponentType] (Maybe [[ComponentType]])
+                        | ComplexComponentTypeListsAdditionsInTheMiddle [ComponentType] (Maybe [[ComponentType]]) [ComponentType]
+                        deriving (Eq,Ord,Show, Typeable, Data)
+componentTypeLists = 
+  choice [ ComplexComponentTypeListsAdditionsAtStart <$> (extensionAndException *> extensionsAdditions) <*> (optionalExtensionMarker *> comma *> componentTypeList)
+         , try $ ComplexComponentTypeListsAdditionsAtEnd <$> componentTypeList <*> (comma *> extensionAndException *> extensionsAdditions) <* optionalExtensionMarker
+         , try $ ComplexComponentTypeListsAdditionsInTheMiddle <$> componentTypeList <*> (comma *> extensionAndException *> extensionsAdditions) <*> (optionalExtensionMarker *> comma *> componentTypeList)
+         , SimpleComponentTypeList <$> componentTypeList
+         ]
+  
+extensionsAdditions = optionMaybe (comma >> extensionAdditionList)
+extensionAdditionList = commaSep1 extensionAddition
+extensionAddition = 
+  choice [ extensionAdditionGroup
+         , componentType >>= return . (:[])
+         ]
+  
+extensionAdditionGroup = do
+  reserved "[[" 
+  l <- componentTypeList 
+  reserved "]]"
+  return l
+
+componentTypeList = componentType `sepBy1` comma'
+  where
+    comma' = try $ do
+      comma
+      notFollowedBy (lexeme (char '.'))
+
+data ComponentType = NamedTypeComponent { element_type::NamedType
+                                        , element_presence::Maybe ValueOptionality
+                                        } 
+                   | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
+componentType =
+  choice [ try $ ComponentsOf <$> (reserved "COMPONENTS" *> reserved "OF" *> theType)
+         , NamedTypeComponent <$> namedType <*> valueOptionality
+         ]
+
+data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
+valueOptionality = optionMaybe $
+  choice [ reserved "OPTIONAL" >> return OptionalValue
+         , reserved "DEFAULT" >> value >>= return . DefaultValue
+         ] 
+
+data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
+namedType = NamedType <$> identifier <*> theType
+-- }} end of section 12.2
 
 simpleDefinedType = 
   choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
@@ -549,7 +613,7 @@ signedNumber = integer
 
 data SetOrSeq = SetT | SequenceT deriving (Eq,Ord,Show, Typeable, Data)
 setOrSeq = choice $ map try [ reserved "SET" >> return SetT
-                            , reserved "SEQUENCE" >> return SequenceT
+                            -- , reserved "SEQUENCE" >> return SequenceT
                             ]
 
 setOrSequenceType =
@@ -557,7 +621,7 @@ setOrSequenceType =
      ; e <- braces elementTypeList
      ; case t of 
        SetT -> return (Set e)
-       SequenceT -> return (Sequence e)
+       -- SequenceT -> return (Sequence e)
      }
      <?> "SetOrSequenceType"
 
@@ -586,7 +650,7 @@ alternativeTypeLists =
   where
     complex = do
       r <- alternativeTypeList
-      char ','; whiteSpace
+      comma
       ex <- extensionAndException
       add <- extensionAdditionAlternatives
       optionalExtensionMarker
@@ -594,11 +658,11 @@ alternativeTypeLists =
 
 -- rootAlternativeTypeList is inlined since it has only one production
 
-extensionAdditionAlternatives = optionMaybe (char ',' >> whiteSpace >> extensionAdditionAlternativesList)
+extensionAdditionAlternatives = optionMaybe (comma >> extensionAdditionAlternativesList)
 
 extensionAdditionAlternativesList = 
   choice [ extensionAdditionAlternative
-         , do l <- extensionAdditionAlternativesList; char ','; whiteSpace; return l
+         , do l <- extensionAdditionAlternativesList; comma; return l
          , extensionAdditionAlternative
          ]
 
@@ -618,10 +682,8 @@ alternativeTypeList = namedType `sepBy1` comma'
   where
     comma' = try $ do
       comma
-      notFollowedBy (whiteSpace >> char '.')
+      notFollowedBy (lexeme (char '.'))
 
-data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
-namedType = NamedType <$> identifier <*> theType
 
 -- {{{ Dubuisson 12.9.2
 extensionAndException = do
@@ -630,10 +692,10 @@ extensionAndException = do
   
 optionalExtensionMarker = optional $ extensionEndMarker
 
-extensionEndMarker = char ',' >> whiteSpace >> symbol "..."
+extensionEndMarker = comma >> symbol "..."
 
 exceptionSpec = 
-  optionMaybe ( char '!' >> whiteSpace >> exceptionIdentification )
+  optionMaybe ( lexeme (char '!') >> exceptionIdentification )
                 
 data ExceptionIdentification = ExceptionNumber Integer
                              | ExceptionValue DefinedValue
@@ -657,7 +719,7 @@ elementTypeList = commaSep1 elementType
 
 elementType =
   choice $ map try 
-           [ componentsType >>= return . ComponentsOf
+           [ componentsType >>= return . ComponentsOf_
            , do { id <- option UndefinedIdentifier (try identifier)
                 ; t <- theType
                 ; presence <- valueOptionality
@@ -665,11 +727,6 @@ elementType =
                 }
            ]
            
-valueOptionality = optionMaybe $
-  choice [ reserved "OPTIONAL" >> return OptionalValue
-         , reserved "DEFAULT" >> value >>= return . DefaultValue
-         ] 
-
 componentsType :: Parser Type
 componentsType =
   do {
@@ -1167,6 +1224,7 @@ asn1Style
 asn1            = P.makeTokenParser asn1Style
             
 whiteSpace      = P.whiteSpace asn1
+lexeme          = P.lexeme asn1
 symbol          = P.symbol asn1
 parsecIdent     = P.identifier asn1
 reserved        = P.reserved asn1
