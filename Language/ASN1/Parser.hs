@@ -514,10 +514,7 @@ alternativeTypeList = namedType `sepBy1` comma'
       notFollowedBy (whiteSpace >> char '.')
 
 data NamedType = NamedType TheIdentifier Type deriving (Eq,Ord,Show, Typeable, Data)
-namedType = do
-  i <- theIdentifier
-  t <- theType
-  return $ NamedType i t
+namedType = NamedType <$> theIdentifier <*> theType
 
 -- {{{ Dubuisson 12.9.2
 extensionAndException = do
