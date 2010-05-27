@@ -171,8 +171,8 @@ data DefinitiveOIDComponent = DefinitiveOIDNumber Integer
                             | DefinitiveOIDName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 definitiveOIDComponent =
   choice [ DefinitiveOIDNumber <$> number
-         , try $ DefinitiveOIDName . TheIdentifier <$> reservedOIDIdentifier
-         , DefinitiveOIDNamedNumber <$> theIdentifier <*> parens number
+         , try $ DefinitiveOIDNamedNumber <$> theIdentifier <*> parens number
+         , DefinitiveOIDName . TheIdentifier <$> reservedOIDIdentifier
          ]
   <?> "DefinitiveObjectIdComponent"
 
