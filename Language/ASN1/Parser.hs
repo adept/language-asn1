@@ -220,7 +220,7 @@ data BuiltinType = IntegerT [NamedNumber]
                  deriving (Eq,Ord,Show, Typeable, Data)
                           
 builtinType =
-  choice $ map try [ IntegerT <$> integerType
+  choice $ map try [ integerType
                    , BitString <$> bitStringType
                    , setOrSequenceType
                    , setOrSequenceOfType
@@ -270,9 +270,11 @@ value = builtinValue <|> referencedValue
 -- TODO: re-check all this once again
 builtinValue =
   choice $ map try [ booleanValue >>= return . BooleanValue -- ok
-                   , nullValue >> return NullValue -- ok
+                   , NullValue <$ reserved "NULL" -- ok
                    , specialRealValue -- is this RealValue?
-                   , signedNumber >>= return . SignedNumber -- is this IntegerValue?
+                     -- Two cases of IntegerValue: SignedNumber and IdentifiedIntegerValue
+                   , SignedNumber <$> signedNumber -- ok
+                   , IdentifiedIntegerValue <$> identifier -- ok
                    , hexString >>= return . HexString
                    , binaryString >>= return . BinaryString
                    , characterStringValue >>= return . CharString -- ok
@@ -434,7 +436,31 @@ definedObjectSet =
 -- }} end of section 9.3
 -- } end of chapter 9
 -- { Chapter 10, "Basic types"
--- {{ 
+-- {{ Section 10.1, "BOOLEAN type"
+-- booleanType parser is inlined into basicType parser
+booleanValue =
+  choice [ True <$ reserved "TRUE"
+         , False <$ reserved "FALSE"
+         ]
+-- }} end of section 10.1
+-- {{ Section 10.2, "NULL type"
+-- parsers for type and value are inlined into builinType and builtinValue
+-- }} end of section 10.2
+-- {{ Section 10.3, "INTEGER type"
+integerType = IntegerT <$> (reserved "INTEGER" *> option [] (braces namedNumberList))
+  
+namedNumberList = commaSep1 namedNumber
+
+data NamedNumber = NamedNumber Identifier Integer
+                 | NamedDefinedValue  Identifier DefinedValue
+                 deriving (Eq,Ord,Show, Typeable, Data)
+namedNumber = 
+  choice [ try $ NamedNumber <$> identifier <*> parens signedNumber
+         , NamedDefinedValue <$> identifier <*> parens definedValue
+         ]
+  <?> "NamedNumber"
+-- }} end of section 10.3
+
 simpleDefinedType = 
   choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
          , LocalTypeReference <$> typereference
@@ -509,11 +535,6 @@ enumeratedType =
      }
      <?> "EnumeratedType"
 
-integerType =
-  do { reserved "INTEGER"
-     ; option [] $ braces namedNumberList
-     }
-     <?> "IntegerType"
 
 bitStringType =
   do { reserved "BIT";  reserved "STRING" 
@@ -521,20 +542,7 @@ bitStringType =
      }
      <?> "BitStringType"
 
-namedNumberList = commaSep1 namedNumber
-                  <?> "NamedNumberList"
 
-namedNumber =
-  do { id <- theIdentifier
-     ; v <- parens numberOrDefinedValue
-     ; return (NamedNumber id v)
-     }
-     <?> "NamedNumber"
-
-numberOrDefinedValue = 
-  choice [ Left <$> signedNumber
-         , Right <$> definedValue
-         ]
 
 signedNumber = integer
      <?> "SignedNumber"
@@ -1036,17 +1044,13 @@ compoundValue = oid
      <?> "CompoundValue"
 
 
-booleanValue =
-  choice [ reserved "TRUE" >> return True
-         , reserved "FALSE" >> return False
-         ]
 
 specialRealValue =
   choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
          , reserved "MINUS-INFINITY" >> return MinusInfinity
          ]
 
-nullValue = reserved "NULL"  
+
 
 namedValue =
   do {
