@@ -1,15 +1,15 @@
 =============
 Parsed module
 Module {
-    module_id = ModuleIdentifier (ModuleReference "PKIX1Implicit88") (Just [DefinitiveOIDNamedNumber (TheIdentifier "iso") 1,
-    DefinitiveOIDNamedNumber (TheIdentifier "identified-organization") 3,
-    DefinitiveOIDNamedNumber (TheIdentifier "dod") 6,
-    DefinitiveOIDNamedNumber (TheIdentifier "internet") 1,
-    DefinitiveOIDNamedNumber (TheIdentifier "security") 5,
-    DefinitiveOIDNamedNumber (TheIdentifier "mechanisms") 5,
-    DefinitiveOIDNamedNumber (TheIdentifier "pkix") 7,
-    DefinitiveOIDNamedNumber (TheIdentifier "id-mod") 0,
-    DefinitiveOIDNamedNumber (TheIdentifier "id-pkix1-implicit") 19]),
+    module_id = ModuleIdentifier (ModuleReference "PKIX1Implicit88") (Just [DefinitiveOIDNamedNumber (Identifier "iso") 1,
+    DefinitiveOIDNamedNumber (Identifier "identified-organization") 3,
+    DefinitiveOIDNamedNumber (Identifier "dod") 6,
+    DefinitiveOIDNamedNumber (Identifier "internet") 1,
+    DefinitiveOIDNamedNumber (Identifier "security") 5,
+    DefinitiveOIDNamedNumber (Identifier "mechanisms") 5,
+    DefinitiveOIDNamedNumber (Identifier "pkix") 7,
+    DefinitiveOIDNamedNumber (Identifier "id-mod") 0,
+    DefinitiveOIDNamedNumber (Identifier "id-pkix1-implicit") 19]),
     default_tag_type = Just ImplicitTags,
     extensibility_implied = False,
     module_body = Just (ModuleBody {
@@ -23,56 +23,23 @@ Module {
       TypeReferenceSymbol (TypeReference "RelativeDistinguishedName"),
       TypeReferenceSymbol (TypeReference "CertificateSerialNumber"),
       TypeReferenceSymbol (TypeReference "Attribute"),
-      TypeReferenceSymbol (TypeReference "DirectoryString")] (GlobalModuleReference (ModuleReference "PKIX1Explicit88") (Just (AssignedIdentifierOID [ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "iso",
-        number_value = Left 1
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "identified-organization",
-        number_value = Left 3
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "dod",
-        number_value = Left 6
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "internet",
-        number_value = Left 1
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "security",
-        number_value = Left 5
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "mechanisms",
-        number_value = Left 5
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "pkix",
-        number_value = Left 7
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "id-mod",
-        number_value = Left 0
-        } ),
-      ObjIdNamedNumber (NamedNumber {
-        number_name = TheIdentifier "id-pkix1-explicit",
-        number_value = Left 18
-        } )])))]],
+      TypeReferenceSymbol (TypeReference "DirectoryString")] (GlobalModuleReference (ModuleReference "PKIX1Explicit88") (Just (AssignedIdentifierOID [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
+      ObjIdNamedNumber (NamedNumber (Identifier "identified-organization") 3),
+      ObjIdNamedNumber (NamedNumber (Identifier "dod") 6),
+      ObjIdNamedNumber (NamedNumber (Identifier "internet") 1),
+      ObjIdNamedNumber (NamedNumber (Identifier "security") 5),
+      ObjIdNamedNumber (NamedNumber (Identifier "mechanisms") 5),
+      ObjIdNamedNumber (NamedNumber (Identifier "pkix") 7),
+      ObjIdNamedNumber (NamedNumber (Identifier "id-mod") 0),
+      ObjIdNamedNumber (NamedNumber (Identifier "id-pkix1-explicit") 18)])))]],
       module_assignments = [ValueAssignment {
         value_ref = ValueReference "id-ce",
         value_ref_type = Type {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber {
-          number_name = TheIdentifier "joint-iso-ccitt",
-          number_value = Left 2
-          } ),
-        ObjIdNamedNumber (NamedNumber {
-          number_name = TheIdentifier "ds",
-          number_value = Left 5
-          } ),
+        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-ccitt") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "ds") 5),
         ObjIdNumber 29]
         } ,
       ValueAssignment {
@@ -85,39 +52,36 @@ Module {
         ObjIdNumber 35]
         } ,
       TypeAssignment (TypeReference "AuthorityKeyIdentifier") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "keyIdentifier"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "keyIdentifier") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "KeyIdentifier"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "authorityCertIssuer"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "authorityCertIssuer") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralNames"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "authorityCertSerialNumber"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "authorityCertSerialNumber") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "CertificateSerialNumber"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "KeyIdentifier") (Type {
@@ -147,42 +111,15 @@ Module {
         ObjIdNumber 15]
         } ,
       TypeAssignment (TypeReference "KeyUsage") (Type {
-        type_id = BitString [NamedNumber {
-          number_name = TheIdentifier "digitalSignature",
-          number_value = Left 0
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "nonRepudiation",
-          number_value = Left 1
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "keyEncipherment",
-          number_value = Left 2
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "dataEncipherment",
-          number_value = Left 3
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "keyAgreement",
-          number_value = Left 4
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "keyCertSign",
-          number_value = Left 5
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "cRLSign",
-          number_value = Left 6
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "encipherOnly",
-          number_value = Left 7
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "decipherOnly",
-          number_value = Left 8
-          } ],
+        type_id = BitString [NamedNumber (Identifier "digitalSignature") 0,
+        NamedNumber (Identifier "nonRepudiation") 1,
+        NamedNumber (Identifier "keyEncipherment") 2,
+        NamedNumber (Identifier "dataEncipherment") 3,
+        NamedNumber (Identifier "keyAgreement") 4,
+        NamedNumber (Identifier "keyCertSign") 5,
+        NamedNumber (Identifier "cRLSign") 6,
+        NamedNumber (Identifier "encipherOnly") 7,
+        NamedNumber (Identifier "decipherOnly") 8],
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -195,28 +132,26 @@ Module {
         ObjIdNumber 16]
         } ,
       TypeAssignment (TypeReference "PrivateKeyUsagePeriod") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "notBefore"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "notBefore") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = GeneralizedTime,
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "notAfter"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "notAfter") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = GeneralizedTime,
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -238,7 +173,7 @@ Module {
         ObjIdNumber 0]
         } ,
       TypeAssignment (TypeReference "CertificatePolicies") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -248,18 +183,16 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PolicyInformation") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "policyIdentifier"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "policyIdentifier") (Type {
             type_id = LocalTypeReference (TypeReference "CertPolicyId"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "policyQualifiers"),
-          element_body = Type {
-            type_id = SequenceOf (SizeConstraint [ValueRange {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "policyQualifiers") (Type {
+            type_id = SequenceOf (Just [ValueRange {
               range_from = Value (SignedNumber 1),
               range_to = MaxValue
               } ]) (Type {
@@ -267,9 +200,9 @@ Module {
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "CertPolicyId") (Type {
@@ -277,32 +210,30 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PolicyQualifierInfo") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "policyQualifierId"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "policyQualifierId") (Type {
             type_id = LocalTypeReference (TypeReference "PolicyQualifierId"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "qualifier"),
-          element_body = Type {
-            type_id = Any (TheIdentifier "policyQualifierId"),
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "qualifier") (Type {
+            type_id = Any (Identifier "policyQualifierId"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PolicyQualifierId") (Type {
         type_id = ObjectIdentifier,
         subtype = Just [ValueRange {
-          range_from = Value (DefinedV (LocalValueReference (ValueReference "id-qt-cps"))),
+          range_from = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "id-qt-cps")),
           range_to = UndefinedValue
           } ,
         ValueRange {
-          range_from = Value (DefinedV (LocalValueReference (ValueReference "id-qt-unotice"))),
+          range_from = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "id-qt-unotice")),
           range_to = UndefinedValue
           } ]
         } ),
@@ -311,69 +242,65 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "UserNotice") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "noticeRef"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "noticeRef") (Type {
             type_id = LocalTypeReference (TypeReference "NoticeReference"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "explicitText"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "explicitText") (Type {
             type_id = LocalTypeReference (TypeReference "DisplayText"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "NoticeReference") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "organization"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "organization") (Type {
             type_id = LocalTypeReference (TypeReference "DisplayText"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "noticeNumbers"),
-          element_body = Type {
-            type_id = SequenceOf UndefinedSizeContraint (Type {
-              type_id = IntegerT [],
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "noticeNumbers") (Type {
+            type_id = SequenceOf Nothing (Type {
+              type_id = TheInteger [],
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "DisplayText") (Type {
-        type_id = Choice (SimpleAlternativeTypeList [NamedType (TheIdentifier "ia5String") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "ia5String") (Type {
           type_id = IA5String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
             range_to = Value (SignedNumber 200)
             } ])]
           } ),
-        NamedType (TheIdentifier "visibleString") (Type {
+        NamedType (Identifier "visibleString") (Type {
           type_id = VisibleString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
             range_to = Value (SignedNumber 200)
             } ])]
           } ),
-        NamedType (TheIdentifier "bmpString") (Type {
+        NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
             range_to = Value (SignedNumber 200)
             } ])]
           } ),
-        NamedType (TheIdentifier "utf8String") (Type {
+        NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
@@ -392,26 +319,24 @@ Module {
         ObjIdNumber 33]
         } ,
       TypeAssignment (TypeReference "PolicyMappings") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
-          type_id = Sequence [NamedElementType {
-            element_name = TypeName (TheIdentifier "issuerDomainPolicy"),
-            element_body = Type {
+          type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "issuerDomainPolicy") (Type {
               type_id = LocalTypeReference (TypeReference "CertPolicyId"),
               subtype = Nothing
-              } ,
+              } ),
             element_presence = Nothing
             } ,
-          NamedElementType {
-            element_name = TypeName (TheIdentifier "subjectDomainPolicy"),
-            element_body = Type {
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "subjectDomainPolicy") (Type {
               type_id = LocalTypeReference (TypeReference "CertPolicyId"),
               subtype = Nothing
-              } ,
+              } ),
             element_presence = Nothing
-            } ],
+            } ]),
           subtype = Nothing
           } ),
         subtype = Nothing
@@ -430,7 +355,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralNames") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -440,63 +365,63 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralName") (Type {
-        type_id = Choice (SimpleAlternativeTypeList [NamedType (TheIdentifier "otherName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "otherName") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AnotherName"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "rfc822Name") (Type {
+        NamedType (Identifier "rfc822Name") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
             type_id = IA5String,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "dNSName") (Type {
+        NamedType (Identifier "dNSName") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
             type_id = IA5String,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "x400Address") (Type {
+        NamedType (Identifier "x400Address") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "ORAddress"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "directoryName") (Type {
+        NamedType (Identifier "directoryName") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 4)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "Name"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "ediPartyName") (Type {
+        NamedType (Identifier "ediPartyName") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 5)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "EDIPartyName"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "uniformResourceIdentifier") (Type {
+        NamedType (Identifier "uniformResourceIdentifier") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 6)) Nothing (Type {
             type_id = IA5String,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "iPAddress") (Type {
+        NamedType (Identifier "iPAddress") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 7)) Nothing (Type {
             type_id = OctetString,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "registeredID") (Type {
+        NamedType (Identifier "registeredID") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 8)) Nothing (Type {
             type_id = ObjectIdentifier,
             subtype = Nothing
@@ -506,50 +431,46 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AnotherName") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "type-id"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type-id") (Type {
             type_id = ObjectIdentifier,
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "value"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Explicit) (Type {
-              type_id = Any (TheIdentifier "type-id"),
+              type_id = Any (Identifier "type-id"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "EDIPartyName") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "nameAssigner"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "nameAssigner") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DirectoryString"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "partyName"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "partyName") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DirectoryString"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -575,7 +496,7 @@ Module {
         ObjIdNumber 9]
         } ,
       TypeAssignment (TypeReference "SubjectDirectoryAttributes") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -594,25 +515,23 @@ Module {
         ObjIdNumber 19]
         } ,
       TypeAssignment (TypeReference "BasicConstraints") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "cA"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "cA") (Type {
             type_id = Boolean,
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just (DefaultValue (BooleanValue False))
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "pathLenConstraint"),
-          element_body = Type {
-            type_id = IntegerT [],
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "pathLenConstraint") (Type {
+            type_id = TheInteger [],
             subtype = Just [ValueRange {
               range_from = Value (SignedNumber 0),
               range_to = MaxValue
               } ]
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -625,32 +544,30 @@ Module {
         ObjIdNumber 30]
         } ,
       TypeAssignment (TypeReference "NameConstraints") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "permittedSubtrees"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "permittedSubtrees") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralSubtrees"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "excludedSubtrees"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "excludedSubtrees") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralSubtrees"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralSubtrees") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -660,40 +577,37 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralSubtree") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "base"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "base") (Type {
             type_id = LocalTypeReference (TypeReference "GeneralName"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "minimum"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "minimum") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "BaseDistance"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just (DefaultValue (SignedNumber 0))
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "maximum"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "maximum") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "BaseDistance"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "BaseDistance") (Type {
-        type_id = IntegerT [],
+        type_id = TheInteger [],
         subtype = Just [ValueRange {
           range_from = Value (SignedNumber 0),
           range_to = MaxValue
@@ -709,32 +623,30 @@ Module {
         ObjIdNumber 36]
         } ,
       TypeAssignment (TypeReference "PolicyConstraints") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "requireExplicitPolicy"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "requireExplicitPolicy") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "SkipCerts"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "inhibitPolicyMapping"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "inhibitPolicyMapping") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "SkipCerts"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SkipCerts") (Type {
-        type_id = IntegerT [],
+        type_id = TheInteger [],
         subtype = Just [ValueRange {
           range_from = Value (SignedNumber 0),
           range_to = MaxValue
@@ -750,7 +662,7 @@ Module {
         ObjIdNumber 31]
         } ,
       TypeAssignment (TypeReference "CRLDistributionPoints") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -760,50 +672,47 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "DistributionPoint") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "distributionPoint"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "distributionPoint") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DistributionPointName"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "reasons"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "reasons") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "ReasonFlags"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "cRLIssuer"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "cRLIssuer") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralNames"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "DistributionPointName") (Type {
-        type_id = Choice (SimpleAlternativeTypeList [NamedType (TheIdentifier "fullName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "fullName") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "GeneralNames"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
-        NamedType (TheIdentifier "nameRelativeToCRLIssuer") (Type {
+        NamedType (Identifier "nameRelativeToCRLIssuer") (Type {
           type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "RelativeDistinguishedName"),
             subtype = Nothing
@@ -813,42 +722,15 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ReasonFlags") (Type {
-        type_id = BitString [NamedNumber {
-          number_name = TheIdentifier "unused",
-          number_value = Left 0
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "keyCompromise",
-          number_value = Left 1
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "cACompromise",
-          number_value = Left 2
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "affiliationChanged",
-          number_value = Left 3
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "superseded",
-          number_value = Left 4
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "cessationOfOperation",
-          number_value = Left 5
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "certificateHold",
-          number_value = Left 6
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "privilegeWithdrawn",
-          number_value = Left 7
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "aACompromise",
-          number_value = Left 8
-          } ],
+        type_id = BitString [NamedNumber (Identifier "unused") 0,
+        NamedNumber (Identifier "keyCompromise") 1,
+        NamedNumber (Identifier "cACompromise") 2,
+        NamedNumber (Identifier "affiliationChanged") 3,
+        NamedNumber (Identifier "superseded") 4,
+        NamedNumber (Identifier "cessationOfOperation") 5,
+        NamedNumber (Identifier "certificateHold") 6,
+        NamedNumber (Identifier "privilegeWithdrawn") 7,
+        NamedNumber (Identifier "aACompromise") 8],
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -861,7 +743,7 @@ Module {
         ObjIdNumber 37]
         } ,
       TypeAssignment (TypeReference "ExtKeyUsageSyntax") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -973,7 +855,7 @@ Module {
         ObjIdNumber 1]
         } ,
       TypeAssignment (TypeReference "AuthorityInfoAccessSyntax") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -983,22 +865,20 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AccessDescription") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "accessMethod"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "accessMethod") (Type {
             type_id = ObjectIdentifier,
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "accessLocation"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "accessLocation") (Type {
             type_id = LocalTypeReference (TypeReference "GeneralName"),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Nothing
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -1011,7 +891,7 @@ Module {
         ObjIdNumber 11]
         } ,
       TypeAssignment (TypeReference "SubjectInfoAccessSyntax") (Type {
-        type_id = SequenceOf (SizeConstraint [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
           } ]) (Type {
@@ -1030,7 +910,7 @@ Module {
         ObjIdNumber 20]
         } ,
       TypeAssignment (TypeReference "CRLNumber") (Type {
-        type_id = IntegerT [],
+        type_id = TheInteger [],
         subtype = Just [ValueRange {
           range_from = Value (SignedNumber 0),
           range_to = MaxValue
@@ -1046,72 +926,66 @@ Module {
         ObjIdNumber 28]
         } ,
       TypeAssignment (TypeReference "IssuingDistributionPoint") (Type {
-        type_id = Sequence [NamedElementType {
-          element_name = TypeName (TheIdentifier "distributionPoint"),
-          element_body = Type {
+        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "distributionPoint") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DistributionPointName"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "onlyContainsUserCerts"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlyContainsUserCerts") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just (DefaultValue (BooleanValue False))
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "onlyContainsCACerts"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlyContainsCACerts") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just (DefaultValue (BooleanValue False))
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "onlySomeReasons"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlySomeReasons") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "ReasonFlags"),
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just OptionalValue
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "indirectCRL"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "indirectCRL") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 4)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just (DefaultValue (BooleanValue False))
           } ,
-        NamedElementType {
-          element_name = TypeName (TheIdentifier "onlyContainsAttributeCerts"),
-          element_body = Type {
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlyContainsAttributeCerts") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 5)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
             subtype = Nothing
-            } ,
+            } ),
           element_presence = Just (DefaultValue (BooleanValue False))
-          } ],
+          } ]),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -1137,46 +1011,16 @@ Module {
         ObjIdNumber 21]
         } ,
       TypeAssignment (TypeReference "CRLReason") (Type {
-        type_id = Enumerated [NamedNumber {
-          number_name = TheIdentifier "unspecified",
-          number_value = Left 0
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "keyCompromise",
-          number_value = Left 1
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "cACompromise",
-          number_value = Left 2
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "affiliationChanged",
-          number_value = Left 3
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "superseded",
-          number_value = Left 4
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "cessationOfOperation",
-          number_value = Left 5
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "certificateHold",
-          number_value = Left 6
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "removeFromCRL",
-          number_value = Left 8
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "privilegeWithdrawn",
-          number_value = Left 9
-          } ,
-        NamedNumber {
-          number_name = TheIdentifier "aACompromise",
-          number_value = Left 10
-          } ],
+        type_id = Enumerated [NamedNumber (Identifier "unspecified") 0,
+        NamedNumber (Identifier "keyCompromise") 1,
+        NamedNumber (Identifier "cACompromise") 2,
+        NamedNumber (Identifier "affiliationChanged") 3,
+        NamedNumber (Identifier "superseded") 4,
+        NamedNumber (Identifier "cessationOfOperation") 5,
+        NamedNumber (Identifier "certificateHold") 6,
+        NamedNumber (Identifier "removeFromCRL") 8,
+        NamedNumber (Identifier "privilegeWithdrawn") 9,
+        NamedNumber (Identifier "aACompromise") 10],
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -1211,22 +1055,10 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber {
-          number_name = TheIdentifier "joint-iso-itu-t",
-          number_value = Left 2
-          } ),
-        ObjIdNamedNumber (NamedNumber {
-          number_name = TheIdentifier "member-body",
-          number_value = Left 2
-          } ),
-        ObjIdNamedNumber (NamedNumber {
-          number_name = TheIdentifier "us",
-          number_value = Left 840
-          } ),
-        ObjIdNamedNumber (NamedNumber {
-          number_name = TheIdentifier "x9cm",
-          number_value = Left 10040
-          } ),
+        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-itu-t") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "member-body") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "us") 840),
+        ObjIdNamedNumber (NamedNumber (Identifier "x9cm") 10040),
         ObjIdNumber 2]
         } ,
       ValueAssignment {
