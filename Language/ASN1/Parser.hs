@@ -50,7 +50,6 @@ data Module = Module { module_id::ModuleIdentifier
                      , extensibility_implied :: Bool
                      , module_body::Maybe ModuleBody
                      } deriving (Eq,Ord,Show, Typeable, Data)
-data GlobalType = GlobalT Type | GlobalDMT DefinedMacroType  deriving (Eq,Ord,Show, Typeable, Data)
 data Type = Type { type_id::BuiltinType
                        , subtype::Maybe SubtypeSpec
                        }
@@ -104,8 +103,6 @@ hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
 
 cstring = 
   do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst s) } <?> "cstring"
-
-numberERange = natural
 
 lcaseFirstIdent = do { i <- identifier
                      ; when (isUpper $ head i) $ unexpected "uppercase first letter"
@@ -302,17 +299,6 @@ void macroBody {
   }
 }
 -}
-
-data MacroReference = TypeMacroReference TypeReference
-                    | DefinedNameMacroReference DefinedMacroName
-                      deriving (Eq,Ord,Show, Typeable, Data)
-macroReference = 
-  do {
-      choice [ typereference >>= return . TypeMacroReference
-             , definedMacroName >>= return . DefinedNameMacroReference
-             ]
-     }
-     <?> "MacroReference"
 
 -- Dubuisson 9.1.2
 typeAssignment =
@@ -1129,15 +1115,6 @@ newtype ValueSetFieldReference = ValueSetFieldReference String deriving (Eq,Ord,
 valuesetfieldreference = char '&' >> ucaseFirstIdent >>= return . ValueSetFieldReference
 
 
-data DefinedMacroType = TextualConventionDMT TextualConventionMacroType | SnmpObjectDMT SnmpObjectTypeMacroType deriving (Eq,Ord,Show, Typeable, Data)
-definedMacroType =
-   do {
-      choice [ textualConventionMacroType >>= return . TextualConventionDMT
-             , snmpObjectTypeMacroType >>= return . SnmpObjectDMT
-             ]
-     }
-     <?> "DefinedMacroType"
-
 data DefinedMacroName = ObjectType | TextualConvention deriving (Eq,Ord,Show, Typeable, Data)
 definedMacroName =
   do {
@@ -1146,105 +1123,6 @@ definedMacroName =
              ]
      }
      <?> "DefinedMacroName"
-
-data SnmpObjectTypeMacroType = SnmpObjectTypeMacroType Type SnmpAccess SnmpStatus SnmpDescr SnmpRefer SnmpIndex Value
-                               deriving (Eq,Ord,Show, Typeable, Data)
-snmpObjectTypeMacroType =
-  do { reserved "OBJECT-TYPE" 
-     ; reserved "SYNTAX" 
-     ; t <- theType
-     ; reserved "ACCESS"
-     ; sa <- snmpAccess
-     ; reserved "STATUS"
-     ; ss <- snmpStatus 
-     ; sd <- option UndefinedSnmpDescr (snmpDescrPart)
-     ; sr <- option UndefinedSnmpRefer (snmpReferPart)
-     ; si <- option UndefinedSnmpIndex (snmpIndexPart)
-     ; sdvp <- option UndefinedV (snmpDefValPart)
-     ; return (SnmpObjectTypeMacroType t sa ss sd sr si sdvp)
-     }
-     <?> "SnmpObjectTypeMacroType"
-
-data SnmpAccess = SnmpAccess TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-snmpAccess = theIdentifier >>= return . SnmpAccess
-             <?> "SnmpAccess"
-
-data SnmpStatus = SnmpStatus TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-snmpStatus = theIdentifier >>= return . SnmpStatus
-             <?> "SnmpStatus"
-
-data SnmpDescr = SnmpDescr StringConst
-               | UndefinedSnmpDescr 
-                 deriving (Eq,Ord,Show, Typeable, Data)
-snmpDescrPart =
-  do { reserved "DESCRIPTION" 
-     ; charString >>= return . SnmpDescr
-     }
-     <?> "SnmpDescrPart"
-
-data SnmpRefer = SnmpRefer StringConst 
-               | UndefinedSnmpRefer
-                 deriving (Eq,Ord,Show, Typeable, Data)
-snmpReferPart =
-  do { reserved "REFERENCE"
-     ; charString >>= return . SnmpRefer
-     }
-     <?> "SnmpReferPart"
-         
-data SnmpIndex = SnmpIndex [TypeOrValue]
-               | UndefinedSnmpIndex
-                 deriving (Eq,Ord,Show, Typeable, Data)
-snmpIndexPart =
-  do { reserved "INDEX"  
-     ; braces typeOrValueList >>= return . SnmpIndex
-     }
-     <?> "SnmpIndexPart"
-
-typeOrValueList =
-  do {
-      typeOrValue 
-     ; many ( do {reservedOp "," ; typeOrValue} )
-     }
-     <?> "TypeOrValueList"
-
-data TypeOrValue = T Type | V Value deriving (Eq,Ord,Show, Typeable, Data)
-typeOrValue =
-  do {
-      choice $ map try [ theType >>= return . T
-                       , value >>= return . V
-                       ]
-     }
-     <?> "TypeOrValue"
-
-snmpDefValPart =
-  do { reserved "DEFVAL"  
-     ; braces value
-     }
-     <?> "SnmpDefValPart"
-
-data TextualConventionMacroType = TextualConventionMacroType DisplayHint SnmpStatus SnmpDescr SnmpRefer Type
-                                  deriving (Eq,Ord,Show, Typeable, Data)
-data DisplayHint = DisplayHint StringConst 
-                 | UndefinedDisplayHint 
-                   deriving (Eq,Ord,Show, Typeable, Data)
-textualConventionMacroType =
-  do { reserved "TEXTUAL-CONVENTION"
-     ; dh <- option UndefinedDisplayHint (displayHint)
-     ; reserved "STATUS"
-     ; ss <- snmpStatus 
-     ; sd <- option UndefinedSnmpDescr (snmpDescrPart)
-     ; sr <- option UndefinedSnmpRefer (snmpReferPart)
-     ; reserved "SYNTAX"
-     ; t <- theType
-     ; return (TextualConventionMacroType dh ss sd sr t)
-     }
-     <?> "TextualConventionMacroType"
-
-displayHint =
-  do { reserved "DISPLAY-HINT" 
-     ; charString >>= return . DisplayHint
-     }
-     <?> "DisplayHint"
 
 -----------------------------------------------------------
 -- Tokens
@@ -1281,14 +1159,9 @@ symbol          = P.symbol asn1
 identifier      = P.identifier asn1
 reserved        = P.reserved asn1
 reservedOp      = P.reservedOp asn1
-decimal         = P.decimal asn1
-charLiteral     = P.charLiteral asn1
-stringLiteral   = P.stringLiteral asn1
 comma           = P.comma asn1
-colon           = P.colon asn1
 commaSep        = P.commaSep asn1
 commaSep1       = P.commaSep1 asn1
-semiSep1        = P.semiSep1 asn1
 braces          = P.braces asn1
 squares         = P.squares asn1
 parens          = P.parens asn1
