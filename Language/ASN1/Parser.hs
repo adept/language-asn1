@@ -115,6 +115,7 @@ data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint derivi
 objectIdentifier =
   do { reserved "OBJECT" ; reserved "IDENTIFIER" }
 
+-- { Dubuisson, chapter 8.1, "Lexical tokens in ASN.1"
 data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
 stringConst allowedSet marker = 
   do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst body) } 
@@ -140,6 +141,7 @@ ucaseIdent = do { i <- identifier
                 ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
                 ; return i
                 }
+-- }
 
 -- { Dubuisson, chapter 9, "Modules and assignments"
 -- {{ Dubuisson, section 9.2, "Module structure"
@@ -159,119 +161,53 @@ data ModuleIdentifier = ModuleIdentifier ModuleReference (Maybe DefinitiveOID) d
 moduleIdentifier = ModuleIdentifier <$> modulereference <*> definitiveIdentifier
                    <?> "ModuleIdentifier"
 
--- Parsec machinery (Token parser) is incapable of handling complex commenting 
--- conditions like "comment ends on next '--' or on newline". Which is why all
--- line comments are turned into block comments and Token parser is instructed
--- to handle only block comments.
-fixupComments = do
-  inp <- getInput
-  setInput $ unlines $ map fixup $ lines inp
-  where 
-    fixup l
-      | "--" `isInfixOf` l && unterminated = l ++ " --"
-      | otherwise = l
-      where
-        unterminated = checkUnterm False l
-        checkUnterm p []             = p
-        checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
-        checkUnterm p (_:rest)       = checkUnterm p rest
+type DefinitiveOID = [DefinitiveOIDComponent]
+definitiveIdentifier =
+  optionMaybe (braces (many1 definitiveOIDComponent))
+  <?> "DefinitiveIdentifier"
 
-moduleDefinition = 
-  do { id <- moduleIdentifier   
-     ; oid_ <- optionMaybe oid
-     ; reserved "DEFINITIONS"
-     ; td <- tagDefault
-     ; ei <- option False ( reserved "EXTENSIBILITY" >> reserved "IMPLIED" >> return True )
-     ; reservedOp "::="
-     ; reserved "BEGIN" 
-     ; body <- optionMaybe moduleBody
-     ; reserved "END"  
-     ; return (Module id oid_ td ei body)
-     }
-     <?> "moduleDefinition"
+data DefinitiveOIDComponent = DefinitiveOIDNumber Integer 
+                            | DefinitiveOIDNamedNumber TheIdentifier Integer
+                            | DefinitiveOIDName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
+definitiveOIDComponent =
+  choice [ DefinitiveOIDNumber <$> number
+         , try $ DefinitiveOIDName . TheIdentifier <$> reservedOIDIdentifier
+         , DefinitiveOIDNamedNumber <$> theIdentifier <*> parens number
+         ]
+  <?> "DefinitiveObjectIdComponent"
+
+type Exports = [ExportedSymbol]
+type Imports = [SymbolsFromModule]
+data ModuleBody = ModuleBody { module_exports::Maybe [Exports]
+                             , module_imports::Maybe [Imports]
+                             , module_assignments::Maybe [Assignment]
+                             } deriving (Eq,Ord,Show, Typeable, Data)
+moduleBody = optionMaybe ( ModuleBody <$> exports <*> imports <*> assignmentList )
+             <?> "ModuleBody"
 
 data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
 data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
 tagType = 
   optionMaybe $
-  choice [ reserved "EXPLICIT" >> return Explicit
-         , reserved "IMPLICIT" >> return Implicit
+  choice [ Explicit <$ reserved "EXPLICIT"
+         , Implicit <$ reserved "IMPLICIT"
          ]
 
 tagDefault = optionMaybe td <?> "tagDefault"
   where td = do 
-          t <- choice [ reserved "EXPLICIT" >> return ExplicitTags
-                      , reserved "IMPLICIT" >> return ImplicitTags
-                      , reserved "AUTOMATIC" >> return AutomaticTags
+          t <- choice [ ExplicitTags <$ reserved "EXPLICIT"
+                      , ImplicitTags <$ reserved "IMPLICIT"
+                      , AutomaticTags <$ reserved "AUTOMATIC"
                       ]
           reserved "TAGS"  
           return t
   
 
-data ModuleIdentifier = ModuleIdentifier (Maybe ModuleReference) (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
-data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
-moduleIdentifier = 
-  do { ref <- optionMaybe moduleReference
-     ; id <- optionMaybe assignedIdentifier
-     ; when ( ref == Nothing && id == Nothing) $ unexpected "Empty module identifier, please provide author with sample file"
-     ; return (ModuleIdentifier ref id)
-     }
-     <?> "moduleIdentifier"
-
-data ModuleBody = ModuleBody { module_exports::[[ExportedSymbol]]
-                             , module_imports::[[SymbolsFromModule]]
-                             , module_assignments::[Assignment]
-                             } deriving (Eq,Ord,Show, Typeable, Data)
-moduleBody = 
-  do { e <- option [] exports
-     ; i <- option [] imports
-     ; a <- option [] assignmentList
-     ; return (ModuleBody e i a)
-     }
-     <?> "moduleBody"
-
-newtype ExportedSymbol = ExportedSymbol TheSymbol deriving (Eq,Ord,Show, Typeable, Data)
-exports = 
-  do { reserved "EXPORTS" 
-     ; endBy (commaSep1 (theSymbol >>= return . ExportedSymbol)) semi
-     }
-     <?> "Exports"
-
-imports = 
-  do { reserved "IMPORTS"  
-     ; (many1 $ try symbolsFromModule) `endBy` semi
-     }
-     <?> "Imports"
-
-data SymbolsFromModule = SymbolsFromModule [TheSymbol] ModuleIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-symbolsFromModule =
-  do { ss <- commaSep1 theSymbol
-     ; reserved "FROM" 
-     ; id <- moduleIdentifier 
-     ; return (SymbolsFromModule ss id)
-     }
-     <?> "SymbolsFromModule"
-
-data AssignedIdentifier = AssignedIdentifierOID OID | AssignedIdentifierDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
-assignedIdentifier = 
-  choice [ AssignedIdentifierOID <$> try oid
-         , AssignedIdentifierDefinedValue <$> definedValue
-         ]
-
 newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
 
-data TheSymbol = TypeReferenceSymbol TypeReference
-               | TheIdentifierSymbol TheIdentifier
-               | DefinedMacroNameSymbol DefinedMacroName 
-                 deriving (Eq,Ord,Show, Typeable, Data)
-theSymbol = 
- choice $ map try [ typereference >>= return . TypeReferenceSymbol
-                  , theIdentifier >>= return . TheIdentifierSymbol
-                  , definedMacroName >>= return . DefinedMacroNameSymbol
-                  ]
 
 -- Dubuisson 9.1.2
-assignmentList = sepBy1 assignment (optional semi) <?> "assignmentList"
+assignmentList = optionMaybe (sepBy1 assignment (optional semi)) <?> "assignmentList"
 
 
 data Assignment = MacroDefinition { macro_def_type::MacroDefinitionType
@@ -442,7 +378,7 @@ definedType =
 
 moduleReferenceAndDot = 
   do { 
-     ; mref <- moduleReference 
+     ; mref <- modulereference 
      ; char '.'
      ; return (mref)
      }
@@ -1122,7 +1058,10 @@ data TheIdentifier = TheIdentifier String
                    | UndefinedIdentifier
                      deriving (Eq,Ord,Show, Typeable, Data)
 theIdentifier = lcaseFirstIdent >>= return . TheIdentifier <?> "identifier"
-moduleReference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
+
+data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
+modulereference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
+
 typereference = ucaseFirstIdent >>= return . TypeReference <?> "typereference"
 
 newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
