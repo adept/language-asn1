@@ -210,6 +210,7 @@ assignedIdentifier =
 
 data Symbol = TypeReferenceSymbol TypeReference
             -- TODO: | ValueReferenceSymbol ValueReference
+            -- it is impossible to distinguish TypeReference and ValueReference syntactically
             | ObjectClassReferenceSymbol ObjectClassReference
             | ObjectReferenceSymbol ObjectReference
             -- TODO: | ObjectSetReferenceSymbol ObjectSetReference
@@ -227,12 +228,55 @@ theSymbol =
 
 -- {{ Dubuisson, section 9.3, "Local and external references"   
 
--- definedType is used only in BuiltinType. See BuiltinType for constructors
+-- definedType is used only in BuiltinType. See BuiltinType for constructors.
+-- I also took libery of reusing simpleDefinedType from chapter 17 for the first two
+-- alternatives of definedType.
 definedType = simpleDefinedType --TODO: <|> parametrizedType <|> parametrizedValueSetType
 
--- }}
-simpleDefinedType = SimpleDefinedType <$> optionMaybe (try moduleReferenceAndDot) <*> typereference
-                    <?> "SimpleDefinedType"
+
+data DefinedValue = ExternalValueReference ModuleReference ValueReference
+                  | LocalValueReference ValueReference
+                  deriving (Eq,Ord,Show, Typeable, Data)
+definedValue = 
+  choice [ try $ ExternalValueReference <$> moduleReferenceAndDot <*> valuereference
+         , LocalValueReference <$> valuereference
+         -- TODO: , parametrizedValue 
+         ] <?> "DefinedValue"
+     
+-- UsefulObjectClassReference is inlined in definedObjectClass
+data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
+                        | LocalObjectClassReference ObjectClassReference
+                        | TypeIdentifier
+                        | AbstractSyntax
+                        deriving (Eq,Ord,Show, Typeable, Data)
+definedObjectClass =
+  choice [ try $ ExternalObjectClassReference <$> moduleReferenceAndDot <*> objectclassreference
+         , LocalObjectClassReference <$> objectclassreference
+         , TypeIdentifier <$ reserved "TYPE-IDENTIFIER"
+         , AbstractSyntax <$ reserved "ABSTRACT-SYNTAX"
+         ]
+
+data DefinedObject = ExternalObjectReference ModuleReference ObjectReference
+                  | LocalObjectReference ObjectReference
+                  deriving (Eq,Ord,Show, Typeable, Data)
+definedObject = 
+  choice [ try $ ExternalObjectReference <$> moduleReferenceAndDot <*> objectreference
+         , LocalObjectReference <$> objectreference
+         ] <?> "DefinedObject"
+  
+data DefinedObjectSet = ExternalObjectSetReference ModuleReference ObjectSetReference
+                  | LocalObjectSetReference ObjectSetReference
+                  deriving (Eq,Ord,Show, Typeable, Data)
+definedObjectSet = 
+  choice [ try $ ExternalObjectSetReference <$> moduleReferenceAndDot <*> objectsetreference
+         , LocalObjectSetReference <$> objectsetreference
+         ] <?> "DefinedObjectSet"
+-- }} end of section 9.3
+simpleDefinedType = 
+  choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
+         , LocalTypeReference <$> typereference
+         ]
+  <?> "SimpleDefinedType"
 
 data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
 data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
@@ -353,7 +397,10 @@ data BuiltinType = IntegerT [NamedNumber]
           | Boolean
           | Null
           | External
-          | SimpleDefinedType (Maybe ModuleReference) TypeReference
+          | LocalTypeReference TypeReference
+          | ExternalTypeReference ModuleReference TypeReference
+          -- TODO: | ParameterizedType
+          -- TODO: | ParametrizedValueSetType
           | BMPString
           | GeneralString
           | GraphicString
@@ -785,21 +832,6 @@ objectSetOptionality = optionMaybe $
   
 
 -- Dubuisson, 9.3.2
-data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
-                        | LocalObjectClassReference ObjectClassReference
-                        | TypeIdentifier
-                        | AbstractSyntax
-                        deriving (Eq,Ord,Show, Typeable, Data)
-definedObjectClass =
-  choice [ try externalObjectClassReference
-         , objectclassreference >>= return . LocalObjectClassReference
-         , reserved "TYPE-IDENTIFIER" >> return TypeIdentifier
-         , reserved "ABSTRACT-SYNTAX" >> return AbstractSyntax
-         ]
-  where externalObjectClassReference = do
-          mref <- moduleReferenceAndDot
-          ocref <- objectclassreference
-          return $ ExternalObjectClassReference mref ocref
 
 -- 
 objectAssignment = do
@@ -1010,15 +1042,6 @@ value =
      }
      <?> "Value"
 
-data DefinedValue = DefinedValue (Maybe ModuleReference) TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
-definedValue =
-  do {
-     ; mref <- optionMaybe $ try moduleReferenceAndDot
-     ; id <- theIdentifier
-     ; return (DefinedValue mref id)
-     }
-     <?> "DefinedValue"
-
 data BuiltinValue = BooleanValue Bool
                   | NullValue
                   | PlusInfinity
@@ -1117,11 +1140,17 @@ objectfieldreference = char '&' >> lcaseFirstIdent >>= return . ObjectFieldRefer
 newtype ObjectReference = ObjectReference String deriving (Eq,Ord,Show, Typeable, Data)
 objectreference = lcaseFirstIdent >>= return . ObjectReference
 
+newtype ObjectSetReference = ObjectSetReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectsetreference = ucaseFirstIdent >>= return . ObjectSetReference
+
 newtype ObjectSetFieldReference = ObjectSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 objectsetfieldreference = char '&' >> ucaseFirstIdent >>= return . ObjectSetFieldReference
 
 newtype ValueSetFieldReference = ValueSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 valuesetfieldreference = char '&' >> ucaseFirstIdent >>= return . ValueSetFieldReference
+
+newtype ValueReference = ValueReference String deriving (Eq,Ord,Show, Typeable, Data)
+valuereference = lcaseFirstIdent >>= return . ValueReference
 
 
 data DefinedMacroName = ObjectType | TextualConvention deriving (Eq,Ord,Show, Typeable, Data)
