@@ -1,5 +1,14 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module Language.ASN1.Parser where
+module Language.ASN1.Parser (
+  parseASN1FromFileOrDie
+  , parseASN1FromFile
+  , parseASN1
+  , Module(..)
+  , Type(..)
+  , Assignment(..)
+    
+  , TypeReference(..)
+  ) where
 {-
  ASN.1 Parser for Haskell (C) Dmitry Astapov 2003-2010
 
@@ -90,10 +99,6 @@ fixupComments = do
         checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
         checkUnterm p (_:rest)       = checkUnterm p rest
 -- }
-data Type = Type { type_id::BuiltinType
-                       , subtype::Maybe SubtypeSpec
-                       }
-               deriving (Eq,Ord,Show, Typeable, Data)
 newtype TypeName = TypeName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 data NamedNumber = NamedNumber { number_name::TheIdentifier
                                , number_value::NumberOrDefinedValue
@@ -111,9 +116,6 @@ data NamedValue = NamedValue { value_name::ValueName
 newtype ValueName = ValueName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
 
-
-objectIdentifier =
-  do { reserved "OBJECT" ; reserved "IDENTIFIER" }
 
 -- { Dubuisson, chapter 8.1, "Lexical tokens in ASN.1"
 data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
@@ -148,15 +150,12 @@ ucaseIdent = do { i <- identifier
 assignmentList = (assignment `sepBy1` (optional semi)) <?> "assignmentList"
 
 
-data Assignment = ValueAssignment { value_ref::TheIdentifier
+data Assignment = ValueAssignment { value_ref::ValueReference
                                   , value_ref_type::Type
-                                  , assigned_value_ref::TheIdentifier
-                                  , assigned_value::BuiltinValue
+                                  , assigned_value::Value
                                   }
-                | TypeAssignment  { type_ref::TypeReference
-                                  , assigned_type::Type
-                                  } 
-                -- TODO: | ValueSetTypeAssignment
+                | TypeAssignment TypeReference Type
+                | ValueSetTypeAssignment TypeReference Type ValueSet
                 | ObjectClassAssignment ObjectClassReference ObjectClass
                 | ObjectAssignment ObjectReference DefinedObjectClass Object
                 -- TODO: | ObjectSetAssignment 
@@ -167,12 +166,145 @@ assignment =
                    , valueAssignment
                    , typeAssignment
                    , objectClassAssignment
-                   -- TODO: , valueSetTypeAssignment
+                   , valueSetTypeAssignment
                    -- TODO: , objectSetAssignment
                    -- TODO: , parameterizedAssignment
                    ]
   
-  
+typeAssignment = TypeAssignment <$> typereference <*> (reservedOp "::=" *> theType)
+                 <?> "TypeAssignment"
+
+-- ConstrainedType is merged in other parsers: "Type Constraint" alternative is encoded here,
+-- and TypeWithConstraint in implemented in SetOf/SequenceOf parsers
+data Type = Type { type_id::BuiltinType
+                 , subtype::Maybe SubtypeSpec
+                 }
+               deriving (Eq,Ord,Show, Typeable, Data)
+theType = Type <$> ( builtinType <|> referencedType ) <*> optionMaybe constraint
+          <?> "Type"
+
+data BuiltinType = IntegerT [NamedNumber]
+                 | BitString [NamedNumber]
+                 | Set [ElementType]
+                 | Sequence [ElementType]
+                 | SetOf SizeConstraint Type
+                 | SequenceOf SizeConstraint Type
+                 | Choice AlternativeTypeLists
+                 | Selection TheIdentifier Type
+                 | Tagged Tag (Maybe TagType) Type
+                 | Any TheIdentifier
+                 | Enumerated [NamedNumber]
+                 | OctetString 
+                 | ObjectIdentifier
+                 | Real
+                 | Boolean
+                 | Null
+                 | External
+                 | LocalTypeReference TypeReference
+                 | ExternalTypeReference ModuleReference TypeReference
+                 -- TODO: | ParameterizedType
+                 -- TODO: | ParametrizedValueSetType
+                 | BMPString
+                 | GeneralString
+                 | GraphicString
+                 | IA5String
+                 | ISO646String
+                 | NumericString
+                 | PrintableString
+                 | TeletexString
+                 | T61String
+                 | UniversalString
+                 | UTF8String
+                 | VideotexString
+                 | VisibleString
+                 | CharacterString
+                 | GeneralizedTime
+                 | UTCTime
+                 deriving (Eq,Ord,Show, Typeable, Data)
+                          
+builtinType =
+  choice $ map try [ IntegerT <$> integerType
+                   , BitString <$> bitStringType
+                   , setOrSequenceType
+                   , setOrSequenceOfType
+                   , Choice <$> choiceType
+                   , taggedType
+                   , Any <$> anyType -- DEPRECATED
+                   , Enumerated <$> enumeratedType
+                   , OctetString <$ (reserved "OCTET" *> reserved "STRING")
+                   , ObjectIdentifier <$ (reserved "OBJECT" *> reserved "IDENTIFIER")
+                   , Real <$ reserved "REAL"
+                   , Boolean <$ reserved "BOOLEAN"
+                   , Null <$ reserved "NULL"
+                   , External <$ reserved "EXTERNAL"
+                   , characterStringType
+                     -- TODO: , embeddedPDVType
+                     -- TODO: , instanceOfType
+                     -- TODO: , objectClassFieldType
+                     -- TODO: , relativeOIDType
+                   ]
+
+referencedType = 
+  definedType <|> usefulType <|> selectionType {- TODO: <|> typeFromObject <|> valueSetFromObjects -} 
+  <?> "ReferencedType"
+
+valueAssignment = ValueAssignment <$> valuereference <*> theType <*> (reservedOp "::=" *> value)
+                  <?> "ValueAssignment"
+
+data Value = BooleanValue Bool
+           | NullValue
+           | PlusInfinity
+           | MinusInfinity
+           | SignedNumber Integer
+           | HexString StringConst
+           | BinaryString StringConst
+           | CharString StringConst
+           | CompoundValue OID
+             -- ReferencedValue constructors:
+           | DefinedV DefinedValue
+             -- TODO: | ValueFromObject ...
+           deriving (Eq,Ord,Show, Typeable, Data)
+
+    
+value = builtinValue <|> referencedValue
+        <?> "Value"
+                      
+-- TODO: re-check all this once again
+builtinValue =
+  choice $ map try [ booleanValue >>= return . BooleanValue -- ok
+                   , nullValue >> return NullValue -- ok
+                   , specialRealValue -- is this RealValue?
+                   , signedNumber >>= return . SignedNumber -- is this IntegerValue?
+                   , hexString >>= return . HexString
+                   , binaryString >>= return . BinaryString
+                   , characterStringValue >>= return . CharString -- ok
+                   , compoundValue >>= return . CompoundValue
+                     -- TODO: bitStringValue
+                     -- TODO: choiceValue
+                     -- TODO: embeddedPDVValue
+                     -- TODO: enumeratedValue
+                     -- TODO: externalValue
+                     -- TODO: instanceOfValue
+                     -- TODO: objectClassFieldValue
+                     -- TODO: objectIdentifierValue
+                     -- TODO: octetStringValue
+                     -- TODO: relativeOIDValue
+                     -- TODO: sequenceValue
+                     -- TODO: sequenceOfValue
+                     -- TODO: setValue
+                     -- TODO: setOfValue
+                     -- TODO: taggedValue
+                     -- From ReferencedValue:
+                   ]
+
+referencedValue = 
+  choice [ DefinedV <$> definedValue 
+         -- TODO: , valueFromObject
+         ]
+
+taggedValue = value
+
+valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
 -- }} end of section 9.1
 -- {{ Dubuisson, section 9.2, "Module structure"
 data Module = Module { module_id::ModuleIdentifier
@@ -333,88 +465,9 @@ newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Da
 
 
 -- Dubuisson 9.1.2
-typeAssignment =
-  do { t1 <- typereference
-     ; reservedOp "::=" 
-     ; t2 <- theType
-     ; return (TypeAssignment t1 t2)
-     }
-     <?> "TypeAssignment"
 
 -- Dubuisson 9.1.2
--- ConstrainedType is merged in other parsers: "Type Constraint" alternative is encoded here,
--- and TypeWithConstraint in implemented in Set/Sequence parsers
-theType :: Parser Type
-theType = do
-  t <- builtinType <|> referencedType
-  c <- optionMaybe constraint
-  return (Type t c)
-  <?> "Type"
 
-data BuiltinType = IntegerT [NamedNumber]
-          | BitString [NamedNumber]
-          | Set [ElementType]
-          | Sequence [ElementType]
-          | SetOf SizeConstraint Type
-          | SequenceOf SizeConstraint Type
-          | Choice AlternativeTypeLists
-          | Selection TheIdentifier Type
-          | Tagged Tag (Maybe TagType) Type
-          | Any TheIdentifier
-          | Enumerated [NamedNumber]
-          | OctetString 
-          | ObjectIdentifier
-          | Real
-          | Boolean
-          | Null
-          | External
-          | LocalTypeReference TypeReference
-          | ExternalTypeReference ModuleReference TypeReference
-          -- TODO: | ParameterizedType
-          -- TODO: | ParametrizedValueSetType
-          | BMPString
-          | GeneralString
-          | GraphicString
-          | IA5String
-          | ISO646String
-          | NumericString
-          | PrintableString
-          | TeletexString
-          | T61String
-          | UniversalString
-          | UTF8String
-          | VideotexString
-          | VisibleString
-          | CharacterString
-          | GeneralizedTime
-          | UTCTime
-            deriving (Eq,Ord,Show, Typeable, Data)
-
--- Dubuisson 9.1.2
-builtinType =
-  do {
-      choice $ map try [ integerType >>= return . IntegerT             -- OK
-                       , bitStringType >>= return . BitString         -- OK
-                       , setOrSequenceType                            -- OK
-                       , setOrSequenceOfType                          -- OK
-                       , choiceType >>= return . Choice               -- OK
-                       , taggedType                                   -- OK
-                       , anyType >>= return . Any                     
-                       , enumeratedType >>= return . Enumerated       -- OK
-                       , octetString >> return OctetString            -- OK
-                       , objectIdentifier >> return ObjectIdentifier  -- OK
-                       , reserved "REAL" >> return Real         -- OK
-                       , reserved "BOOLEAN" >> return Boolean   -- OK
-                       , reserved "NULL" >> return Null         -- OK
-                       , reserved "EXTERNAL" >> return External -- OK
-                       , characterStringType
-                       -- TODO: , embeddedPDVType
-                       -- TODO: , instanceOfType
-                       -- TODO: , objectClassFieldType
-                       -- TODO: , relativeOIDType
-                       ]
-     }
-     <?> "BuiltinType"
 
 embeddedPDVType = undefined
 instanceOfType = undefined
@@ -425,9 +478,6 @@ valueSetFromObjects = undefined
 objectDescriptor = undefined
 
 -- Dubuisson 9.1.2
-referencedType = 
-  definedType <|> usefulType <|> selectionType {- <|> typeFromObject <|> valueSetFromObjects -} 
-  <?> "ReferencedType"
 
 -- Dubuisson 11.15.2
 usefulType = 
@@ -459,9 +509,6 @@ characterStringType =
          , reserved "VisibleString" >> return VisibleString 
          , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
          ]
-
-octetString = 
-  do { reserved "OCTET" ; reserved "STRING" }
 
 enumeratedType =
   do { reserved "ENUMERATED"
@@ -989,54 +1036,8 @@ presenceConstraint =
   <?> "PresenceConstraint"
 
 
-valueAssignment =
-  do { id <- theIdentifier
-     ; t <- theType 
-     ; reservedOp "::="  
-     ; id2 <- option UndefinedIdentifier $ do { i <- theIdentifier
-                                              ; optional $ symbol ":" 
-                                              ; return i
-                                              } 
-     ; v <- option UndefinedBuiltinValue builtinValue
-     ; return (ValueAssignment id t id2 v)
-     }
-     <?> "ValueAssignment"
 
-data Value = BuiltinV BuiltinValue
-              | DefinedV DefinedValue -- TODO: add ValueFromObject here
-              | UndefinedV deriving (Eq,Ord,Show, Typeable, Data)
-value = 
-  do {
-     ; choice [ builtinValue >>= return . BuiltinV
-              , definedValue >>= return . DefinedV
-              ]
-     }
-     <?> "Value"
 
-data BuiltinValue = BooleanValue Bool
-                  | NullValue
-                  | PlusInfinity
-                  | MinusInfinity
-                  | SignedNumber Integer
-                  | HexString StringConst
-                  | BinaryString StringConst
-                  | CharString StringConst
-                  | CompoundValue OID
-                  | UndefinedBuiltinValue deriving (Eq,Ord,Show, Typeable, Data)
-                      
-builtinValue =
-  do {
-      choice $ map try [ booleanValue >>= return . BooleanValue
-                       , nullValue >> return NullValue
-                       , specialRealValue
-                       , signedNumber >>= return . SignedNumber
-                       , hexString >>= return . HexString
-                       , binaryString >>= return . BinaryString
-                       , charString >>= return . CharString
-                       , compoundValue >>= return . CompoundValue
-                       ]
-     }
-     <?> "BuiltinValue"
 
 compoundValue = oid
      <?> "CompoundValue"
@@ -1082,9 +1083,14 @@ reservedOIDIdentifier = do
   notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
   return i
 
+data TODO = TODO deriving (Eq,Ord,Show, Typeable, Data)
+
+data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
+valueSet = undefined
+
 binaryString = bstring <?> "BinaryString"
 hexString = hstring  <?> "HexString"
-charString = cstring <?> "CharString"
+characterStringValue = cstring <?> "CharacteStringValue"
 number = natural <?> "number"
 data TheIdentifier = TheIdentifier String 
                    | UndefinedIdentifier
