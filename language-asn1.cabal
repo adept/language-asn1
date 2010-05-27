@@ -18,10 +18,19 @@ Tested-With:    GHC >=6.10.4
 
 Extra-Source-Files: LICENSE README LDAP.asn1 TestASN1Parser.hs
 
-Library
-    Extensions: DeriveDataTypeable
-    Build-Depends:  base >=3 && <4 , parsec <= 3.0.0.0
+Flag splitBase
+  Description: Choose the new smaller, split-up base package.
 
-    Hs-Source-Dirs: .
-    Exposed-Modules:
-                      Language.ASN1.Parser
+Library
+  if flag(splitBase)
+    Build-Depends:       base >= 3 && < 5, parsec == 3.1.0, syb
+  else
+    Build-Depends:       base >= 2 && < 3
+  if impl(ghc >= 6.10)
+    build-depends: base >= 4
+
+  Extensions: DeriveDataTypeable
+
+  Hs-Source-Dirs: .
+  Exposed-Modules:
+    Language.ASN1.Parser
