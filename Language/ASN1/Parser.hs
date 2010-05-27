@@ -185,6 +185,55 @@ data ModuleBody = ModuleBody { module_exports::Maybe [Exports]
 moduleBody = optionMaybe ( ModuleBody <$> exports <*> imports <*> assignmentList )
              <?> "ModuleBody"
 
+newtype ExportedSymbol = ExportedSymbol Symbol deriving (Eq,Ord,Show, Typeable, Data)
+exports = optionMaybe ( reserved "EXPORTS" *> symbolsExported)
+          <?> "Exports"
+  where symbolsExported = (commaSep $ ExportedSymbol <$> theSymbol) `endBy` semi
+
+imports = optionMaybe ( reserved "IMPORTS" *> symbolsImported )
+          <?> "Imports"
+  where symbolsImported = (many $ try symbolsFromModule) `endBy` semi
+
+data SymbolsFromModule = SymbolsFromModule [Symbol] GlobalModuleReference deriving (Eq,Ord,Show, Typeable, Data)
+symbolsFromModule = SymbolsFromModule <$> commaSep1 theSymbol <*> (reserved "FROM" *> globalModuleReference)
+                    <?> "SymbolsFromModule"
+
+data GlobalModuleReference = GlobalModuleReference ModuleReference (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
+globalModuleReference = GlobalModuleReference <$> modulereference <*> assignedIdentifier
+
+data AssignedIdentifier = AssignedIdentifierOID OID | AssignedIdentifierDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
+assignedIdentifier = 
+  optionMaybe $ 
+  choice [ AssignedIdentifierOID <$> try oid
+         , AssignedIdentifierDefinedValue <$> definedValue
+         ]
+
+data Symbol = TypeReferenceSymbol TypeReference
+            -- TODO: | ValueReferenceSymbol ValueReference
+            | ObjectClassReferenceSymbol ObjectClassReference
+            | ObjectReferenceSymbol ObjectReference
+            -- TODO: | ObjectSetReferenceSymbol ObjectSetReference
+            deriving (Eq,Ord,Show, Typeable, Data)
+theSymbol =
+ choice ( map try [ TypeReferenceSymbol <$> typereference
+                  , ObjectClassReferenceSymbol <$> objectclassreference
+                  , ObjectReferenceSymbol <$> objectreference
+                  -- TODO: , ObjectSetReferenceSymbol <$> objectsetreference
+                  -- TODO: , ValueReferenceSymbol <$> valuereference
+                  ] ) <* parametrizedDesignation
+ where
+   parametrizedDesignation = optional (char '{' >> whiteSpace >> char '}')
+-- }} end of section 9.2
+
+-- {{ Dubuisson, section 9.3, "Local and external references"   
+
+-- definedType is used only in BuiltinType. See BuiltinType for constructors
+definedType = simpleDefinedType --TODO: <|> parametrizedType <|> parametrizedValueSetType
+
+-- }}
+simpleDefinedType = SimpleDefinedType <$> optionMaybe (try moduleReferenceAndDot) <*> typereference
+                    <?> "SimpleDefinedType"
+
 data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
 data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
 tagType = 
@@ -304,7 +353,7 @@ data BuiltinType = IntegerT [NamedNumber]
           | Boolean
           | Null
           | External
-          | Defined (Maybe ModuleReference) TypeReference
+          | SimpleDefinedType (Maybe ModuleReference) TypeReference
           | BMPString
           | GeneralString
           | GraphicString
@@ -368,14 +417,6 @@ usefulType =
          , reserved "UTCTime" >> return UTCTime
          ]
   
-definedType =
-  do {
-     ; mref <- optionMaybe (try moduleReferenceAndDot)
-     ; typeref <- typereference
-     ; return (Defined mref typeref)
-     }
-     <?> "DefinedType"
-
 moduleReferenceAndDot = 
   do { 
      ; mref <- modulereference 
