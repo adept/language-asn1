@@ -732,14 +732,8 @@ data ExceptionIdentification = ExceptionNumber Integer
 exceptionIdentification =
   choice [ ExceptionNumber <$> signedNumber 
          , ExceptionValue <$> definedValue
-         , typeAndValue
+         , ExceptionTypeAndValue <$> theType <*> (reserved ":" *> value)
          ]
-  where
-    typeAndValue = do
-      t <- theType
-      reserved ":"
-      v <- value
-      return $ ExceptionTypeAndValue t v
 -- }}}  
 
 elementTypeList = commaSep1 elementType
