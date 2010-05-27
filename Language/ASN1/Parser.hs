@@ -39,17 +39,57 @@ import Text.ParserCombinators.Parsec.Language
 
 import System.Exit (exitFailure)
 import Data.Generics
-import Control.Applicative ((<$>))
+import Control.Applicative ((<$>),(<*),(*>),(<*>),(<$))
 import Control.Monad (when)
 import Data.Char (isUpper, isAlpha)
 import Data.List (isInfixOf)
 
-data Module = Module { module_id::ModuleIdentifier
-                     , module_oid :: Maybe OID
-                     , default_tag_type::Maybe TagDefault
-                     , extensibility_implied :: Bool
-                     , module_body::Maybe ModuleBody
-                     } deriving (Eq,Ord,Show, Typeable, Data)
+-- { Top-level interface
+parseASN1FromFileOrDie :: String -> IO ([Module])
+parseASN1FromFileOrDie fname =
+  do result <- parseASN1FromFile fname
+     case result of
+       Left err -> do { putStr "parse error at: "
+                      ; print err
+                      ; exitFailure
+                      }
+       Right x  -> return x
+
+
+parseASN1FromFile :: String -> IO (Either ParseError [Module])
+parseASN1FromFile fname = 
+  parseFromFile asn1Input fname
+
+parseASN1 source = 
+  parse asn1Input "" source
+-- }
+
+-- { Top-level parser
+asn1Input = do
+  fixupComments
+  whiteSpace
+  modules <- many1 moduleDefinition
+  eof
+  return modules
+  <?> "asn1Input"
+
+-- Parsec machinery (Token parser) is incapable of handling complex commenting 
+-- conditions like "comment ends on next '--' or on newline". Which is why all
+-- line comments are turned into block comments and Token parser is instructed
+-- to handle only block comments.
+fixupComments = do
+  inp <- getInput
+  setInput $ unlines $ map fixup $ lines inp
+  where 
+    fixup l
+      | "--" `isInfixOf` l && unterminated = l ++ " --"
+      | otherwise = l
+      where
+        unterminated = checkUnterm False l
+        checkUnterm p []             = p
+        checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
+        checkUnterm p (_:rest)       = checkUnterm p rest
+-- }
 data Type = Type { type_id::BuiltinType
                        , subtype::Maybe SubtypeSpec
                        }
@@ -70,24 +110,6 @@ data NamedValue = NamedValue { value_name::ValueName
                              } deriving (Eq,Ord,Show, Typeable, Data)
 newtype ValueName = ValueName TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
-
-parseASN1FromFileOrDie :: String -> IO ([Module])
-parseASN1FromFileOrDie fname =
-  do result <- parseASN1FromFile fname
-     case result of
-       Left err -> do { putStr "parse error at: "
-                      ; print err
-                      ; exitFailure
-                      }
-       Right x  -> return x
-
-
-parseASN1FromFile :: String -> IO (Either ParseError [Module])
-parseASN1FromFile fname = 
-  parseFromFile asn1Input fname
-
-parseASN1 source = 
-  parse asn1Input "" source
 
 
 objectIdentifier =
@@ -119,13 +141,23 @@ ucaseIdent = do { i <- identifier
                 ; return i
                 }
 
-asn1Input = do
-  fixupComments
-  whiteSpace
-  modules <- many1 moduleDefinition
-  eof
-  return modules
-  <?> "asn1Input"
+-- { Dubuisson, chapter 9, "Modules and assignments"
+-- {{ Dubuisson, section 9.2, "Module structure"
+data Module = Module { module_id::ModuleIdentifier
+                     , default_tag_type::Maybe TagDefault
+                     , extensibility_implied :: Bool
+                     , module_body::Maybe ModuleBody
+                     } deriving (Eq,Ord,Show, Typeable, Data)
+moduleDefinition = 
+  Module <$> moduleIdentifier <*> (reserved "DEFINITIONS" *> tagDefault) <*> extensibility 
+         <*> (reservedOp "::=" *> reserved "BEGIN" *> moduleBody) <* reserved "END"  
+         <?> "ModuleDefinition"
+ where
+   extensibility = option False $ True <$ (reserved "EXTENSIBILITY" >> reserved "IMPLIED")
+   
+data ModuleIdentifier = ModuleIdentifier ModuleReference (Maybe DefinitiveOID) deriving (Eq,Ord,Show, Typeable, Data)
+moduleIdentifier = ModuleIdentifier <$> modulereference <*> definitiveIdentifier
+                   <?> "ModuleIdentifier"
 
 -- Parsec machinery (Token parser) is incapable of handling complex commenting 
 -- conditions like "comment ends on next '--' or on newline". Which is why all
