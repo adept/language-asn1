@@ -194,7 +194,9 @@ data BuiltinType = TheInteger [NamedNumber]
                  | Selection Identifier Type
                  | Tagged Tag (Maybe TagType) Type
                  | Any Identifier
-                 | Enumerated [NamedNumber]
+                 | SimpleEnumeration [EnumerationItem]
+                 | EnumerationWithException [EnumerationItem] (Maybe ExceptionIdentification)
+                 | EnumerationWithExceptionAndAddition [EnumerationItem] (Maybe ExceptionIdentification) [EnumerationItem]
                  | OctetString 
                  | ObjectIdentifier
                  | Real
@@ -232,7 +234,7 @@ builtinType =
                    , choiceType
                    , taggedType
                    , Any <$> anyType -- DEPRECATED
-                   , Enumerated <$> enumeratedType
+                   , enumeratedType
                    , OctetString <$ (reserved "OCTET" *> reserved "STRING")
                    , ObjectIdentifier <$ (reserved "OBJECT" *> reserved "IDENTIFIER")
                    , Real <$ reserved "REAL"
@@ -469,6 +471,32 @@ namedNumber =
          ]
   <?> "NamedNumber"
 -- }} end of section 10.3
+-- {{ Section 10.4, "The ENUMERATED type"
+enumeratedType = reserved "ENUMERATED" *> braces enumerations
+
+enumerations = 
+  choice [ try $ EnumerationWithExceptionAndAddition <$> enumeration <*> (comma *> symbol "..." *> exceptionSpec) <*> (comma *> enumeration)
+         , try $ EnumerationWithException <$> enumeration <*> (comma *> symbol "..." *> exceptionSpec)
+         , SimpleEnumeration <$> enumeration
+         ]
+
+-- TODO: merge three almost similar functions in enumeration, sequence and choice parsers
+enumeration = enumerationItem `sepBy1` comma'
+  where
+    comma' = try $ do
+      comma
+      notFollowedBy (lexeme (char '.'))
+
+data EnumerationItem = EnumerationItemNumber NamedNumber
+                     | EnumerationItemIdentifier Identifier
+                     deriving (Eq,Ord,Show, Typeable, Data)
+enumerationItem = 
+  choice [ try $ EnumerationItemNumber <$> namedNumber
+         , EnumerationItemIdentifier <$> identifier
+         ]
+
+-- TODO: values
+-- }} end of section 10.4
 -- { Chapter 12, "Constructed types, tagging, extensibility rules"
 -- {{ Section 12.2, "The constructor SEQUENCE"
 sequenceType = 
@@ -622,13 +650,6 @@ characterStringType =
          , reserved "VisibleString" >> return VisibleString 
          , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
          ]
-
-enumeratedType =
-  do { reserved "ENUMERATED"
-     ; braces namedNumberList
-     }
-     <?> "EnumeratedType"
-
 
 bitStringType =
   do { reserved "BIT";  reserved "STRING" 
