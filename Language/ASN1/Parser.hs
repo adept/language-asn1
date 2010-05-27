@@ -181,13 +181,15 @@ theType = Type <$> ( builtinType <|> referencedType ) <*> optionMaybe constraint
 
 data BuiltinType = TheInteger [NamedNumber]
                  | BitString [NamedNumber]
-                 | Set [ElementType]
                    -- SEQUENCE variants
                  | EmptySequence
                  | EmptyExtendableSequence
                  | Sequence ComponentTypeLists
-                 | SetOf SizeConstraint Type
-                 | SequenceOf SizeConstraint Type
+                 | EmptySet
+                 | EmptyExtendableSet
+                 | Set ComponentTypeLists
+                 | SetOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
+                 | SequenceOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
                  | Choice AlternativeTypeLists
                  | Selection Identifier Type
                  | Tagged Tag (Maybe TagType) Type
@@ -225,9 +227,9 @@ builtinType =
   choice $ map try [ integerType
                    , BitString <$> bitStringType
                    , try $ sequenceType
-                   , setOrSequenceType
+                   , try $ setType
                    , setOrSequenceOfType
-                   , Choice <$> choiceType
+                   , choiceType
                    , taggedType
                    , Any <$> anyType -- DEPRECATED
                    , Enumerated <$> enumeratedType
@@ -487,6 +489,7 @@ componentTypeLists =
          , SimpleComponentTypeList <$> componentTypeList
          ]
   
+-- TODO: merge with similar code in "CHOICE" type parser
 extensionsAdditions = optionMaybe (comma >> extensionAdditionList)
 extensionAdditionList = commaSep1 extensionAddition
 extensionAddition = 
@@ -523,7 +526,34 @@ valueOptionality = optionMaybe $
 
 data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
 namedType = NamedType <$> identifier <*> theType
+
+-- TODO: values
 -- }} end of section 12.2
+-- {{ Section 12.3, "The constructor SET"
+setType = 
+  choice [ try $ EmptySet <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
+         , try $ EmptyExtendableSet <$ ( reserved "SET" >> braces ( extensionAndException >> optionalExtensionMarker ) )
+         , Set <$> (reserved "SET" *> braces componentTypeLists)
+         ]
+-- TODO: values
+-- }} end of section 12.3
+-- {{ Section 12.4 and 12.5, "The constructor SEQUENCE OF" and "The constructor SET OF"
+-- 'TypeWithConstraint' is merged with SetOfType and SequenceOfType for brevity
+setOrSequenceOfType = do  
+  set <- isSet
+  c <- optionMaybe setSeqConstraint
+  reserved "OF"
+  if set 
+    then SetOf c <$> theType
+    else SequenceOf c <$> theType
+  where
+    isSet = ( True <$ reserved "SET" ) <|> (False <$ reserved "SEQUENCE")
+    setSeqConstraint =
+      choice [ reserved "SIZE" >> constraint -- TODO: This is SizeConstraint, wrap in appropriate constructor
+             , constraint
+             ]
+-- TODO: values      
+-- }}
 
 simpleDefinedType = 
   choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
@@ -611,33 +641,10 @@ bitStringType =
 signedNumber = integer
      <?> "SignedNumber"
 
-data SetOrSeq = SetT | SequenceT deriving (Eq,Ord,Show, Typeable, Data)
-setOrSeq = choice $ map try [ reserved "SET" >> return SetT
-                            -- , reserved "SEQUENCE" >> return SequenceT
-                            ]
 
-setOrSequenceType =
-  do { t <- setOrSeq
-     ; e <- braces elementTypeList
-     ; case t of 
-       SetT -> return (Set e)
-       -- SequenceT -> return (Sequence e)
-     }
-     <?> "SetOrSequenceType"
-
-setOrSequenceOfType =
-  do { t <- setOrSeq
-     ; sc <- option UndefinedSizeContraint ( sizeConstraint <|> parens sizeConstraint )
-     ; reserved "OF"
-     ; innert <- theType
-     ; case t of 
-       SetT -> return (SetOf sc innert)
-       SequenceT -> return (SequenceOf sc innert)
-     }
-     <?> "SetOrSequenceOfType"
 
 -- Dubuisson 12.6.2
-choiceType = reserved "CHOICE" >> braces alternativeTypeLists
+choiceType = Choice <$> ( reserved "CHOICE" *> braces alternativeTypeLists )
              <?> "ChoiceType"
 
 data AlternativeTypeLists = SimpleAlternativeTypeList [NamedType] 
