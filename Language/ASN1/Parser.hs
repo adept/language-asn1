@@ -144,6 +144,36 @@ ucaseIdent = do { i <- identifier
 -- }
 
 -- { Dubuisson, chapter 9, "Modules and assignments"
+-- {{ Dubuisson, section 9.1, "Assignments"
+assignmentList = (assignment `sepBy1` (optional semi)) <?> "assignmentList"
+
+
+data Assignment = ValueAssignment { value_ref::TheIdentifier
+                                  , value_ref_type::Type
+                                  , assigned_value_ref::TheIdentifier
+                                  , assigned_value::BuiltinValue
+                                  }
+                | TypeAssignment  { type_ref::TypeReference
+                                  , assigned_type::Type
+                                  } 
+                -- TODO: | ValueSetTypeAssignment
+                | ObjectClassAssignment ObjectClassReference ObjectClass
+                | ObjectAssignment ObjectReference DefinedObjectClass Object
+                -- TODO: | ObjectSetAssignment 
+                -- TODO: | ParameterizedAssignment
+                  deriving (Eq,Ord,Show, Typeable, Data)
+assignment = 
+  choice $ map try [ objectAssignment
+                   , valueAssignment
+                   , typeAssignment
+                   , objectClassAssignment
+                   -- TODO: , valueSetTypeAssignment
+                   -- TODO: , objectSetAssignment
+                   -- TODO: , parameterizedAssignment
+                   ]
+  
+  
+-- }} end of section 9.1
 -- {{ Dubuisson, section 9.2, "Module structure"
 data Module = Module { module_id::ModuleIdentifier
                      , default_tag_type::Maybe TagDefault
@@ -180,7 +210,7 @@ type Exports = [ExportedSymbol]
 type Imports = [SymbolsFromModule]
 data ModuleBody = ModuleBody { module_exports::Maybe [Exports]
                              , module_imports::Maybe [Imports]
-                             , module_assignments::Maybe [Assignment]
+                             , module_assignments::[Assignment]
                              } deriving (Eq,Ord,Show, Typeable, Data)
 moduleBody = optionMaybe ( ModuleBody <$> exports <*> imports <*> assignmentList )
              <?> "ModuleBody"
@@ -300,66 +330,7 @@ newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Da
 
 
 -- Dubuisson 9.1.2
-assignmentList = optionMaybe (sepBy1 assignment (optional semi)) <?> "assignmentList"
 
-
-data Assignment = MacroDefinition { macro_def_type::MacroDefinitionType
-                                  , macro_body::MacroBody
-                                  }
-                | ValueAssignment { value_ref::TheIdentifier
-                                  , value_ref_type::Type
-                                  , assigned_value_ref::TheIdentifier
-                                  , assigned_value::BuiltinValue
-                                  }
-                | TypeAssignment  { type_ref::TypeReference
-                                  , assigned_type::Type
-                                  } 
-                -- TODO: | ValueSetTypeAssignment
-                | ObjectClassAssignment ObjectClassReference ObjectClass
-                | ObjectAssignment ObjectReference DefinedObjectClass Object
-                -- TODO: | ObjectSetAssignment 
-                -- TODO: | ParameterizedAssignment
-                  deriving (Eq,Ord,Show, Typeable, Data)
-assignment = 
-  choice $ map try [ macroDefinition
-                   , objectAssignment
-                   , valueAssignment
-                   , typeAssignment
-                   , objectClassAssignment
-                   ]
-
-data MacroDefinitionType = DefinedMacroNameMDT DefinedMacroName 
-                         | TypeReferenceMDT TypeReference
-                           deriving (Eq,Ord,Show, Typeable, Data)
-macroDefinition =
-  do { t <- choice [ definedMacroName >>= return . DefinedMacroNameMDT
-                   , typereference >>= return . TypeReferenceMDT
-                   ]
-     ; reserved "MACRO"
-     ; reservedOp "::="  
-     ; reserved "BEGIN"
-     ; body <- macroBody
-     ; reserved "END"
-     ; return (MacroDefinition t body) 
-     }
-     <?> "macroDefinition"
-
-data MacroBody = MacroBody String deriving (Eq,Ord,Show, Typeable, Data)
-macroBody = anyChar `manyTill` (reserved "END") >>= return . MacroBody -- WRONG or not?
-{-
-JAVACODE
-void macroBody {	
-  Token tok;
-  int nesting = 1;
-  while (true) {
-    tok = getToken(1);
-    if (tok.kind == END_TKN) {
-	break;	
-    }
-    tok = getnextToken;
-  }
-}
--}
 
 -- Dubuisson 9.1.2
 typeAssignment =
