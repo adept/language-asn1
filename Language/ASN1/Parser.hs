@@ -149,13 +149,13 @@ fixupComments = do
 
 moduleDefinition = 
   do { id <- moduleIdentifier   
-     ; oid_ <- optMaybe oid
+     ; oid_ <- optionMaybe oid
      ; reserved "DEFINITIONS"
      ; td <- tagDefault
      ; ei <- option False ( reserved "EXTENSIBILITY" >> reserved "IMPLIED" >> return True )
      ; reservedOp "::="
      ; reserved "BEGIN" 
-     ; body <- optMaybe moduleBody
+     ; body <- optionMaybe moduleBody
      ; reserved "END"  
      ; return (Module id oid_ td ei body)
      }
@@ -182,8 +182,8 @@ tagDefault = optionMaybe td <?> "tagDefault"
 data ModuleIdentifier = ModuleIdentifier (Maybe ModuleReference) (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
 moduleIdentifier = 
-  do { ref <- optMaybe moduleReference
-     ; id <- optMaybe assignedIdentifier
+  do { ref <- optionMaybe moduleReference
+     ; id <- optionMaybe assignedIdentifier
      ; when ( ref == Nothing && id == Nothing) $ unexpected "Empty module identifier, please provide author with sample file"
      ; return (ModuleIdentifier ref id)
      }
@@ -416,7 +416,7 @@ usefulType =
   
 definedType =
   do {
-     ; mref <- optMaybe (try moduleReferenceAndDot)
+     ; mref <- optionMaybe (try moduleReferenceAndDot)
      ; typeref <- typereference
      ; return (Defined mref typeref)
      }
@@ -1021,7 +1021,7 @@ value =
 data DefinedValue = DefinedValue (Maybe ModuleReference) TheIdentifier deriving (Eq,Ord,Show, Typeable, Data)
 definedValue =
   do {
-     ; mref <- optMaybe $ try moduleReferenceAndDot
+     ; mref <- optionMaybe $ try moduleReferenceAndDot
      ; id <- theIdentifier
      ; return (DefinedValue mref id)
      }
@@ -1245,8 +1245,6 @@ displayHint =
      ; charString >>= return . DisplayHint
      }
      <?> "DisplayHint"
-
-optMaybe p = option Nothing (Just <$> p)
 
 -----------------------------------------------------------
 -- Tokens
