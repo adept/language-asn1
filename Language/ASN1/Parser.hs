@@ -690,7 +690,7 @@ taggedType =
      }
      <?> "TaggedType"
 
-data Tag = Tag TheClass ClassNumber deriving (Eq,Ord,Show, Typeable, Data)
+data Tag = Tag Class ClassNumber deriving (Eq,Ord,Show, Typeable, Data)
 tag = squares $ do { c <- option UndefinedClass theClass
                    ; cn <- classNumber
                    ; return (Tag c cn)
@@ -703,7 +703,7 @@ classNumber =
          ]
   <?> "ClassNumber"
 
-data TheClass = Universal | Application | Private | UndefinedClass deriving (Eq,Ord,Show, Typeable, Data)
+data Class = Universal | Application | Private | UndefinedClass deriving (Eq,Ord,Show, Typeable, Data)
 theClass = choice [ reserved "UNIVERSAL" >> return Universal
                   , reserved "APPLICATION" >> return Application
                   , reserved "PRIVATE" >> return Private
