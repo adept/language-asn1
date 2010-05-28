@@ -497,41 +497,70 @@ enumerationItem =
 
 -- TODO: values
 -- }} end of section 10.4
--- { Chapter 12, "Constructed types, tagging, extensibility rules"
--- {{ Section 12.2, "The constructor SEQUENCE"
+-- { X.680-0207, section 24, "Notation for sequence types"
+
+-- Checked
 sequenceType = 
   choice [ try $ EmptySequence <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
          , try $ EmptyExtendableSequence <$> ( reserved "SEQUENCE" *> braces (extensionAndException <* optionalExtensionMarker) )
          , Sequence <$> (reserved "SEQUENCE" *> braces componentTypeLists)
          ]
 
-data ComponentTypeLists = SimpleComponentTypeList [ComponentType]
-                        | ComplexComponentTypeListsAdditionsAtStart (Maybe ExceptionIdentification) (Maybe [[ComponentType]]) [ComponentType]
-                        | ComplexComponentTypeListsAdditionsAtEnd [ComponentType] (Maybe ExceptionIdentification) (Maybe [[ComponentType]])
-                        | ComplexComponentTypeListsAdditionsInTheMiddle [ComponentType] (Maybe ExceptionIdentification) (Maybe [[ComponentType]]) [ComponentType]
+data ComponentTypeLists = ComponentTypeList [ComponentType]
+                        | JustExtensions (Maybe ExceptionIdentification) (Maybe [ExtensionAddition])
+                        | ExtensionsAtStart (Maybe ExceptionIdentification) (Maybe [ExtensionAddition]) [ComponentType]
+                        | ExtensionsAtEnd [ComponentType] (Maybe ExceptionIdentification) (Maybe [ExtensionAddition])
+                        | ExtensionsInTheMiddle [ComponentType] (Maybe ExceptionIdentification) (Maybe [ExtensionAddition]) [ComponentType]
                         deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Commented commas are in the ASN.1, but here they are consumed by the preceding parsers
+-- Checked
 componentTypeLists = 
-  choice [ ComplexComponentTypeListsAdditionsAtStart <$> extensionAndException <*> extensionsAdditions <*> (optionalExtensionMarker *> comma *> componentTypeList)
-         , try $ ComplexComponentTypeListsAdditionsAtEnd <$> componentTypeList <*> (comma *> extensionAndException) <*> extensionsAdditions <* optionalExtensionMarker
-         , try $ ComplexComponentTypeListsAdditionsInTheMiddle <$> componentTypeList <*> (comma *> extensionAndException) <*> extensionsAdditions <*> (optionalExtensionMarker *> comma *> componentTypeList)
-         , SimpleComponentTypeList <$> componentTypeList
+  choice [ try $ ExtensionsInTheMiddle <$> componentTypeList <*> ({- comma *>-} extensionAndException) <*> extensionsAdditions <*> (extensionEndMarker *> comma *> componentTypeList)
+         , try $ ExtensionsAtStart <$> extensionAndException <*> extensionsAdditions <*> (extensionEndMarker *> comma *> componentTypeList)
+         , JustExtensions <$> extensionAndException <*> extensionsAdditions <* optionalExtensionMarker
+         , try $ ExtensionsAtEnd <$> componentTypeList <*> ({- comma *>-} extensionAndException) <*> extensionsAdditions <* optionalExtensionMarker
+         , ComponentTypeList <$> componentTypeList
          ]
   
+-- If this marker comes after *TypeList, then trailing comma would be consumed by the *TypeList parser.
+-- Hence the (optional comma) and not (comma) as was in ASN.1 spec
+-- Checked
+extensionEndMarker = optional comma >> symbol "..."
+
 -- TODO: merge with similar code in "CHOICE" type parser
+-- Checked
 extensionsAdditions = optionMaybe (comma >> extensionAdditionList)
-extensionAdditionList = commaSep1 extensionAddition
+
+-- It is hard to ensure that this parser does not consume the trailing coma (and fail).
+-- So we let it do that and make subsequent coma optional at call site
+-- Checked
+extensionAdditionList = commaSepEndBy1 extensionAddition -- `sepEndBy1` comma'
+  where 
+    comma' = try $ do
+      comma
+      notFollowedBy (lexeme (char '.'))
+
+data ExtensionAddition = ExtensionAdditionGroup (Maybe Integer) [ComponentType]
+                       | ExtensionAdditionType ComponentType
+                       deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Checked
 extensionAddition = 
   choice [ extensionAdditionGroup
-         , componentType >>= return . (:[])
+         , ExtensionAdditionType <$> componentType
          ]
-  
-extensionAdditionGroup = do
-  reserved "[[" 
-  l <- componentTypeList 
-  reserved "]]"
-  return l
+  where
+    -- Checked
+    extensionAdditionGroup = ExtensionAdditionGroup <$> ( symbol "[[" *> versionNumber ) <*> componentTypeList <* symbol "]]"
 
-componentTypeList = componentType `sepBy1` comma'
+-- Checked
+versionNumber = optionMaybe $ number <* lexeme (char ':')
+
+-- It is hard to ensure that this parser does not consume the trailing coma (and fail).
+-- So we let it do that and make subsequent coma optional at call site
+-- Checked
+componentTypeList = commaSepEndBy1 componentType -- `sepBy1` comma'
   where
     comma' = try $ do
       comma
@@ -541,19 +570,20 @@ data ComponentType = NamedTypeComponent { element_type::NamedType
                                         , element_presence::Maybe ValueOptionality
                                         } 
                    | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Three cases of definition of componentType from X.680 are folded into valueOptionality helper parser
+-- Checked
 componentType =
   choice [ try $ ComponentsOf <$> (reserved "COMPONENTS" *> reserved "OF" *> theType)
          , NamedTypeComponent <$> namedType <*> valueOptionality
          ]
 
 data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
 valueOptionality = optionMaybe $
   choice [ reserved "OPTIONAL" >> return OptionalValue
          , reserved "DEFAULT" >> value >>= return . DefaultValue
          ] 
-
-data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
-namedType = NamedType <$> identifier <*> theType
 
 -- TODO: values
 -- }} end of section 12.2
@@ -582,6 +612,11 @@ setOrSequenceOfType = do
              ]
 -- TODO: values      
 -- }}
+
+data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
+namedType = NamedType <$> identifier <*> theType
+
+
 
 simpleDefinedType = 
   choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
@@ -701,7 +736,7 @@ extensionAdditionAlternative =
          ]
 
 extensionAdditionGroupAlternatives = do
-  reserved "[[" 
+  reserved "[["
   l <- alternativeTypeList 
   reserved "]]"
   return l
@@ -720,7 +755,6 @@ extensionAndException = do
   
 optionalExtensionMarker = optional $ extensionEndMarker
 
-extensionEndMarker = comma >> symbol "..."
 
 exceptionSpec = 
   optionMaybe ( lexeme (char '!') >> exceptionIdentification )
@@ -1241,7 +1275,7 @@ asn1Style
                         "CHARACTER",  "GeneralizedTime",  "OCTET",  "TYPE-IDENTIFIER", 
                         "CHOICE",  "GeneralString",  "OF",  "UNION", 
                         "CLASS",  "GraphicString",  "OPTIONAL",  "UNIQUE", 
-                        "COMPONENT",  "IA", 5"String",  "PATTERN",  "UNIVERSAL", 
+                        "COMPONENT",  "IA5String",  "PATTERN",  "UNIVERSAL", 
                         "COMPONENTS",  "IDENTIFIER",  "PDV",  "UniversalString", 
                         "CONSTRAINED",  "IMPLICIT",  "PLUS-INFINITY",  "UTCTime", 
                         "CONTAINING",  "IMPLIED",  "PRESENT",  "UTF8String", 
@@ -1270,6 +1304,8 @@ semi            = P.semi asn1
 natural         = P.natural asn1
 integer         = P.integer asn1
 dot             = P.dot asn1
+commaSepEndBy p = p `sepEndBy` comma
+commaSepEndBy1 p = p `sepEndBy1` comma
 
 -- Local Variables: 
 -- outline-regexp:"-- [{]\+"
