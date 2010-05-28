@@ -104,6 +104,149 @@ fixupComments = do
         checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
         checkUnterm p (_:rest)       = checkUnterm p rest
 -- }
+        
+-- {{ X.680-0207,  Clause 11, "ASN.1 lexical items"
+        -- TODO
+-- }}
+        
+-- {{ X.680-0207, Clause 12, "Module definition"
+data Module = Module { module_id::ModuleIdentifier
+                     , default_tag_type::TagDefault
+                     , extensibility_implied :: Bool
+                     , module_body::Maybe ModuleBody
+                     } deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked, X.680-0207
+moduleDefinition = 
+  Module <$> moduleIdentifier <*> (reserved "DEFINITIONS" *> tagDefault) <*> extensibility 
+         <*> (reservedOp "::=" *> reserved "BEGIN" *> moduleBody) <* reserved "END"  
+         <?> "ModuleDefinition"
+ where
+   -- Checked, X.680-0207
+   extensibility = option False $ True <$ (reserved "EXTENSIBILITY" >> reserved "IMPLIED")
+   
+data ModuleIdentifier = ModuleIdentifier ModuleReference (Maybe DefinitiveOID) deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Checked, X.680-0207
+moduleIdentifier = ModuleIdentifier <$> modulereference <*> definitiveIdentifier
+                   <?> "ModuleIdentifier"
+
+type DefinitiveOID = [DefinitiveOIDComponent]
+
+-- Checked, X.680-0207
+definitiveIdentifier =
+  optionMaybe (braces (many1 definitiveOIDComponent))
+  <?> "DefinitiveIdentifier"
+
+data DefinitiveOIDComponent = DefinitiveOIDNumber Integer 
+                            | DefinitiveOIDNamedNumber Identifier Integer
+                            | DefinitiveOIDName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked, X.680-0207
+definitiveOIDComponent =
+  choice [ DefinitiveOIDNumber <$> number
+         , try $ DefinitiveOIDNamedNumber <$> identifier <*> parens number
+         , DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
+         ]
+  <?> "DefinitiveObjectIdComponent"
+
+-- Checked, X.680-0207
+-- If not set, defaults to ExplicitTags per X.680-0207, 12.2
+tagDefault = option ExplicitTags td <?> "tagDefault"
+  where 
+    td = choice [ ExplicitTags <$ reserved "EXPLICIT"
+                , ImplicitTags <$ reserved "IMPLICIT"
+                , AutomaticTags <$ reserved "AUTOMATIC"
+                ]
+         <* reserved "TAGS"  
+
+
+data Exports = ExportsAll | Exports [ExportedSymbol] deriving (Eq,Ord,Show, Typeable, Data)
+data Imports = ImportsNone | Imports [SymbolsFromModule] deriving (Eq,Ord,Show, Typeable, Data)
+data ModuleBody = ModuleBody { module_exports::Exports
+                             , module_imports::Imports
+                             , module_assignments::[Assignment]
+                             } deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Checked, X.680-0207
+moduleBody = optionMaybe ( ModuleBody <$> exports <*> imports <*> assignmentList )
+             <?> "ModuleBody"
+
+newtype ExportedSymbol = ExportedSymbol Symbol deriving (Eq,Ord,Show, Typeable, Data)
+exports = 
+  option ExportsAll ( 
+    choice [ try $ ExportsAll <$ ( reserved "EXPORTS" *> reserved "ALL" *> semi )
+           , Exports <$> (reserved "EXPORTS" *> symbolsExported )
+           ]) <?> "Exports"
+  where symbolsExported = (commaSep $ ExportedSymbol <$> theSymbol) <* semi
+
+-- Checked, X.680-0207
+imports = option ImportsNone ( Imports <$> (reserved "IMPORTS" *> symbolsImported) )
+          <?> "Imports"
+  where symbolsImported = (try symbolsFromModule) `endBy` semi
+
+data SymbolsFromModule = SymbolsFromModule [Symbol] GlobalModuleReference deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Checked, X.680-0207
+symbolsFromModule = SymbolsFromModule <$> commaSep1 theSymbol <*> (reserved "FROM" *> globalModuleReference)
+                    <?> "SymbolsFromModule"
+
+data GlobalModuleReference = GlobalModuleReference ModuleReference (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked, X.680-0207
+globalModuleReference = GlobalModuleReference <$> modulereference <*> assignedIdentifier
+
+data AssignedIdentifier = AssignedIdentifierOID OID | AssignedIdentifierDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked, X.680-0207
+assignedIdentifier = 
+  optionMaybe $ 
+  choice [ AssignedIdentifierOID <$> try oid
+         , AssignedIdentifierDefinedValue <$> definedValue
+         ]
+
+data Symbol = TypeReferenceSymbol TypeReference
+            -- TODO: | ValueReferenceSymbol ValueReference
+            -- it is impossible to distinguish TypeReference and ValueReference syntactically
+            | ObjectClassReferenceSymbol ObjectClassReference
+            | ObjectReferenceSymbol ObjectReference
+            -- TODO: | ObjectSetReferenceSymbol ObjectSetReference
+            deriving (Eq,Ord,Show, Typeable, Data)
+theSymbol =
+ choice ( map try [ TypeReferenceSymbol <$> typereference
+                  , ObjectClassReferenceSymbol <$> objectclassreference
+                  , ObjectReferenceSymbol <$> objectreference
+                  -- TODO: , ObjectSetReferenceSymbol <$> objectsetreference
+                  -- TODO: , ValueReferenceSymbol <$> valuereference
+                  ] ) <* parametrizedDesignation
+ where
+   -- Checked, X.683-0207, 9.1
+   parametrizedDesignation = optional (lexeme (char '{') >> lexeme (char '}'))
+
+-- Checked, X.680-0207
+assignmentList = many1 assignment <?> "assignmentList"
+
+
+data Assignment = ValueAssignment { value_ref::ValueReference
+                                  , value_ref_type::Type
+                                  , assigned_value::Value
+                                  }
+                | TypeAssignment TypeReference Type
+                | ValueSetTypeAssignment TypeReference Type ValueSet
+                | ObjectClassAssignment ObjectClassReference ObjectClass
+                | ObjectAssignment ObjectReference DefinedObjectClass Object
+                -- TODO: | ObjectSetAssignment 
+                -- TODO: | ParameterizedAssignment
+                  deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked, X.680-0207
+assignment = 
+  choice $ map try [ objectAssignment
+                   , valueAssignment
+                   , typeAssignment
+                   , objectClassAssignment
+                   , valueSetTypeAssignment
+                   -- TODO: , objectSetAssignment
+                   -- TODO: , parameterizedAssignment
+                   ]
+-- }} end of clause 12
+
+
 newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 type NumberOrDefinedValue = Either Integer DefinedValue
 data ElementType = NamedElementType { _element_name::TypeName
@@ -148,29 +291,6 @@ ucaseIdent = do { i <- parsecIdent
 
 -- { Chapter 9, "Modules and assignments"
 -- {{ Section 9.1, "Assignments"
-assignmentList = (assignment `sepBy1` (optional semi)) <?> "assignmentList"
-
-
-data Assignment = ValueAssignment { value_ref::ValueReference
-                                  , value_ref_type::Type
-                                  , assigned_value::Value
-                                  }
-                | TypeAssignment TypeReference Type
-                | ValueSetTypeAssignment TypeReference Type ValueSet
-                | ObjectClassAssignment ObjectClassReference ObjectClass
-                | ObjectAssignment ObjectReference DefinedObjectClass Object
-                -- TODO: | ObjectSetAssignment 
-                -- TODO: | ParameterizedAssignment
-                  deriving (Eq,Ord,Show, Typeable, Data)
-assignment = 
-  choice $ map try [ objectAssignment
-                   , valueAssignment
-                   , typeAssignment
-                   , objectClassAssignment
-                   , valueSetTypeAssignment
-                   -- TODO: , objectSetAssignment
-                   -- TODO: , parameterizedAssignment
-                   ]
   
 typeAssignment = TypeAssignment <$> typereference <*> (reservedOp "::=" *> theType)
                  <?> "TypeAssignment"
@@ -322,87 +442,6 @@ taggedValue = value
 
 valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
 -- }} end of section 9.1
--- {{ Section 9.2, "Module structure"
-data Module = Module { module_id::ModuleIdentifier
-                     , default_tag_type::Maybe TagDefault
-                     , extensibility_implied :: Bool
-                     , module_body::Maybe ModuleBody
-                     } deriving (Eq,Ord,Show, Typeable, Data)
-moduleDefinition = 
-  Module <$> moduleIdentifier <*> (reserved "DEFINITIONS" *> tagDefault) <*> extensibility 
-         <*> (reservedOp "::=" *> reserved "BEGIN" *> moduleBody) <* reserved "END"  
-         <?> "ModuleDefinition"
- where
-   extensibility = option False $ True <$ (reserved "EXTENSIBILITY" >> reserved "IMPLIED")
-   
-data ModuleIdentifier = ModuleIdentifier ModuleReference (Maybe DefinitiveOID) deriving (Eq,Ord,Show, Typeable, Data)
-moduleIdentifier = ModuleIdentifier <$> modulereference <*> definitiveIdentifier
-                   <?> "ModuleIdentifier"
-
-type DefinitiveOID = [DefinitiveOIDComponent]
-definitiveIdentifier =
-  optionMaybe (braces (many1 definitiveOIDComponent))
-  <?> "DefinitiveIdentifier"
-
-data DefinitiveOIDComponent = DefinitiveOIDNumber Integer 
-                            | DefinitiveOIDNamedNumber Identifier Integer
-                            | DefinitiveOIDName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-definitiveOIDComponent =
-  choice [ DefinitiveOIDNumber <$> number
-         , try $ DefinitiveOIDNamedNumber <$> identifier <*> parens number
-         , DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
-         ]
-  <?> "DefinitiveObjectIdComponent"
-
-type Exports = [ExportedSymbol]
-type Imports = [SymbolsFromModule]
-data ModuleBody = ModuleBody { module_exports::Maybe [Exports]
-                             , module_imports::Maybe [Imports]
-                             , module_assignments::[Assignment]
-                             } deriving (Eq,Ord,Show, Typeable, Data)
-moduleBody = optionMaybe ( ModuleBody <$> exports <*> imports <*> assignmentList )
-             <?> "ModuleBody"
-
-newtype ExportedSymbol = ExportedSymbol Symbol deriving (Eq,Ord,Show, Typeable, Data)
-exports = optionMaybe ( reserved "EXPORTS" *> symbolsExported)
-          <?> "Exports"
-  where symbolsExported = (commaSep $ ExportedSymbol <$> theSymbol) `endBy` semi
-
-imports = optionMaybe ( reserved "IMPORTS" *> symbolsImported )
-          <?> "Imports"
-  where symbolsImported = (many $ try symbolsFromModule) `endBy` semi
-
-data SymbolsFromModule = SymbolsFromModule [Symbol] GlobalModuleReference deriving (Eq,Ord,Show, Typeable, Data)
-symbolsFromModule = SymbolsFromModule <$> commaSep1 theSymbol <*> (reserved "FROM" *> globalModuleReference)
-                    <?> "SymbolsFromModule"
-
-data GlobalModuleReference = GlobalModuleReference ModuleReference (Maybe AssignedIdentifier) deriving (Eq,Ord,Show, Typeable, Data)
-globalModuleReference = GlobalModuleReference <$> modulereference <*> assignedIdentifier
-
-data AssignedIdentifier = AssignedIdentifierOID OID | AssignedIdentifierDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
-assignedIdentifier = 
-  optionMaybe $ 
-  choice [ AssignedIdentifierOID <$> try oid
-         , AssignedIdentifierDefinedValue <$> definedValue
-         ]
-
-data Symbol = TypeReferenceSymbol TypeReference
-            -- TODO: | ValueReferenceSymbol ValueReference
-            -- it is impossible to distinguish TypeReference and ValueReference syntactically
-            | ObjectClassReferenceSymbol ObjectClassReference
-            | ObjectReferenceSymbol ObjectReference
-            -- TODO: | ObjectSetReferenceSymbol ObjectSetReference
-            deriving (Eq,Ord,Show, Typeable, Data)
-theSymbol =
- choice ( map try [ TypeReferenceSymbol <$> typereference
-                  , ObjectClassReferenceSymbol <$> objectclassreference
-                  , ObjectReferenceSymbol <$> objectreference
-                  -- TODO: , ObjectSetReferenceSymbol <$> objectsetreference
-                  -- TODO: , ValueReferenceSymbol <$> valuereference
-                  ] ) <* parametrizedDesignation
- where
-   parametrizedDesignation = optional (lexeme (char '{') >> lexeme (char '}'))
--- }} end of section 9.2
 
 -- {{ Section 9.3, "Local and external references"   
 
@@ -504,7 +543,7 @@ enumerationItem =
 -- }} end of section 10.4
 -- { X.680-0207, section 24, "Notation for sequence types"
 
--- Checked
+-- Checked, X.680-0207
 sequenceType = 
   choice [ try $ EmptySequence <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
          , try $ EmptyExtendableSequence <$> ( reserved "SEQUENCE" *> braces (extensionAndException <* optionalExtensionMarker) )
@@ -519,7 +558,7 @@ data ComponentTypeLists = ComponentTypeList [ComponentType]
                         deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Commented commas are in the ASN.1, but here they are consumed by the preceding parsers
--- Checked
+-- Checked, X.680-0207
 componentTypeLists = 
   choice [ try $ ExtensionsInTheMiddle <$> componentTypeList <*> ({- comma *>-} extensionAndException) <*> extensionsAdditions <*> (extensionEndMarker *> comma *> componentTypeList)
          , try $ ExtensionsAtStart <$> extensionAndException <*> extensionsAdditions <*> (extensionEndMarker *> comma *> componentTypeList)
@@ -530,16 +569,16 @@ componentTypeLists =
   
 -- If this marker comes after *TypeList, then trailing comma would be consumed by the *TypeList parser.
 -- Hence the (optional comma) and not (comma) as was in ASN.1 spec
--- Checked
+-- Checked, X.680-0207
 extensionEndMarker = optional comma >> symbol "..."
 
 -- TODO: merge with similar code in "CHOICE" type parser
--- Checked
+-- Checked, X.680-0207
 extensionsAdditions = optionMaybe (comma >> extensionAdditionList)
 
 -- It is hard to ensure that this parser does not consume the trailing coma (and fail).
 -- So we let it do that and make subsequent coma optional at call site
--- Checked
+-- Checked, X.680-0207
 extensionAdditionList = commaSepEndBy1 extensionAddition -- `sepEndBy1` comma'
   where 
     comma' = try $ do
@@ -550,21 +589,21 @@ data ExtensionAddition = ExtensionAdditionGroup (Maybe Integer) [ComponentType]
                        | ExtensionAdditionType ComponentType
                        deriving (Eq,Ord,Show, Typeable, Data)
 
--- Checked
+-- Checked, X.680-0207
 extensionAddition = 
   choice [ extensionAdditionGroup
          , ExtensionAdditionType <$> componentType
          ]
   where
-    -- Checked
+    -- Checked, X.680-0207
     extensionAdditionGroup = ExtensionAdditionGroup <$> ( symbol "[[" *> versionNumber ) <*> componentTypeList <* symbol "]]"
 
--- Checked
+-- Checked, X.680-0207
 versionNumber = optionMaybe $ number <* lexeme (char ':')
 
 -- It is hard to ensure that this parser does not consume the trailing coma (and fail).
 -- So we let it do that and make subsequent coma optional at call site
--- Checked
+-- Checked, X.680-0207
 componentTypeList = commaSepEndBy1 componentType -- `sepBy1` comma'
   where
     comma' = try $ do
@@ -577,14 +616,14 @@ data ComponentType = NamedTypeComponent { element_type::NamedType
                    | ComponentsOf Type deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Three cases of definition of componentType from X.680 are folded into valueOptionality helper parser
--- Checked
+-- Checked, X.680-0207
 componentType =
   choice [ try $ ComponentsOf <$> (reserved "COMPONENTS" *> reserved "OF" *> theType)
          , NamedTypeComponent <$> namedType <*> valueOptionality
          ]
 
 data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
--- Checked
+-- Checked, X.680-0207
 valueOptionality = optionMaybe $
   choice [ reserved "OPTIONAL" >> return OptionalValue
          , reserved "DEFAULT" >> value >>= return . DefaultValue
@@ -637,14 +676,6 @@ tagType =
          , Implicit <$ reserved "IMPLICIT"
          ]
 
-tagDefault = optionMaybe td <?> "tagDefault"
-  where td = do 
-          t <- choice [ ExplicitTags <$ reserved "EXPLICIT"
-                      , ImplicitTags <$ reserved "IMPLICIT"
-                      , AutomaticTags <$ reserved "AUTOMATIC"
-                      ]
-          reserved "TAGS"  
-          return t
   
 
 newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
