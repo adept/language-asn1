@@ -1227,19 +1227,28 @@ asn1Style
     , identStart     = letter
     , identLetter = alphaNum <|> oneOf "-"
     , caseSensitive = True
-    , reservedNames = [ "ABSENT", "ABSTRACT-SYNTAX", "ALL", "APPLICATION", "AUTOMATIC", "BEGIN",
-                        "BIT", "BMPString", "BOOLEAN", "BY", "CHARACTER", "CHOICE", "CLASS", "COMPONENT",
-                        "COMPONENTS", "CONSTRAINED", "CONTAINING" , "DEFAULT", "DEFINITIONS", "EMBEDDED",
-                        "ENCODED" , "END", "ENUMERATED", "EXCEPT", "EXPLICIT", "EXPORTS", "EXTENSIBILITY",
-                        "EXTERNAL", "FALSE", "FROM", "GeneralizedTime", "GeneralString", "GraphicString",
-                        "IA5String", "IDENTIFIER", "IMPLICIT", "IMPLIED", "IMPORTS", "INCLUDES", "INSTANCE",
-                        "INTEGER", "INTERSECTION", "ISO646String", "MAX", "MIN", "MINUS-INFINITY",
-                        "NULL", "NumericString", "OBJECT", "ObjectDescriptor", "OCTET", "OF", "OPTIONAL",
-                        "PATTERN" , "PDV", "PLUS-INFINITY", "PRESENT", "PrintableString", "PRIVATE",
-                        "REAL", "RELATIVE-OID", "SEQUENCE", "SET", "SIZE", "STRING", "SYNTAX", "T61String",
-                        "TAGS", "TeletexString", "TRUE", "TYPE-IDENTIFIER", "UNION", "UNIQUE", "UNIVERSAL",
-                        "UniversalString", "UTCTime", "UTF8String", "VideotexString", "VisibleString",
-                        "WITH" ]
+      -- X.680-0207, 11.27
+    , reservedNames = [ "ABSENT",  "ENCODED",  "INTEGER",  "RELATIVE-OID", 
+                        "ABSTRACT-SYNTAX",  "END",  "INTERSECTION",  "SEQUENCE", 
+                        "ALL",  "ENUMERATED",  "ISO646String",  "SET", 
+                        "APPLICATION",  "EXCEPT",  "MAX",  "SIZE", 
+                        "AUTOMATIC",  "EXPLICIT",  "MIN",  "STRING", 
+                        "BEGIN",  "EXPORTS",  "MINUS-INFINITY",  "SYNTAX", 
+                        "BIT",  "EXTENSIBILITY",  "NULL",  "T61String", 
+                        "BMPString",  "EXTERNAL",  "NumericString",  "TAGS", 
+                        "BOOLEAN",  "FALSE",  "OBJECT",  "TeletexString", 
+                        "BY",  "FROM",  "ObjectDescriptor",  "TRUE", 
+                        "CHARACTER",  "GeneralizedTime",  "OCTET",  "TYPE-IDENTIFIER", 
+                        "CHOICE",  "GeneralString",  "OF",  "UNION", 
+                        "CLASS",  "GraphicString",  "OPTIONAL",  "UNIQUE", 
+                        "COMPONENT",  "IA", 5"String",  "PATTERN",  "UNIVERSAL", 
+                        "COMPONENTS",  "IDENTIFIER",  "PDV",  "UniversalString", 
+                        "CONSTRAINED",  "IMPLICIT",  "PLUS-INFINITY",  "UTCTime", 
+                        "CONTAINING",  "IMPLIED",  "PRESENT",  "UTF8String", 
+                        "DEFAULT",  "IMPORTS",  "PrintableString",  "VideotexString", 
+                        "DEFINITIONS",  "INCLUDES",  "PRIVATE",  "VisibleString", 
+                        "EMBEDDED",  "INSTANCE",  "REAL",  "WITH" ]
+                      
     , reservedOpNames = [ "::=", ",", "...", "!" ]
     }
 
