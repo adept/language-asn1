@@ -69,8 +69,13 @@ parseASN1FromFile :: String -> IO (Either ParseError [Module])
 parseASN1FromFile fname = 
   parseFromFile asn1Input fname
 
-parseASN1 source = 
-  parse asn1Input "" source
+-- This parser is intended for use in tests
+parseASN1 p source = 
+  case parse p' "" source of
+       Left err -> Nothing
+       Right x  -> Just x
+  where
+    p' = fixupComments *> whiteSpace *> p <* eof
 -- }
 
 -- { Top-level parser
