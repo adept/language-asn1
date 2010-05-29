@@ -54,7 +54,7 @@ Module {
       TypeAssignment (TypeReference "AuthorityKeyIdentifier") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "keyIdentifier") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "KeyIdentifier"),
               subtype = Nothing
               } ),
@@ -64,7 +64,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "authorityCertIssuer") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralNames"),
               subtype = Nothing
               } ),
@@ -74,7 +74,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "authorityCertSerialNumber") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "CertificateSerialNumber"),
               subtype = Nothing
               } ),
@@ -134,7 +134,7 @@ Module {
       TypeAssignment (TypeReference "PrivateKeyUsagePeriod") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "notBefore") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = GeneralizedTime,
               subtype = Nothing
               } ),
@@ -144,7 +144,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "notAfter") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = GeneralizedTime,
               subtype = Nothing
               } ),
@@ -176,10 +176,10 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "PolicyInformation"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PolicyInformation") (Type {
@@ -195,10 +195,10 @@ Module {
             type_id = SequenceOf (Just [ValueRange {
               range_from = Value (SignedNumber 1),
               range_to = MaxValue
-              } ]) (Type {
+              } ]) (Left (Type {
               type_id = LocalTypeReference (TypeReference "PolicyQualifierInfo"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Just OptionalValue
@@ -268,10 +268,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "noticeNumbers") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = TheInteger [],
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -322,7 +322,7 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "issuerDomainPolicy") (Type {
               type_id = LocalTypeReference (TypeReference "CertPolicyId"),
@@ -338,7 +338,7 @@ Module {
             element_presence = Nothing
             } ]),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -358,71 +358,71 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "GeneralName"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "otherName") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AnotherName"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "rfc822Name") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
             type_id = IA5String,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "dNSName") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
             type_id = IA5String,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "x400Address") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "ORAddress"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "directoryName") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 4)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "Name"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "ediPartyName") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 5)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "EDIPartyName"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "uniformResourceIdentifier") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 6)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 6)) Nothing (Type {
             type_id = IA5String,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "iPAddress") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 7)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 7)) Nothing (Type {
             type_id = OctetString,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "registeredID") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 8)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 8)) Nothing (Type {
             type_id = ObjectIdentifier,
             subtype = Nothing
             } ),
@@ -440,7 +440,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "value") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Explicit) (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Explicit) (Type {
               type_id = Any (Identifier "type-id"),
               subtype = Nothing
               } ),
@@ -453,7 +453,7 @@ Module {
       TypeAssignment (TypeReference "EDIPartyName") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "nameAssigner") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DirectoryString"),
               subtype = Nothing
               } ),
@@ -463,7 +463,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "partyName") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DirectoryString"),
               subtype = Nothing
               } ),
@@ -499,10 +499,10 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "Attribute"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -546,7 +546,7 @@ Module {
       TypeAssignment (TypeReference "NameConstraints") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "permittedSubtrees") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralSubtrees"),
               subtype = Nothing
               } ),
@@ -556,7 +556,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "excludedSubtrees") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralSubtrees"),
               subtype = Nothing
               } ),
@@ -570,10 +570,10 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "GeneralSubtree"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralSubtree") (Type {
@@ -586,7 +586,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "minimum") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "BaseDistance"),
               subtype = Nothing
               } ),
@@ -596,7 +596,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "maximum") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "BaseDistance"),
               subtype = Nothing
               } ),
@@ -625,7 +625,7 @@ Module {
       TypeAssignment (TypeReference "PolicyConstraints") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "requireExplicitPolicy") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "SkipCerts"),
               subtype = Nothing
               } ),
@@ -635,7 +635,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "inhibitPolicyMapping") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "SkipCerts"),
               subtype = Nothing
               } ),
@@ -665,16 +665,16 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "DistributionPoint"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "DistributionPoint") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "distributionPoint") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DistributionPointName"),
               subtype = Nothing
               } ),
@@ -684,7 +684,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "reasons") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "ReasonFlags"),
               subtype = Nothing
               } ),
@@ -694,7 +694,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "cRLIssuer") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "GeneralNames"),
               subtype = Nothing
               } ),
@@ -706,14 +706,14 @@ Module {
         } ),
       TypeAssignment (TypeReference "DistributionPointName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "fullName") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "GeneralNames"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "nameRelativeToCRLIssuer") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "RelativeDistinguishedName"),
             subtype = Nothing
             } ),
@@ -746,10 +746,10 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "KeyPurposeId"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "KeyPurposeId") (Type {
@@ -858,10 +858,10 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "AccessDescription"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AccessDescription") (Type {
@@ -894,10 +894,10 @@ Module {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (Type {
+          } ]) (Left (Type {
           type_id = LocalTypeReference (TypeReference "AccessDescription"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       ValueAssignment {
@@ -928,7 +928,7 @@ Module {
       TypeAssignment (TypeReference "IssuingDistributionPoint") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "distributionPoint") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "DistributionPointName"),
               subtype = Nothing
               } ),
@@ -938,7 +938,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "onlyContainsUserCerts") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
@@ -948,7 +948,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "onlyContainsCACerts") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
@@ -958,7 +958,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "onlySomeReasons") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "ReasonFlags"),
               subtype = Nothing
               } ),
@@ -968,7 +968,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "indirectCRL") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 4)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
@@ -978,7 +978,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "onlyContainsAttributeCerts") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 5)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),

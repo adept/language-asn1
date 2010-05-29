@@ -94,10 +94,10 @@ Module {
               subtype = Nothing
               } ),
             NamedType (Identifier "transactions") (Type {
-              type_id = SequenceOf Nothing (Type {
+              type_id = SequenceOf Nothing (Left (Type {
                 type_id = LocalTypeReference (TypeReference "Transaction"),
                 subtype = Nothing
-                } ),
+                } )),
               subtype = Nothing
               } )]),
             subtype = Nothing
@@ -241,10 +241,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "actions") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "ActionRequest"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -283,10 +283,10 @@ Module {
               subtype = Nothing
               } ),
             NamedType (Identifier "actionReplies") (Type {
-              type_id = SequenceOf Nothing (Type {
+              type_id = SequenceOf Nothing (Left (Type {
                 type_id = LocalTypeReference (TypeReference "ActionReply"),
                 subtype = Nothing
-                } ),
+                } )),
               subtype = Nothing
               } )]),
             subtype = Nothing
@@ -296,10 +296,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TransactionResponseAck") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "TransactionAck"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TransactionAck") (Type {
@@ -378,10 +378,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "commandRequests") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "CommandRequest"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -412,10 +412,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "commandReply") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "CommandReply"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -442,10 +442,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "topologyReq") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "TopologyRequest"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Just OptionalValue
@@ -606,10 +606,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "descriptors") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "AmmDescriptor"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -735,10 +735,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TerminationAudit") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "AuditReturnParameter"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AuditReturnParameter") (Type {
@@ -862,10 +862,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "observedEventLst") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "ObservedEvent"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -889,10 +889,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "eventParList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "EventParameter"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1000,10 +1000,10 @@ Module {
       TypeAssignment (TypeReference "TerminationID") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "wildcard") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "WildcardField"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1021,10 +1021,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TerminationIDList") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "TerminationID"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "MediaDescriptor") (Type {
@@ -1042,10 +1042,10 @@ Module {
               subtype = Nothing
               } ),
             NamedType (Identifier "multiStream") (Type {
-              type_id = SequenceOf Nothing (Type {
+              type_id = SequenceOf Nothing (Left (Type {
                 type_id = LocalTypeReference (TypeReference "StreamDescriptor"),
                 subtype = Nothing
-                } ),
+                } )),
               subtype = Nothing
               } )]),
             subtype = Nothing
@@ -1119,10 +1119,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "propertyParms") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "PropertyParm"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1147,10 +1147,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "value") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = OctetString,
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1198,10 +1198,10 @@ Module {
       TypeAssignment (TypeReference "LocalRemoteDescriptor") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "propGrps") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "PropertyGroup"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1209,19 +1209,19 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PropertyGroup") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "PropertyParm"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TerminationStateDescriptor") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "propertyParms") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "PropertyParm"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1263,10 +1263,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "termList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "TerminationID"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1304,10 +1304,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "eventList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "RequestedEvent"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1338,10 +1338,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "evParList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "EventParameter"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1400,10 +1400,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "eventList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "SecondRequestedEvent"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1434,10 +1434,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "evParList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "EventParameter"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1469,10 +1469,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "EventBufferDescriptor") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "EventSpec"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "EventSpec") (Type {
@@ -1492,10 +1492,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "eventParList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "EventParameter"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1503,10 +1503,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SignalsDescriptor") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "SignalRequest"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SignalRequest") (Type {
@@ -1533,10 +1533,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "signalList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "Signal"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1591,10 +1591,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "sigParList") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "SigParameter"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1663,20 +1663,20 @@ Module {
       TypeAssignment (TypeReference "ModemDescriptor") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "mtl") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "ModemType"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "mpl") (Type {
-            type_id = SequenceOf Nothing (Type {
+            type_id = SequenceOf Nothing (Left (Type {
               type_id = LocalTypeReference (TypeReference "PropertyParm"),
               subtype = Nothing
-              } ),
+              } )),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -1932,10 +1932,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PackagesDescriptor") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "PackagesItem"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PackagesItem") (Type {
@@ -1959,10 +1959,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "StatisticsDescriptor") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = LocalTypeReference (TypeReference "StatisticsParameter"),
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "StatisticsParameter") (Type {
@@ -2084,10 +2084,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Value") (Type {
-        type_id = SequenceOf Nothing (Type {
+        type_id = SequenceOf Nothing (Left (Type {
           type_id = OctetString,
           subtype = Nothing
-          } ),
+          } )),
         subtype = Nothing
         } )]
       } )

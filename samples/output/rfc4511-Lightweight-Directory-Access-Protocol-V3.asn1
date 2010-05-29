@@ -111,7 +111,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "controls") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "Controls"),
               subtype = Nothing
               } ),
@@ -191,10 +191,10 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "vals") (Type {
-            type_id = SetOfNamed Nothing (NamedType (Identifier "value") (Type {
+            type_id = SetOf Nothing (Right (NamedType (Identifier "value") (Type {
               type_id = LocalTypeReference (TypeReference "AttributeValue"),
               subtype = Nothing
-              } )),
+              } ))),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -274,7 +274,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "referral") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "Referral"),
               subtype = Nothing
               } ),
@@ -285,13 +285,13 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Referral") (Type {
-        type_id = SequenceOfNamed (Just [ValueRange {
+        type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
           range_to = MaxValue
-          } ]) (NamedType (Identifier "uri") (Type {
+          } ]) (Right (NamedType (Identifier "uri") (Type {
           type_id = LocalTypeReference (TypeReference "URI"),
           subtype = Nothing
-          } )),
+          } ))),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "URI") (Type {
@@ -299,10 +299,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Controls") (Type {
-        type_id = SequenceOfNamed Nothing (NamedType (Identifier "control") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "control") (Type {
           type_id = LocalTypeReference (TypeReference "Control"),
           subtype = Nothing
-          } )),
+          } ))),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Control") (Type {
@@ -330,7 +330,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "BindRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 0)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 0)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "version") (Type {
               type_id = TheInteger [],
@@ -361,14 +361,14 @@ Module {
         } ),
       TypeAssignment (TypeReference "AuthenticationChoice") (Type {
         type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "simple") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
             type_id = OctetString,
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "sasl") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "SaslCredentials"),
             subtype = Nothing
             } ),
@@ -394,14 +394,14 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "BindResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 1)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 1)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [ComponentsOf (Type {
             type_id = LocalTypeReference (TypeReference "LDAPResult"),
             subtype = Nothing
             } ),
           NamedTypeComponent {
             element_type = NamedType (Identifier "serverSaslCreds") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 7)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 7)) Nothing (Type {
                 type_id = OctetString,
                 subtype = Nothing
                 } ),
@@ -414,14 +414,14 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "UnbindRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 2)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 2)) Nothing (Type {
           type_id = Null,
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SearchRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 3)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 3)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "baseObject") (Type {
               type_id = LocalTypeReference (TypeReference "LDAPDN"),
@@ -494,90 +494,90 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AttributeSelection") (Type {
-        type_id = SequenceOfNamed Nothing (NamedType (Identifier "selector") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "selector") (Type {
           type_id = LocalTypeReference (TypeReference "LDAPString"),
           subtype = Nothing
-          } )),
+          } ))),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Filter") (Type {
         type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "and") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
-            type_id = SetOfNamed (Just [ValueRange {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+            type_id = SetOf (Just [ValueRange {
               range_from = Value (SignedNumber 1),
               range_to = MaxValue
-              } ]) (NamedType (Identifier "filter") (Type {
+              } ]) (Right (NamedType (Identifier "filter") (Type {
               type_id = LocalTypeReference (TypeReference "Filter"),
               subtype = Nothing
-              } )),
+              } ))),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "or") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
-            type_id = SetOfNamed (Just [ValueRange {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+            type_id = SetOf (Just [ValueRange {
               range_from = Value (SignedNumber 1),
               range_to = MaxValue
-              } ]) (NamedType (Identifier "filter") (Type {
+              } ]) (Right (NamedType (Identifier "filter") (Type {
               type_id = LocalTypeReference (TypeReference "Filter"),
               subtype = Nothing
-              } )),
+              } ))),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "not") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "Filter"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "equalityMatch") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "substrings") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 4)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "SubstringFilter"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "greaterOrEqual") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 5)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "lessOrEqual") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 6)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 6)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "present") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 7)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 7)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AttributeDescription"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "approxMatch") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 8)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 8)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
             subtype = Nothing
             } ),
           subtype = Nothing
           } ),
         NamedType (Identifier "extensibleMatch") (Type {
-          type_id = Tagged (Tag UndefinedClass (ClassNumber 9)) Nothing (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 9)) Nothing (Type {
             type_id = LocalTypeReference (TypeReference "MatchingRuleAssertion"),
             subtype = Nothing
             } ),
@@ -595,33 +595,33 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "substrings") (Type {
-            type_id = SequenceOfNamed (Just [ValueRange {
+            type_id = SequenceOf (Just [ValueRange {
               range_from = Value (SignedNumber 1),
               range_to = MaxValue
-              } ]) (NamedType (Identifier "substring") (Type {
+              } ]) (Right (NamedType (Identifier "substring") (Type {
               type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "initial") (Type {
-                type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
                   type_id = LocalTypeReference (TypeReference "AssertionValue"),
                   subtype = Nothing
                   } ),
                 subtype = Nothing
                 } ),
               NamedType (Identifier "any") (Type {
-                type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
                   type_id = LocalTypeReference (TypeReference "AssertionValue"),
                   subtype = Nothing
                   } ),
                 subtype = Nothing
                 } ),
               NamedType (Identifier "final") (Type {
-                type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
                   type_id = LocalTypeReference (TypeReference "AssertionValue"),
                   subtype = Nothing
                   } ),
                 subtype = Nothing
                 } )]),
               subtype = Nothing
-              } )),
+              } ))),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -631,7 +631,7 @@ Module {
       TypeAssignment (TypeReference "MatchingRuleAssertion") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "matchingRule") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "MatchingRuleId"),
               subtype = Nothing
               } ),
@@ -641,7 +641,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 2)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "AttributeDescription"),
               subtype = Nothing
               } ),
@@ -651,7 +651,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "matchValue") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 3)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "AssertionValue"),
               subtype = Nothing
               } ),
@@ -661,7 +661,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "dnAttributes") (Type {
-            type_id = Tagged (Tag UndefinedClass (ClassNumber 4)) Nothing (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
               type_id = Boolean,
               subtype = Nothing
               } ),
@@ -672,7 +672,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SearchResultEntry") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 4)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 4)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "objectName") (Type {
               type_id = LocalTypeReference (TypeReference "LDAPDN"),
@@ -692,34 +692,34 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PartialAttributeList") (Type {
-        type_id = SequenceOfNamed Nothing (NamedType (Identifier "partialAttribute") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "partialAttribute") (Type {
           type_id = LocalTypeReference (TypeReference "PartialAttribute"),
           subtype = Nothing
-          } )),
+          } ))),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SearchResultReference") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 19)) Nothing (Type {
-          type_id = SequenceOfNamed (Just [ValueRange {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 19)) Nothing (Type {
+          type_id = SequenceOf (Just [ValueRange {
             range_from = Value (SignedNumber 1),
             range_to = MaxValue
-            } ]) (NamedType (Identifier "uri") (Type {
+            } ]) (Right (NamedType (Identifier "uri") (Type {
             type_id = LocalTypeReference (TypeReference "URI"),
             subtype = Nothing
-            } )),
+            } ))),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SearchResultDone") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 5)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 5)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPResult"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ModifyRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 6)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 6)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "object") (Type {
               type_id = LocalTypeReference (TypeReference "LDAPDN"),
@@ -729,7 +729,7 @@ Module {
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "changes") (Type {
-              type_id = SequenceOfNamed Nothing (NamedType (Identifier "change") (Type {
+              type_id = SequenceOf Nothing (Right (NamedType (Identifier "change") (Type {
                 type_id = Sequence (ComponentTypeList [NamedTypeComponent {
                   element_type = NamedType (Identifier "operation") (Type {
                     type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "add") 0),
@@ -747,7 +747,7 @@ Module {
                   element_presence = Nothing
                   } ]),
                 subtype = Nothing
-                } )),
+                } ))),
               subtype = Nothing
               } ),
             element_presence = Nothing
@@ -757,14 +757,14 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ModifyResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 7)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 7)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPResult"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AddRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 8)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 8)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "entry") (Type {
               type_id = LocalTypeReference (TypeReference "LDAPDN"),
@@ -784,35 +784,35 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AttributeList") (Type {
-        type_id = SequenceOfNamed Nothing (NamedType (Identifier "attribute") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "attribute") (Type {
           type_id = LocalTypeReference (TypeReference "Attribute"),
           subtype = Nothing
-          } )),
+          } ))),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AddResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 9)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 9)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPResult"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "DelRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 10)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 10)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPDN"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "DelResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 11)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 11)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPResult"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ModifyDNRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 12)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 12)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "entry") (Type {
               type_id = LocalTypeReference (TypeReference "LDAPDN"),
@@ -836,7 +836,7 @@ Module {
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "newSuperior") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
                 type_id = LocalTypeReference (TypeReference "LDAPDN"),
                 subtype = Nothing
                 } ),
@@ -849,14 +849,14 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ModifyDNResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 13)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 13)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPResult"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "CompareRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 14)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 14)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "entry") (Type {
               type_id = LocalTypeReference (TypeReference "LDAPDN"),
@@ -876,24 +876,24 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "CompareResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 15)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 15)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "LDAPResult"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AbandonRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 16)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 16)) Nothing (Type {
           type_id = LocalTypeReference (TypeReference "MessageID"),
           subtype = Nothing
           } ),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ExtendedRequest") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 23)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 23)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "requestName") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
                 type_id = LocalTypeReference (TypeReference "LDAPOID"),
                 subtype = Nothing
                 } ),
@@ -903,7 +903,7 @@ Module {
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "requestValue") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
                 type_id = OctetString,
                 subtype = Nothing
                 } ),
@@ -916,14 +916,14 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ExtendedResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 24)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 24)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [ComponentsOf (Type {
             type_id = LocalTypeReference (TypeReference "LDAPResult"),
             subtype = Nothing
             } ),
           NamedTypeComponent {
             element_type = NamedType (Identifier "responseName") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 10)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 10)) Nothing (Type {
                 type_id = LocalTypeReference (TypeReference "LDAPOID"),
                 subtype = Nothing
                 } ),
@@ -933,7 +933,7 @@ Module {
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "responseValue") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 11)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 11)) Nothing (Type {
                 type_id = OctetString,
                 subtype = Nothing
                 } ),
@@ -946,10 +946,10 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "IntermediateResponse") (Type {
-        type_id = Tagged (Tag Application (ClassNumber 25)) Nothing (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 25)) Nothing (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "responseName") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
                 type_id = LocalTypeReference (TypeReference "LDAPOID"),
                 subtype = Nothing
                 } ),
@@ -959,7 +959,7 @@ Module {
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "responseValue") (Type {
-              type_id = Tagged (Tag UndefinedClass (ClassNumber 1)) Nothing (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
                 type_id = OctetString,
                 subtype = Nothing
                 } ),
