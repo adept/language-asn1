@@ -11,14 +11,7 @@ main = defaultMain tests
 
 tests = 
   [ testGroup "Modules" moduleTests
-  , testGroup "Enumerated type" 
-    [ testCase "Simple enumeration" $
-      parseASN1 enumeratedType "ENUMERATED {a(1),b(2)}" @?= Just (SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)])
-    , testCase "Enumeration with extension at the end" $
-      parseASN1 enumeratedType "ENUMERATED {a(1),b(2),...}" @?= Just (EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)] Nothing)
-    , testCase "Enumeration with extension in the middle" $
-      parseASN1 enumeratedType "ENUMERATED {a(1),b(2),...,someIdent}" @?= Just (EnumerationWithExceptionAndAddition [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)] Nothing [EnumerationItemIdentifier (Identifier "someIdent")])
-    ]
+  , testGroup "Enumerated type" enumeratedTests
   , testGroup "SEQUENCE" sequenceTests
   ]
 
@@ -35,6 +28,17 @@ moduleTests =
   , testCase "IMPORTS from several modules without assigned identifiers" $ parseASN1 imports "IMPORTS Bi1, Bi2 FROM B Ci1 FROM C;" @?= Just (Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "Bi1"),TypeReferenceSymbol (TypeReference "Bi2")] (GlobalModuleReference (ModuleReference "B") Nothing),SymbolsFromModule [TypeReferenceSymbol (TypeReference "Ci1")] (GlobalModuleReference (ModuleReference "C") Nothing)])
   , testCase "IMPORTS from modules with assigned OID, local and external defined values" $ parseASN1 imports "IMPORTS ProbableCause FROM Attribute-ASN1Module {joint-iso-itu-t ms(9) smi(3) part2(2) asn1Module(2) 1} TimePeriod FROM MetricModule someLocalValue Foo FROM BAR External.value;" @?= Just (Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "ProbableCause")] (GlobalModuleReference (ModuleReference "Attribute-ASN1Module") (Just (AssignedIdentifierOID [ObjIdDefinedValue (LocalValueReference (ValueReference "joint-iso-itu-t")),ObjIdNamedNumber (NamedNumber (Identifier "ms") 9),ObjIdNamedNumber (NamedNumber (Identifier "smi") 3),ObjIdNamedNumber (NamedNumber (Identifier "part2") 2),ObjIdNamedNumber (NamedNumber (Identifier "asn1Module") 2),ObjIdNumber 1]))),SymbolsFromModule [TypeReferenceSymbol (TypeReference "TimePeriod")] (GlobalModuleReference (ModuleReference "MetricModule") (Just (AssignedIdentifierDefinedValue (LocalValueReference (ValueReference "someLocalValue"))))),SymbolsFromModule [TypeReferenceSymbol (TypeReference "Foo")] (GlobalModuleReference (ModuleReference "BAR") (Just (AssignedIdentifierDefinedValue (ExternalValueReference (ModuleReference "External") (ValueReference "value")))))])
  ]
+
+-- X.680-0207, clause 19, "ENUMERATED"
+enumeratedTests = 
+  [ testCase "Simple enumeration" $
+    parseASN1 enumeratedType "ENUMERATED {a(1),b(2)}" @?= Just (SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)])
+  , testCase "Enumeration with extension at the end" $
+    parseASN1 enumeratedType "ENUMERATED {a(1),b(2),...}" @?= Just (EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)] Nothing)
+  , testCase "Enumeration with extension in the middle" $
+    parseASN1 enumeratedType "ENUMERATED {a(1),b(2),...,someIdent}" @?= Just (EnumerationWithExceptionAndAddition [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)] Nothing [EnumerationItemIdentifier (Identifier "someIdent")])
+  ]
+  
 -- Section 12.2, SEQUENCE
 sequenceTests = 
   [ testCase "Empty SEQUENCE" $ parseASN1 sequenceType "SEQUENCE {}" @?= Just EmptySequence

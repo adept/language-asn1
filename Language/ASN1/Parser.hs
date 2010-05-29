@@ -471,6 +471,32 @@ signedNumber = integer <?> "SignedNumber"
 
 -- Parser for integer values is inlined into builtinValue parser
 -- }} end of clause 18
+-- {{ X.680-0207, clause 19, "Notation for the enumerated type"
+-- Checked
+enumeratedType = reserved "ENUMERATED" *> braces enumerations
+
+-- Commented commas are in the ASN.1, but here they are consumed by the preceding parsers
+-- Checked
+enumerations = 
+  choice [ try $ EnumerationWithExceptionAndAddition <$> enumeration <*> ({- comma *>-} symbol "..." *> exceptionSpec) <*> (comma *> enumeration)
+         , try $ EnumerationWithException <$> enumeration <*> ({- comma *> -} symbol "..." *> exceptionSpec)
+         , SimpleEnumeration <$> enumeration
+         ]
+
+-- Checked
+enumeration = commaSepEndBy1 enumerationItem
+
+data EnumerationItem = EnumerationItemNumber NamedNumber
+                     | EnumerationItemIdentifier Identifier
+                     deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+enumerationItem = 
+  choice [ try $ EnumerationItemNumber <$> namedNumber
+         , EnumerationItemIdentifier <$> identifier
+         ]
+
+-- Value parser is inlined into builtinValue parser
+-- }} end of clause 19
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
 elementSetSpecs = undefined
@@ -572,29 +598,6 @@ definedObjectSet =
 -- {{ Section 10.3, "INTEGER type"
 -- }} end of section 10.3
 -- {{ Section 10.4, "The ENUMERATED type"
-enumeratedType = reserved "ENUMERATED" *> braces enumerations
-
-enumerations = 
-  choice [ try $ EnumerationWithExceptionAndAddition <$> enumeration <*> (comma *> symbol "..." *> exceptionSpec) <*> (comma *> enumeration)
-         , try $ EnumerationWithException <$> enumeration <*> (comma *> symbol "..." *> exceptionSpec)
-         , SimpleEnumeration <$> enumeration
-         ]
-
--- TODO: merge three almost similar functions in enumeration, sequence and choice parsers
-enumeration = enumerationItem `sepBy1` comma'
-  where
-    comma' = try $ do
-      comma
-      notFollowedBy (lexeme (char '.'))
-
-data EnumerationItem = EnumerationItemNumber NamedNumber
-                     | EnumerationItemIdentifier Identifier
-                     deriving (Eq,Ord,Show, Typeable, Data)
-enumerationItem = 
-  choice [ try $ EnumerationItemNumber <$> namedNumber
-         , EnumerationItemIdentifier <$> identifier
-         ]
-
 -- TODO: values
 -- }} end of section 10.4
 -- { X.680-0207, section 24, "Notation for sequence types"
