@@ -397,9 +397,10 @@ data Value = BooleanValue Bool
              
            | SignedNumber Integer
            | CharString StringConst
-           | CompoundValue OID
+           | OID [OIDComponent]
            | ComponentValue ComponentValueList
            | ValueList [Value]
+           | ChoiceValue Identifier Value
              -- ReferencedValue constructors:
            | DefinedV DefinedValue
              -- TODO: | ValueFromObject ...
@@ -420,13 +421,13 @@ builtinValue =
                    , bitStringValue -- This covers OCTET STRING as well
                    , characterStringValue >>= return . CharString -- ok
                    , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
-                     -- TODO: choiceValue
+                   , choiceValue
                      -- TODO: embeddedPDVValue
                      -- TODO: enumeratedValue
                      -- TODO: externalValue
                      -- TODO: instanceOfValue
                      -- TODO: objectClassFieldValue
-                     -- TODO: objectIdentifierValue
+                   , OID <$> oid
                      -- TODO: relativeOIDValue
                      -- TODO: taggedValue
                      -- From ReferencedValue:
@@ -547,6 +548,13 @@ sequenceType =
          , Sequence <$> (reserved "SEQUENCE" *> braces componentTypeLists)
          ]
 
+-- Checked
+extensionAndException = symbol "..." >> exceptionSpec
+  
+
+-- Checked
+optionalExtensionMarker = optional $ extensionEndMarker
+
 data ComponentTypeLists = ComponentTypeList [ComponentType]
                         | JustExtensions (Maybe ExceptionIdentification) (Maybe [ExtensionAddition])
                         | ExtensionsAtStart (Maybe ExceptionIdentification) (Maybe [ExtensionAddition]) [ComponentType]
@@ -564,6 +572,7 @@ componentTypeLists =
          , ComponentTypeList <$> componentTypeList
          ]
   
+
 -- If this marker comes after *TypeList, then trailing comma would be consumed by the *TypeList parser.
 -- Hence the (optional comma) and not (comma) as was in ASN.1 spec
 -- Checked, X.680-0207
@@ -652,6 +661,97 @@ setOrSequenceOfValue =
          , ValueList <$> braces (commaSep value)
          ]
 -- }} end of clause 25, end of clause 27
+-- {{ X.680-0207, clause 26, "SET"
+setType = 
+  choice [ try $ EmptySet <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
+         , try $ EmptyExtendableSet <$> ( reserved "SET" *> braces ( extensionAndException <* optionalExtensionMarker ) )
+         , Set <$> (reserved "SET" *> braces componentTypeLists)
+         ]
+-- value parser is handled by setOrSequenceOfValue
+-- }} end of clause 26
+-- {{ X.680-0207, clause 28, "CHOICE"
+-- Checked
+choiceType = Choice <$> ( reserved "CHOICE" *> braces alternativeTypeLists )
+             <?> "ChoiceType"
+
+data AlternativeTypeLists = SimpleAlternativeTypeList [NamedType] 
+                          | AlternativeTypeListWithExtension [NamedType] (Maybe ExceptionIdentification) (Maybe [ExtensionAdditionAlternative])
+                          deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Commented commas are in the ASN.1, but here they are consumed by the preceding parsers
+-- Checked
+alternativeTypeLists = 
+  choice [ try $ AlternativeTypeListWithExtension <$> alternativeTypeList <*> {- comma *> -} extensionAndException <*> extensionAdditionAlternatives <* optionalExtensionMarker
+         , SimpleAlternativeTypeList <$> alternativeTypeList 
+         ]
+
+-- rootAlternativeTypeList is inlined since it has only one production
+
+-- Checked
+extensionAdditionAlternatives = optionMaybe (comma >> extensionAdditionAlternativesList)
+
+-- Checked
+extensionAdditionAlternativesList = commaSepEndBy1 extensionAdditionAlternative
+
+-- TODO: merge with definitions from SEQUENCE
+data ExtensionAdditionAlternative = ExtensionAdditionAlternativesGroup (Maybe Integer) [NamedType]
+                                  | ExtensionAdditionAlternativesType NamedType
+                                  deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+extensionAdditionAlternative =
+  choice [ extensionAdditionGroupAlternatives
+         , ExtensionAdditionAlternativesType <$> namedType
+         ]
+-- Checked
+extensionAdditionGroupAlternatives = ExtensionAdditionAlternativesGroup <$> ( symbol "[[" *> versionNumber) <*> alternativeTypeList  <* symbol "]]"
+
+-- Checked
+alternativeTypeList = commaSepEndBy1 namedType
+
+choiceValue = ChoiceValue <$> identifier <*> ( colon *> value)
+-- }} end of clause 28
+-- {{ X.680-0207, clause 31, "Object Identifier Type"
+-- Type parser is trivial and inlined in builtinType parser
+
+-- ObjectIdentifier is replaced with OID for brevity
+type OID = [OIDComponent]
+-- Checked
+oid = braces (many1 oidComponent) <?> "OID"
+
+data OIDComponent = ObjIdDefinedValue DefinedValue | ObjIdNumber Integer | ObjIdNamedNumber NamedNumber | ObjIdName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+oidComponent =
+  choice [ ObjIdNamedNumber <$> try namedNumber
+         , ObjIdName . Identifier <$> try reservedOIDIdentifier
+         , ObjIdNumber <$> number
+         , ObjIdDefinedValue <$> definedValue
+         ]
+  <?> "OIDComponent"
+
+-- Checked
+reservedOIDIdentifier = do
+  i <- choice $ map (try.symbol) $ [ "itu-t", "ccitt", "iso", "joint-iso-itu-t", "joint-iso-ccitt"
+                                   , "recommendation", "question", "administration", "network-operator"
+                                   , "identified-organization", "standard", "member-body"] ++ map (:[]) ['a'..'z']
+  notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
+  return i
+-- }} end of clause 31
+-- {{ X.680-0207, clause 49, "The exception identifier"
+-- Checked
+exceptionSpec = 
+  optionMaybe ( lexeme (char '!') >> exceptionIdentification )
+                
+data ExceptionIdentification = ExceptionNumber Integer
+                             | ExceptionValue DefinedValue
+                             | ExceptionTypeAndValue Type Value
+                             deriving (Eq,Ord,Show, Typeable, Data)
+exceptionIdentification =
+  choice [ ExceptionNumber <$> signedNumber 
+         , ExceptionValue <$> definedValue
+         , ExceptionTypeAndValue <$> theType <*> (colon *> value)
+         ]
+-- }} end of clause 49
+
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
 elementSetSpecs = undefined
@@ -741,11 +841,6 @@ definedObjectSet =
 -- TODO: values
 -- }} end of section 10.4
 -- {{ Section 12.3, "The constructor SET"
-setType = 
-  choice [ try $ EmptySet <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
-         , try $ EmptyExtendableSet <$> ( reserved "SET" *> braces ( extensionAndException <* optionalExtensionMarker ) )
-         , Set <$> (reserved "SET" *> braces componentTypeLists)
-         ]
 -- TODO: values
 -- }} end of section 12.3
 -- {{ Section 12.4 and 12.5, "The constructor SEQUENCE OF" and "The constructor SET OF"
@@ -816,74 +911,6 @@ characterStringType =
 
 
 -- Dubuisson 12.6.2
-choiceType = Choice <$> ( reserved "CHOICE" *> braces alternativeTypeLists )
-             <?> "ChoiceType"
-
-data AlternativeTypeLists = SimpleAlternativeTypeList [NamedType] 
-                          | AlternativeTypeListWithExtension [NamedType] (Maybe ExceptionIdentification) (Maybe [NamedType])
-                          deriving (Eq,Ord,Show, Typeable, Data)
-alternativeTypeLists = 
-  choice [ try complex
-         , SimpleAlternativeTypeList <$> alternativeTypeList 
-         ]
-  where
-    complex = do
-      r <- alternativeTypeList
-      comma
-      ex <- extensionAndException
-      add <- extensionAdditionAlternatives
-      optionalExtensionMarker
-      return $ AlternativeTypeListWithExtension r ex add
-
--- rootAlternativeTypeList is inlined since it has only one production
-
-extensionAdditionAlternatives = optionMaybe (comma >> extensionAdditionAlternativesList)
-
-extensionAdditionAlternativesList = 
-  choice [ extensionAdditionAlternative
-         , do l <- extensionAdditionAlternativesList; comma; return l
-         , extensionAdditionAlternative
-         ]
-
--- FIXME: should I wrap in additional datatype here?
-extensionAdditionAlternative =
-  choice [ extensionAdditionGroupAlternatives
-         , namedType >>= return . (:[])
-         ]
-
-extensionAdditionGroupAlternatives = do
-  reserved "[["
-  l <- alternativeTypeList 
-  reserved "]]"
-  return l
-  
-alternativeTypeList = namedType `sepBy1` comma'
-  where
-    comma' = try $ do
-      comma
-      notFollowedBy (lexeme (char '.'))
-
-
--- {{{ Dubuisson 12.9.2
-extensionAndException = do
-  symbol "..."
-  exceptionSpec
-  
-optionalExtensionMarker = optional $ extensionEndMarker
-
-
-exceptionSpec = 
-  optionMaybe ( lexeme (char '!') >> exceptionIdentification )
-                
-data ExceptionIdentification = ExceptionNumber Integer
-                             | ExceptionValue DefinedValue
-                             | ExceptionTypeAndValue Type Value
-                             deriving (Eq,Ord,Show, Typeable, Data)
-exceptionIdentification =
-  choice [ ExceptionNumber <$> signedNumber 
-         , ExceptionValue <$> definedValue
-         , ExceptionTypeAndValue <$> theType <*> (reserved ":" *> value)
-         ]
 -- }}}  
 
 elementTypeList = commaSep1 elementType
@@ -1269,25 +1296,6 @@ presenceConstraint =
 
 
 
-oid = braces (many1 oidComponent)
-     <?> "OID"
-
-type OID = [OIDComponent]
-data OIDComponent = ObjIdDefinedValue DefinedValue | ObjIdNumber Integer | ObjIdNamedNumber NamedNumber | ObjIdName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-oidComponent =
-  choice [ ObjIdNamedNumber <$> try namedNumber
-         , ObjIdName . Identifier <$> try reservedOIDIdentifier
-         , ObjIdNumber <$> number
-         , ObjIdDefinedValue <$> definedValue
-         ]
-  <?> "OIDComponent"
-
-reservedOIDIdentifier = do
-  i <- choice $ map (try.symbol) $ [ "itu-t", "ccitt", "iso", "joint-iso-itu-t", "joint-iso-ccitt"
-                                   , "recommendation", "question", "administration", "network-operator"
-                                   , "identified-organization", "standard", "member-body"] ++ map (:[]) ['a'..'z']
-  notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
-  return i
 
 data TODO = TODO deriving (Eq,Ord,Show, Typeable, Data)
 
@@ -1395,6 +1403,7 @@ braces          = P.braces asn1
 squares         = P.squares asn1
 parens          = P.parens asn1
 semi            = P.semi asn1
+colon           = P.colon asn1
 natural         = P.natural asn1
 integer         = P.integer asn1
 float           = P.float asn1
