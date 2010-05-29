@@ -274,8 +274,11 @@ typeAssignment = TypeAssignment <$> typereference <*> (reservedOp "::=" *> theTy
                  <?> "TypeAssignment"
 
 -- Checked
-valueAssignment = ValueAssignment <$> valuereference <*> theType <*> (reservedOp "::=" *> value)
-                  <?> "ValueAssignment"
+valueAssignment = do
+  ref <- valuereference 
+  t <- theType 
+  v <- (reservedOp "::=" *> valueOfType t)
+  return $ ValueAssignment ref t v
 
 -- Checked
 valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
@@ -416,63 +419,132 @@ data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data
 -- Checked
 namedType = NamedType <$> identifier <*> theType
 
-data Value = BooleanValue Bool
-           | NullValue
-             -- Real type
-           | RealValue Double
-           | SequenceRealValue ComponentValueList
-           | PlusInfinity
-           | MinusInfinity
-             -- End of Real type
-             -- BitString and OctetString values:
-           | HexString StringConst
-           | BinaryString StringConst
-           | Containing Value
-             -- Special BitString values:
-           | IdentifierListBitString [Identifier]
-           | EmptyBitString
-             
-           | SignedNumber Integer
-           | CharString StringConst
-           | OID [OIDComponent]
-           | ComponentValue ComponentValueList
-           | ValueList [Value]
-           | ChoiceValue Identifier Value
-             -- ReferencedValue constructors:
-           | DefinedV DefinedValue
-             -- TODO: | ValueFromObject ...
-           | IntegerOrEnumeratedIdentifiedValue Identifier
-           deriving (Eq,Ord,Show, Typeable, Data)
+data Value = 
+  -- Five BitString (and OctetString) values:
+    HexString StringConst
+  | BinaryString StringConst
+  | Containing Value
+  | IdentifierListBitString [Identifier]
+  | IdentifiedNumber Identifier
+    
+  | BooleanValue Bool
+  | CharString StringConst -- TODO: maybe more variants
+  | ChoiceValue Identifier Value
+  | EnumeratedValue Identifier
+    -- TODO: ExternalValue
+    -- TODO: InstanceOf value
+  | SignedNumber Integer -- this is integerValue
+  | NullValue
+  | OID [OIDComponent]
+    -- OctetString values are covered by BitString values above
+    -- Four Real values
+  | RealValue Double
+  | SequenceRealValue ComponentValueList
+  | PlusInfinity
+  | MinusInfinity
+    
+    -- Set/Seq and SetOf/SeqOf:
+  | SequenceValue ComponentValueList -- this
+  | SetValue ComponentValueList
+  | NamedValueList ComponentValueList
+  | ValueList [Value]
+    -- Tagged value is just Value
+    -- ReferencedValue constructors:
+  | DefinedV DefinedValue
+    -- TODO: | ParameterizedType value
+    -- TODO: | ParametrizedValueSetType value
+    -- TODO: | GeneralizedTime value
+    -- TODO: | UTCTime value
+    -- Selection type value is just Value
+    -- TODO: TypeFromObject constructors                   
+    -- TODO: ValueSetFromObjects constructors
+    -- TODO: | ValueFromObject ...
+    -- Catch-all for Integer and Enumerated types
+  | SomeIdentifiedValue Identifier
+    -- TODO: catch-all for OID-like values
+  deriving (Eq,Ord,Show, Typeable, Data)
 
+-- TODO: incomplete, check for "undefined"
+valueOfType (Type t _) = v t
+  where
+    v (BitString _) = bitStringValue
+    v Boolean = booleanValue
+    -- Fourteen CharacterString variants
+    v CharacterString = undefined
+    v BMPString = undefined
+    v GeneralString = undefined
+    v GraphicString = undefined
+    v IA5String = undefined
+    v ISO646String = undefined
+    v NumericString = undefined
+    v PrintableString = undefined
+    v TeletexString = undefined
+    v T61String = undefined
+    v UniversalString = undefined
+    v UTF8String = undefined
+    v VideotexString = undefined
+    v VisibleString = undefined
+    v (Choice _) = choiceValue
+    -- TODO: EmbeddedPDV
+    -- Three ENUMERATED variants
+    v (SimpleEnumeration _) = enumeratedValue
+    v (EnumerationWithException _ _) = enumeratedValue
+    v (EnumerationWithExceptionAndAddition _ _ _) = enumeratedValue
+    v External = undefined
+    -- TODO: InstanceOf = undefined
+    v (TheInteger namedNumber) = integerValue
+    v Null = nullValue
+    -- TODO: ObjectClassField = undefined
+    v ObjectIdentifier = objectIdentifierValue
+    v OctetString  = octetStringValue
+    v Real = realValue
+      -- TODO: RelativeOID = undefined
+    v (Sequence _) = sequenceValue
+    v (SequenceOf _ _) = sequenceOfValue
+    v (Set _) = setValue
+    v (SetOf _ _) = setOfValue
+    v (Tagged _ _ innerType) = valueOfType innerType
+    -- Referenced Type constructors:
+    -- Four defined type variants
+    v (LocalTypeReference _) = value
+    v (ExternalTypeReference _ _) = value
+      -- TODO: v ParameterizedType = undefined
+      -- TODO: v ParametrizedValueSetType = undefined
+      -- Two UsefulType variants:
+    v GeneralizedTime = undefined
+    v UTCTime = undefined
+    v (Selection _ innerType) = valueOfType innerType
+      -- TODO: TypeFromObject constructors                    = undefined
+      -- TODO: ValueSetFromObjects constructors     = undefined
+    v (Any _) = value
+
+-- TODO: When we dont know the type of value we are parsing, we could not distinguish between some
+-- of the alternatives without deep context analysis and/or semantical analysis
 -- Checked    
 value = builtinValue <|> referencedValue {- TODO: <|> objectClassFieldValue -}
         <?> "Value"
 
 -- TODO: re-check this after implementation of all builtin types
 builtinValue =
-  choice $ map try [ booleanValue >>= return . BooleanValue -- ok
-                   , NullValue <$ reserved "NULL" -- ok
-                   , realValue -- ok
-                     -- Integer identified by 'identifier' is described below
-                   , SignedNumber <$> signedNumber -- ok
-                   , bitStringValue -- This covers OCTET STRING as well
-                   , characterStringValue >>= return . CharString -- ok
+  choice $ map try [ booleanValue -- ok
+                   , nullValue -- ok
+                   , SignedNumber <$> integer -- Integer identified by 'identifier' is covered by SomeIdentifiedValue
+                   , bitStringValue -- This covers OCTET STRING values as well
+                   , CharString <$> characterStringValue
                    , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
                    , choiceValue
                      -- TODO: embeddedPDVValue
-                     -- TODO: enumeratedValue
                      -- TODO: externalValue
                      -- TODO: instanceOfValue
                      -- TODO: objectClassFieldValue
                    , OID <$> oid
                      -- TODO: relativeOIDValue
-                     -- TODO: taggedValue
-                     -- From ReferencedValue:
+                     -- taggedValue is not here because it is just "value" and would lead to infinie loop
                      --   TODO
+                   , realValue -- ok
                      -- Two types could have values denoted by a simple identified. Without semantical analysis
                      -- it is impossible to tell them apart. So they are captured by this single catch-all case below
-                   , IntegerOrEnumeratedIdentifiedValue <$> identifier -- ok
-
+                   , SomeIdentifiedValue <$> identifier -- ok
                    ]
 
 -- Checked
@@ -490,6 +562,7 @@ namedValue = NamedValue <$> identifier <*> value
 -- booleanType parser is inlined into basicType parser
 -- Checked
 booleanValue =
+  BooleanValue <$>
   choice [ True <$ reserved "TRUE"
          , False <$ reserved "FALSE"
          ]
@@ -514,7 +587,10 @@ namedNumber =
 -- Checked  
 signedNumber = integer <?> "SignedNumber"
 
--- Parser for integer values is inlined into builtinValue parser
+integerValue = 
+  choice [ SignedNumber <$> signedNumber
+         , IdentifiedNumber <$> identifier
+         ]
 -- }} end of clause 18
 -- {{ X.680-0207, clause 19, "Notation for the enumerated type"
 -- Checked
@@ -541,6 +617,7 @@ enumerationItem =
          ]
 
 -- Value parser is inlined into builtinValue parser
+enumeratedValue = EnumeratedValue <$> identifier
 -- }} end of clause 19
 -- {{ X.680-0207, clause 20, "REAL"
 -- The type parser inlined into builtinType parser
@@ -562,27 +639,32 @@ bitStringType = BitString <$> ( reserved "BIT" *>  reserved "STRING" *> option [
 bitStringValue =
   choice [ try $ BinaryString <$> bstring
          , HexString <$> hstring
-         , try $ EmptyBitString <$ ( lexeme (char '{') >> lexeme (char '}') )
-         , IdentifierListBitString <$> braces (commaSep1 identifier)
+         , IdentifierListBitString <$> braces (commaSep identifier)
          , Containing <$> (reserved "CONTAINING" *> value)
          ]
 -- }} end of clause 21
 -- {{ X.680-0207, clause 22, "OCTET STRING"
 -- Type parser is inlined in builtinType parser
--- Value parser is a subset of BITSTRING value parser (hstring, bstring and CONTAINING clauses) and inlined into builtinValue
--- and bitStringSpecialValue
+-- Value parser is also a subset of BITSTRING value parser (hstring, bstring and CONTAINING clauses) and inlined into bitStringValue
+-- Checked
+octetStringValue = 
+  choice [ try $ BinaryString <$> bstring
+         , HexString <$> hstring
+         , Containing <$> (reserved "CONTAINING" *> value)
+         ]
 -- }} end of clause 22
 -- {{ X.680-0207, clause 23, "NULL"
 -- Type parser is inlined in builtinType parser
--- Value parser is inlined into builtinValue parser
+nullValue = NullValue <$ reserved "NULL"
 -- }} end of clause 23
 -- {{ X.680-0207, clause 24, "SEQUENCE"
 
 -- Checked, X.680-0207
 sequenceType = 
-  choice [ try $ EmptySequence <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
-         , try $ EmptyExtendableSequence <$> ( reserved "SEQUENCE" *> braces (extensionAndException <* optionalExtensionMarker) )
-         , Sequence <$> (reserved "SEQUENCE" *> braces componentTypeLists)
+  Sequence <$>
+  choice [ try $ Empty <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
+         , try $ JustException <$> ( reserved "SEQUENCE" *> braces (extensionAndException <* optionalExtensionMarker) )
+         , (reserved "SEQUENCE" *> braces componentTypeLists)
          ]
 
 -- Checked
@@ -593,6 +675,8 @@ extensionAndException = symbol "..." >> exceptionSpec
 optionalExtensionMarker = optional $ extensionEndMarker
 
 data ComponentTypeLists = ComponentTypeList [ComponentType]
+                        | Empty
+                        | JustException  (Maybe ExceptionIdentification)
                         | JustExtensions (Maybe ExceptionIdentification) (Maybe [ExtensionAddition])
                         | ExtensionsAtStart (Maybe ExceptionIdentification) (Maybe [ExtensionAddition]) [ComponentType]
                         | ExtensionsAtEnd [ComponentType] (Maybe ExceptionIdentification) (Maybe [ExtensionAddition])
@@ -622,11 +706,7 @@ extensionsAdditions = optionMaybe (comma >> extensionAdditionList)
 -- It is hard to ensure that this parser does not consume the trailing coma (and fail).
 -- So we let it do that and make subsequent coma optional at call site
 -- Checked, X.680-0207
-extensionAdditionList = commaSepEndBy1 extensionAddition -- `sepEndBy1` comma'
-  where 
-    comma' = try $ do
-      comma
-      notFollowedBy (lexeme (char '.'))
+extensionAdditionList = commaSepEndBy1 extensionAddition
 
 data ExtensionAddition = ExtensionAdditionGroup (Maybe Integer) [ComponentType]
                        | ExtensionAdditionType ComponentType
@@ -670,23 +750,25 @@ valueOptionality = optionMaybe $
 
 -- This is also used as SequenceOf value
 -- Checked
-newtype ComponentValueList = ComponentValueList [NamedValue] deriving (Eq,Ord,Show, Typeable, Data)
-componentValueList = ComponentValueList <$> braces (commaSep namedValue)
+type ComponentValueList = [NamedValue]
+componentValueList = braces (commaSep namedValue)
 
+sequenceValue = SequenceValue <$> componentValueList
 -- Value parsing is covered by setOf/seqOf value parser
 -- }} end of clause 24
 -- {{ X.680-0207, clause 25, "SEQUENCE OF" and clause 27, "SET OF"
 -- 'TypeWithConstraint' is merged with SetOfType and SequenceOfType for brevity
 -- Checked
 setOrSequenceOfType = do  
-  (constrT, constrNT) <- constructor
+  constr <- constructor
   c <- optionMaybe setSeqConstraint
   reserved "OF"
-  choice [ try $ constrNT c <$> namedType
-         , constrT c <$> theType
-         ]
+  t <- choice [ try $ Right <$> namedType
+              , Left <$> theType
+              ]
+  return $ constr c t
   where
-    constructor = ( (SetOf, SetOfNamed) <$ reserved "SET" ) <|> ( (SequenceOf, SequenceOfNamed) <$ reserved "SEQUENCE")
+    constructor = ( SetOf <$ reserved "SET" ) <|> ( SequenceOf <$ reserved "SEQUENCE")
     setSeqConstraint =
       choice [ reserved "SIZE" >> constraint -- TODO: This is SizeConstraint, wrap in appropriate constructor
              , constraint
@@ -694,17 +776,22 @@ setOrSequenceOfType = do
 
 -- Checked      
 setOrSequenceOfValue = 
-  choice [ try $ ComponentValue <$> componentValueList
+  choice [ try $ NamedValueList <$> componentValueList
          , ValueList <$> braces (commaSep value)
          ]
+
+sequenceOfValue = setOrSequenceOfValue
+setOfValue = setOrSequenceOfValue
 -- }} end of clause 25, end of clause 27
 -- {{ X.680-0207, clause 26, "SET"
 setType = 
-  choice [ try $ EmptySet <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
-         , try $ EmptyExtendableSet <$> ( reserved "SET" *> braces ( extensionAndException <* optionalExtensionMarker ) )
-         , Set <$> (reserved "SET" *> braces componentTypeLists)
+  Set <$>
+  choice [ try $ Empty <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
+         , try $ JustException <$> ( reserved "SET" *> braces ( extensionAndException <* optionalExtensionMarker ) )
+         , (reserved "SET" *> braces componentTypeLists)
          ]
--- value parser is handled by setOrSequenceOfValue
+-- value parser is also handled by setOrSequenceOfValue
+setValue = SetValue <$> componentValueList
 -- }} end of clause 26
 -- {{ X.680-0207, clause 28, "CHOICE"
 -- Checked
@@ -759,7 +846,7 @@ taggedType = Tagged <$> tag <*> tagType <*> theType
 
 data Tag = Tag (Maybe Class) ClassNumber deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked
-tag = Tag <$> squares (optionMaybe theClass <*> classNumber)
+tag = squares (Tag <$> optionMaybe theClass <*> classNumber)
 
 data ClassNumber = ClassNumber Integer | ClassNumberAsDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked
@@ -774,10 +861,12 @@ theClass = choice [ Universal <$ reserved "UNIVERSAL"
                   , Application <$ reserved "APPLICATION"
                   , Private <$ reserved "PRIVATE"
                   ]
+-- Tagged type does not have value parser - it is just "value"
 -- }} end of clause 30
 -- {{ X.680-0207, clause 31, "Object Identifier Type"
 -- Type parser is trivial and inlined in builtinType parser
 
+objectIdentifierValue = OID <$> oid
 -- ObjectIdentifier is replaced with OID for brevity
 type OID = [OIDComponent]
 -- Checked
@@ -801,6 +890,7 @@ reservedOIDIdentifier = do
   notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
   return i
 -- }} end of clause 31
+
 -- {{ X.680-0207, clause 49, "The exception identifier"
 -- Checked
 exceptionSpec = 
