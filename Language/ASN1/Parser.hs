@@ -710,6 +710,28 @@ alternativeTypeList = commaSepEndBy1 namedType
 
 choiceValue = ChoiceValue <$> identifier <*> ( colon *> value)
 -- }} end of clause 28
+-- {{ X.680-0207, clause 30, "Tagged Types"
+-- Checked
+taggedType = Tagged <$> tag <*> tagType <*> theType
+
+data Tag = Tag (Maybe Class) ClassNumber deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+tag = Tag <$> squares (optionMaybe theClass <*> classNumber)
+
+data ClassNumber = ClassNumber Integer | ClassNumberAsDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+classNumber =
+  choice [ ClassNumber <$> number
+         , ClassNumberAsDefinedValue <$> definedValue
+         ]
+
+data Class = Universal | Application | Private deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+theClass = choice [ Universal <$ reserved "UNIVERSAL"
+                  , Application <$ reserved "APPLICATION"
+                  , Private <$ reserved "PRIVATE"
+                  ]
+-- }} end of clause 30
 -- {{ X.680-0207, clause 31, "Object Identifier Type"
 -- Type parser is trivial and inlined in builtinType parser
 
@@ -946,32 +968,6 @@ selectionType =
      <?> "SelectionType"
 
 
-taggedType =
-  do { t <- tag
-     ; tt <- tagType
-     ; typ <- theType
-     ; return (Tagged t tt typ)
-     }
-     <?> "TaggedType"
-
-data Tag = Tag Class ClassNumber deriving (Eq,Ord,Show, Typeable, Data)
-tag = squares $ do { c <- option UndefinedClass theClass
-                   ; cn <- classNumber
-                   ; return (Tag c cn)
-                   } 
-
-data ClassNumber = ClassNumber Integer | ClassNumberAsDefinedValue DefinedValue deriving (Eq,Ord,Show, Typeable, Data)
-classNumber =
-  choice [ number >>= return . ClassNumber
-         , definedValue >>= return . ClassNumberAsDefinedValue
-         ]
-  <?> "ClassNumber"
-
-data Class = Universal | Application | Private | UndefinedClass deriving (Eq,Ord,Show, Typeable, Data)
-theClass = choice [ reserved "UNIVERSAL" >> return Universal
-                  , reserved "APPLICATION" >> return Application
-                  , reserved "PRIVATE" >> return Private
-                  ]
            
 anyType =
   do { reserved "ANY"
