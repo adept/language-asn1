@@ -530,6 +530,12 @@ bitStringSpecialValue =
          , Containing <$> (reserved "CONTAINING" *> value)
          ]
 -- }} end of clause 21
+-- {{ X.680-0207, clause 22, "OCTET STRING"
+-- Type parser is inlined in builtinType parser
+-- Value parser is a subset of BITSTRING value parser (hstring, bstring and CONTAINING clauses) and inlined into builtinValue
+-- and bitStringSpecialValue
+-- }} end of clause 22
+
 sequenceValue = undefined
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
