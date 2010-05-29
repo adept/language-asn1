@@ -305,6 +305,8 @@ data BuiltinType = TheInteger [NamedNumber]
                  | Set ComponentTypeLists
                  | SetOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
                  | SequenceOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
+                 | SetOfNamed (Maybe SubtypeSpec) NamedType -- TODO: fix types when constraint is implemented properly
+                 | SequenceOfNamed (Maybe SubtypeSpec) NamedType -- TODO: fix types when constraint is implemented properly                   
                  | Choice AlternativeTypeLists
                  | Selection Identifier Type
                  | Tagged Tag (Maybe TagType) Type
@@ -381,7 +383,7 @@ data Value = BooleanValue Bool
            | NullValue
              -- Real type
            | RealValue Double
-           | SequenceRealValue SequenceValue
+           | SequenceRealValue ComponentValueList
            | PlusInfinity
            | MinusInfinity
              -- End of Real type
@@ -396,7 +398,8 @@ data Value = BooleanValue Bool
            | SignedNumber Integer
            | CharString StringConst
            | CompoundValue OID
-           | SequenceV SequenceValue
+           | ComponentValue ComponentValueList
+           | ValueList [Value]
              -- ReferencedValue constructors:
            | DefinedV DefinedValue
              -- TODO: | ValueFromObject ...
@@ -414,9 +417,9 @@ builtinValue =
                    , realValue -- ok
                      -- Integer identified by 'identifier' is described below
                    , SignedNumber <$> signedNumber -- ok
-                   , bitStringSpecialValue -- ok
+                   , bitStringValue -- This covers OCTET STRING as well
                    , characterStringValue >>= return . CharString -- ok
-                   , compoundValue >>= return . CompoundValue
+                   , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
                      -- TODO: choiceValue
                      -- TODO: embeddedPDVValue
                      -- TODO: enumeratedValue
@@ -424,11 +427,7 @@ builtinValue =
                      -- TODO: instanceOfValue
                      -- TODO: objectClassFieldValue
                      -- TODO: objectIdentifierValue
-                     -- TODO: octetStringValue
                      -- TODO: relativeOIDValue
-                     -- TODO: sequenceOfValue
-                     -- TODO: setValue
-                     -- TODO: setOfValue
                      -- TODO: taggedValue
                      -- From ReferencedValue:
                      --   TODO
@@ -512,7 +511,7 @@ realValue =
   choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
          , reserved "MINUS-INFINITY" >> return MinusInfinity
          , RealValue <$> float
-         , SequenceRealValue <$> sequenceValue
+         , SequenceRealValue <$> componentValueList
          ]
 
 -- }} end of clause 20
@@ -522,7 +521,7 @@ realValue =
 bitStringType = BitString <$> ( reserved "BIT" *>  reserved "STRING" *> option [] (braces namedNumberList) )
 
 -- Checked
-bitStringSpecialValue =
+bitStringValue =
   choice [ try $ BinaryString <$> bstring
          , HexString <$> hstring
          , try $ EmptyBitString <$ ( lexeme (char '{') >> lexeme (char '}') )
@@ -602,11 +601,7 @@ versionNumber = optionMaybe $ number <* lexeme (char ':')
 -- It is hard to ensure that this parser does not consume the trailing coma (and fail).
 -- So we let it do that and make subsequent coma optional at call site
 -- Checked, X.680-0207
-componentTypeList = commaSepEndBy1 componentType -- `sepBy1` comma'
-  where
-    comma' = try $ do
-      comma
-      notFollowedBy (lexeme (char '.'))
+componentTypeList = commaSepEndBy1 componentType
 
 data ComponentType = NamedTypeComponent { element_type::NamedType
                                         , element_presence::Maybe ValueOptionality
@@ -627,12 +622,36 @@ valueOptionality = optionMaybe $
          , reserved "DEFAULT" >> value >>= return . DefaultValue
          ] 
 
+-- This is also used as SequenceOf value
 -- Checked
-newtype SequenceValue = SequenceValue [NamedValue] deriving (Eq,Ord,Show, Typeable, Data)
-sequenceValue = SequenceValue <$> braces (commaSep namedValue)
+newtype ComponentValueList = ComponentValueList [NamedValue] deriving (Eq,Ord,Show, Typeable, Data)
+componentValueList = ComponentValueList <$> braces (commaSep namedValue)
 
+-- Value parsing is covered by setOf/seqOf value parser
 -- }} end of clause 24
+-- {{ X.680-0207, clause 25, "SEQUENCE OF" and clause 27, "SET OF"
+-- 'TypeWithConstraint' is merged with SetOfType and SequenceOfType for brevity
+-- Checked
+setOrSequenceOfType = do  
+  (constrT, constrNT) <- constructor
+  c <- optionMaybe setSeqConstraint
+  reserved "OF"
+  choice [ try $ constrNT c <$> namedType
+         , constrT c <$> theType
+         ]
+  where
+    constructor = ( (SetOf, SetOfNamed) <$ reserved "SET" ) <|> ( (SequenceOf, SequenceOfNamed) <$ reserved "SEQUENCE")
+    setSeqConstraint =
+      choice [ reserved "SIZE" >> constraint -- TODO: This is SizeConstraint, wrap in appropriate constructor
+             , constraint
+             ]
 
+-- Checked      
+setOrSequenceOfValue = 
+  choice [ try $ ComponentValue <$> componentValueList
+         , ValueList <$> braces (commaSep value)
+         ]
+-- }} end of clause 25, end of clause 27
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
 elementSetSpecs = undefined
@@ -730,21 +749,6 @@ setType =
 -- TODO: values
 -- }} end of section 12.3
 -- {{ Section 12.4 and 12.5, "The constructor SEQUENCE OF" and "The constructor SET OF"
--- 'TypeWithConstraint' is merged with SetOfType and SequenceOfType for brevity
-setOrSequenceOfType = do  
-  set <- isSet
-  c <- optionMaybe setSeqConstraint
-  reserved "OF"
-  if set 
-    then SetOf c <$> theType
-    else SequenceOf c <$> theType
-  where
-    isSet = ( True <$ reserved "SET" ) <|> (False <$ reserved "SEQUENCE")
-    setSeqConstraint =
-      choice [ reserved "SIZE" >> constraint -- TODO: This is SizeConstraint, wrap in appropriate constructor
-             , constraint
-             ]
--- TODO: values      
 -- }}
 
 
@@ -1260,15 +1264,6 @@ presenceConstraint =
          , do reserved "OPTIONAL"; return OptionalConstraint
          ]
   <?> "PresenceConstraint"
-
-
-
-
-
-compoundValue = oid
-     <?> "CompoundValue"
-
-
 
 
 
