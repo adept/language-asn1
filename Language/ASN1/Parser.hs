@@ -284,63 +284,13 @@ valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*
     valueSetOrAlternative = valueSet <|> parens elementSetSpecs
 -- }} end of clause 15
 -- {{ X.680-0207, clause 16, "Definition of types and values"
--- }} end of clause 16
-
-data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
-valueSet = braces elementSetSpecs
-elementSetSpecs = undefined
-
-newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-type NumberOrDefinedValue = Either Integer DefinedValue
-data ElementType = NamedElementType { _element_name::TypeName
-                                    , _element_body::Type
-                                    , _element_presence::Maybe ValueOptionality
-                                    } 
-                 | ComponentsOf_ Type deriving (Eq,Ord,Show, Typeable, Data)
-data NamedValue = NamedValue { value_name::ValueName
-                             , named_value::Value
-                             } deriving (Eq,Ord,Show, Typeable, Data)
-newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
-
-
--- { Chapter 8.1, "Lexical tokens in ASN.1"
-data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
-stringConst allowedSet marker = 
-  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst body) } 
-
-bstring = stringConst "01" 'B' <?> "bstring"
-
-hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
-
-cstring = 
-  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst s) } <?> "cstring"
-
-lcaseFirstIdent = do { i <- parsecIdent
-                     ; when (isUpper $ head i) $ unexpected "uppercase first letter"
-                     ; return i
-                     }
-
-ucaseFirstIdent = do { i <- parsecIdent
-                     ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
-                     ; return i
-                     }
-
-ucaseIdent = do { i <- parsecIdent
-                ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
-                ; return i
-                }
--- }
-
--- { Chapter 9, "Modules and assignments"
--- {{ Section 9.1, "Assignments"
-  
--- ConstrainedType is merged in other parsers: "Type Constraint" alternative is encoded here,
+-- ConstrainedType (clause 45) is merged in other parsers: "Type Constraint" alternative is encoded here,
 -- and TypeWithConstraint in implemented in SetOf/SequenceOf parsers
 data Type = Type { type_id::BuiltinType
                  , subtype::Maybe SubtypeSpec
                  }
                deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
 theType = Type <$> ( builtinType <|> referencedType ) <*> optionMaybe constraint
           <?> "Type"
 
@@ -389,34 +339,43 @@ data BuiltinType = TheInteger [NamedNumber]
                  | GeneralizedTime
                  | UTCTime
                  deriving (Eq,Ord,Show, Typeable, Data)
-                          
-builtinType =
-  choice $ map try [ integerType
-                   , BitString <$> bitStringType
-                   , try $ sequenceType
-                   , try $ setType
-                   , setOrSequenceOfType
-                   , choiceType
-                   , taggedType
-                   , Any <$> anyType -- DEPRECATED
-                   , enumeratedType
-                   , OctetString <$ (reserved "OCTET" *> reserved "STRING")
-                   , ObjectIdentifier <$ (reserved "OBJECT" *> reserved "IDENTIFIER")
-                   , Real <$ reserved "REAL"
-                   , Boolean <$ reserved "BOOLEAN"
-                   , Null <$ reserved "NULL"
-                   , External <$ reserved "EXTERNAL"
-                   , characterStringType
-                     -- TODO: , embeddedPDVType
-                     -- TODO: , instanceOfType
-                     -- TODO: , objectClassFieldType
-                     -- TODO: , relativeOIDType
-                   ]
 
-referencedType = 
-  definedType <|> usefulType <|> selectionType {- TODO: <|> typeFromObject <|> valueSetFromObjects -} 
+-- Checked                          
+builtinType =
+  choice $ map try [ integerType -- clause 18
+                   , BitString <$> bitStringType -- clause 21
+                   , try $ sequenceType -- clause 24
+                   , try $ setType -- clause 26
+                   , setOrSequenceOfType -- clauses 25 and 27
+                   , choiceType -- clause 28
+                   , taggedType -- clause 30
+                   , Any <$> anyType -- DEPRECATED
+                   , enumeratedType -- clause 19
+                   , OctetString <$ (reserved "OCTET" *> reserved "STRING") -- clause 22
+                   , ObjectIdentifier <$ (reserved "OBJECT" *> reserved "IDENTIFIER") -- clause 31
+                   , Real <$ reserved "REAL" -- clause 20
+                   , Boolean <$ reserved "BOOLEAN" -- clause 17
+                   , Null <$ reserved "NULL" -- clause 23
+                   , External <$ reserved "EXTERNAL" -- clause 34
+                   , characterStringType -- clause 36
+                     -- TODO: , embeddedPDVType -- clause 33
+                     -- TODO: , instanceOfType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
+                     -- TODO: , objectClassFieldType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
+                     -- TODO: , relativeOIDType -- clause 32
+                   ]
+-- Checked
+referencedType = definedType -- clause 13.1
+                 <|> usefulType -- clause 41.1
+                 <|> selectionType -- clause 29
+                 {- TODO: 
+                 <|> typeFromObject -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
+                 <|> valueSetFromObjects -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
+                 -} 
   <?> "ReferencedType"
 
+data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+namedType = NamedType <$> identifier <*> theType
 
 data Value = BooleanValue Bool
            | NullValue
@@ -433,11 +392,11 @@ data Value = BooleanValue Bool
            | IntegerOrEnumeratedIdentifiedValue Identifier
            deriving (Eq,Ord,Show, Typeable, Data)
 
-    
-value = builtinValue <|> referencedValue
+-- Checked    
+value = builtinValue <|> referencedValue {- TODO: <|> objectClassFieldValue -}
         <?> "Value"
-                      
--- TODO: re-check all this once again
+
+-- TODO: re-check this after implementation of all builtin types
 builtinValue =
   choice $ map try [ booleanValue >>= return . BooleanValue -- ok
                    , NullValue <$ reserved "NULL" -- ok
@@ -471,10 +430,70 @@ builtinValue =
 
                    ]
 
+-- Checked
 referencedValue = 
   choice [ DefinedV <$> definedValue 
-         -- TODO: , valueFromObject
+         -- TODO: , valueFromObject -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
          ]
+
+data NamedValue = NamedValue Identifier Value deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+namedValue = NamedValue <$> identifier <*> value
+             <?> "NamedValue"
+-- }} end of clause 16
+
+data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
+valueSet = braces elementSetSpecs
+elementSetSpecs = undefined
+
+newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+type NumberOrDefinedValue = Either Integer DefinedValue
+data ElementType = NamedElementType { _element_name::TypeName
+                                    , _element_body::Type
+                                    , _element_presence::Maybe ValueOptionality
+                                    } 
+                 | ComponentsOf_ Type deriving (Eq,Ord,Show, Typeable, Data)
+newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
+
+
+-- { Chapter 8.1, "Lexical tokens in ASN.1"
+data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
+stringConst allowedSet marker = 
+  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst body) } 
+
+bstring = stringConst "01" 'B' <?> "bstring"
+
+hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
+
+cstring = 
+  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst s) } <?> "cstring"
+
+lcaseFirstIdent = do { i <- parsecIdent
+                     ; when (isUpper $ head i) $ unexpected "uppercase first letter"
+                     ; return i
+                     }
+
+ucaseFirstIdent = do { i <- parsecIdent
+                     ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
+                     ; return i
+                     }
+
+ucaseIdent = do { i <- parsecIdent
+                ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
+                ; return i
+                }
+-- }
+
+-- { Chapter 9, "Modules and assignments"
+-- {{ Section 9.1, "Assignments"
+  
+
+
+
+                      
+-- TODO: re-check all this once again
+
 
 taggedValue = value
 
@@ -682,8 +701,6 @@ setOrSequenceOfType = do
 -- TODO: values      
 -- }}
 
-data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
-namedType = NamedType <$> identifier <*> theType
 
 
 
@@ -1221,13 +1238,6 @@ specialRealValue =
 
 
 
-namedValue =
-  do {
-     ; id <- option UndefinedIdentifier ( try identifier )
-     ; v <- value
-     ; return (NamedValue (ValueName id) v)
-     }
-     <?> "NamedValue"
 
 oid = braces (many1 oidComponent)
      <?> "OID"
