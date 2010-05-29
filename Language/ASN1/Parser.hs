@@ -710,6 +710,12 @@ alternativeTypeList = commaSepEndBy1 namedType
 
 choiceValue = ChoiceValue <$> identifier <*> ( colon *> value)
 -- }} end of clause 28
+-- {{ X.680-0207, clause 29, "Selection Types"
+selectionType = Selection <$> identifier <*> (symbol "<" *> theType)
+                <?> "SelectionType"
+
+-- SelectionType does not have a special value parser
+-- }} end of clause 29
 -- {{ X.680-0207, clause 30, "Tagged Types"
 -- Checked
 taggedType = Tagged <$> tag <*> tagType <*> theType
@@ -959,13 +965,6 @@ componentsType =
      <?> "ComponentsType"
 
 
-selectionType =
-  do { id <- identifier;
-     ; symbol "<"
-     ; t <- theType
-     ; return (Selection id t)
-     }
-     <?> "SelectionType"
 
 
            
