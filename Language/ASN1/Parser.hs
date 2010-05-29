@@ -293,37 +293,43 @@ data Type = Type { type_id::BuiltinType
 -- Checked
 theType = Type <$> ( builtinType <|> referencedType ) <*> optionMaybe constraint
           <?> "Type"
+{-
+Type Clause in the X.680
+------------------------
+BitStringType 21
+BooleanType 17
+CharacterStringType 36
+ChoiceType 28
+EmbeddedPDVType 33
+EnumeratedType 19
+ExternalType 34
+InstanceOfType ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
+IntegerType 18
+NullType 23
+ObjectClassFieldType ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
+ObjectIdentifierType 31
+OctetStringType 22
+RealType 20
+RelativeOIDType 32
+SequenceType 24
+SequenceOfType 25
+SetType 26
+SetOfType 27
+TaggedType 30
 
-data BuiltinType = TheInteger [NamedNumber]
-                 | BitString [NamedNumber]
-                   -- SEQUENCE variants
-                 | EmptySequence
-                 | EmptyExtendableSequence (Maybe ExceptionIdentification)
-                 | Sequence ComponentTypeLists
-                 | EmptySet
-                 | EmptyExtendableSet (Maybe ExceptionIdentification)
-                 | Set ComponentTypeLists
-                 | SetOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
-                 | SequenceOf (Maybe SubtypeSpec) Type -- TODO: fix types when constraint is implemented properly
-                 | SetOfNamed (Maybe SubtypeSpec) NamedType -- TODO: fix types when constraint is implemented properly
-                 | SequenceOfNamed (Maybe SubtypeSpec) NamedType -- TODO: fix types when constraint is implemented properly                   
-                 | Choice AlternativeTypeLists
-                 | Selection Identifier Type
-                 | Tagged Tag (Maybe TagType) Type
-                 | Any Identifier
-                 | SimpleEnumeration [EnumerationItem]
-                 | EnumerationWithException [EnumerationItem] (Maybe ExceptionIdentification)
-                 | EnumerationWithExceptionAndAddition [EnumerationItem] (Maybe ExceptionIdentification) [EnumerationItem]
-                 | OctetString 
-                 | ObjectIdentifier
-                 | Real
+ReferencedTypes:
+----------------
+DefinedType 13.1
+UsefulType 41.1
+SelectionType 29
+TypeFromObject ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
+ValueSetFromObjects ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
+-}
+
+data BuiltinType = BitString [NamedNumber]
                  | Boolean
-                 | Null
-                 | External
-                 | LocalTypeReference TypeReference
-                 | ExternalTypeReference ModuleReference TypeReference
-                 -- TODO: | ParameterizedType
-                 -- TODO: | ParametrizedValueSetType
+                   -- Fourteen CharacterString variants
+                 | CharacterString
                  | BMPString
                  | GeneralString
                  | GraphicString
@@ -337,9 +343,40 @@ data BuiltinType = TheInteger [NamedNumber]
                  | UTF8String
                  | VideotexString
                  | VisibleString
-                 | CharacterString
+                 | Choice AlternativeTypeLists
+                   -- TODO: EmbeddedPDV
+                   -- Three ENUMERATED variants
+                 | SimpleEnumeration [EnumerationItem]
+                 | EnumerationWithException [EnumerationItem] (Maybe ExceptionIdentification)
+                 | EnumerationWithExceptionAndAddition [EnumerationItem] (Maybe ExceptionIdentification) [EnumerationItem]
+                 | External
+                   -- TODO: InstanceOf
+                 | TheInteger [NamedNumber]
+                 | Null
+                   -- TODO: ObjectClassField
+                 | ObjectIdentifier
+                 | OctetString 
+                 | Real
+                   -- TODO: RelativeOID
+                 | Sequence ComponentTypeLists
+                 | SequenceOf (Maybe SubtypeSpec) (Either Type NamedType)-- TODO: fix types when constraint is implemented properly
+                 | Set ComponentTypeLists
+                 | SetOf (Maybe SubtypeSpec) (Either Type NamedType) -- TODO: fix types when constraint is implemented properly
+                 | Tagged Tag (Maybe TagType) Type
+                   -- Referenced Type constructors:
+                   -- Four defined type variants
+                 | LocalTypeReference TypeReference
+                 | ExternalTypeReference ModuleReference TypeReference
+                   -- TODO: | ParameterizedType
+                   -- TODO: | ParametrizedValueSetType
+                   -- Two UsefulType variants:
                  | GeneralizedTime
                  | UTCTime
+                 | Selection Identifier Type
+                   -- TODO: TypeFromObject constructors                   
+                   -- TODO: ValueSetFromObjects constructors
+                   -- Obsolete, for backward compatibility
+                 | Any Identifier
                  deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Checked                          
@@ -351,7 +388,6 @@ builtinType =
                    , setOrSequenceOfType -- clauses 25 and 27
                    , choiceType -- clause 28
                    , taggedType -- clause 30
-                   , Any <$> anyType -- DEPRECATED
                    , enumeratedType -- clause 19
                    , OctetString <$ (reserved "OCTET" *> reserved "STRING") -- clause 22
                    , ObjectIdentifier <$ (reserved "OBJECT" *> reserved "IDENTIFIER") -- clause 31
@@ -364,6 +400,7 @@ builtinType =
                      -- TODO: , instanceOfType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
                      -- TODO: , objectClassFieldType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
                      -- TODO: , relativeOIDType -- clause 32
+                   , anyType
                    ]
 -- Checked
 referencedType = definedType -- clause 13.1
@@ -968,7 +1005,7 @@ componentsType =
 
 
            
-anyType =
+anyType = Any <$>
   do { reserved "ANY"
      ; option UndefinedIdentifier (  do {reserved "DEFINED"  ;  reserved "BY"  ; identifier  } ) 
      }
