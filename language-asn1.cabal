@@ -22,6 +22,10 @@ Extra-Source-Files: LICENSE README TestASN1Parser.hs
 Flag splitBase
   Description: Choose the new smaller, split-up base package.
 
+flag test
+  Description: Build testsuite and code coverage tests
+  Default: False
+
 Library
   if flag(splitBase)
     Build-Depends:       base >= 3 && < 5, parsec >= 3.0.0, syb
@@ -35,3 +39,12 @@ Library
   Hs-Source-Dirs: .
   Exposed-Modules:
     Language.ASN1.Parser
+
+Executable  LanguageASN1Testsuite
+  Hs-Source-Dirs: .
+  Main-Is:       Testsuite.hs
+  if flag(test)
+    GHC-Options: -fhpc
+    Build-Depends: base >=3 && <=5, HUnit, test-framework, test-framework-hunit, parsec >= 3.0.0, syb
+  else
+    Buildable: False
