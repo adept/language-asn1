@@ -381,7 +381,7 @@ data Value = BooleanValue Bool
            | NullValue
              -- Real type
            | RealValue Double
-           | SequenceRealValue TODO
+           | SequenceRealValue SequenceValue
            | PlusInfinity
            | MinusInfinity
              -- End of Real type
@@ -396,6 +396,7 @@ data Value = BooleanValue Bool
            | SignedNumber Integer
            | CharString StringConst
            | CompoundValue OID
+           | SequenceV SequenceValue
              -- ReferencedValue constructors:
            | DefinedV DefinedValue
              -- TODO: | ValueFromObject ...
@@ -425,7 +426,6 @@ builtinValue =
                      -- TODO: objectIdentifierValue
                      -- TODO: octetStringValue
                      -- TODO: relativeOIDValue
-                     -- TODO: sequenceValue
                      -- TODO: sequenceOfValue
                      -- TODO: setValue
                      -- TODO: setOfValue
@@ -539,114 +539,7 @@ bitStringSpecialValue =
 -- Type parser is inlined in builtinType parser
 -- Value parser is inlined into builtinValue parser
 -- }} end of clause 23
-
-sequenceValue = undefined
-data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
-valueSet = braces elementSetSpecs
-elementSetSpecs = undefined
-
-newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-type NumberOrDefinedValue = Either Integer DefinedValue
-data ElementType = NamedElementType { _element_name::TypeName
-                                    , _element_body::Type
-                                    , _element_presence::Maybe ValueOptionality
-                                    } 
-                 | ComponentsOf_ Type deriving (Eq,Ord,Show, Typeable, Data)
-newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
-
-
--- { Chapter 8.1, "Lexical tokens in ASN.1"
-data StringConst = StringConst (Maybe Char) String deriving (Eq,Ord,Show, Typeable, Data)
-stringConst allowedSet marker = 
-  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst (Just marker) body) } 
-
-type BString = StringConst
-bstring = stringConst "01" 'B' <?> "bstring"
-
-type HString = StringConst
-hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
-
-cstring = 
-  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst Nothing s) } <?> "cstring"
-
-lcaseFirstIdent = do { i <- parsecIdent
-                     ; when (isUpper $ head i) $ unexpected "uppercase first letter"
-                     ; return i
-                     }
-
-ucaseFirstIdent = do { i <- parsecIdent
-                     ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
-                     ; return i
-                     }
-
-ucaseIdent = do { i <- parsecIdent
-                ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
-                ; return i
-                }
--- }
-
--- { Chapter 9, "Modules and assignments"
--- {{ Section 9.1, "Assignments"
-  
-
-
-
-                      
--- TODO: re-check all this once again
-
-
-taggedValue = value
-
--- }} end of section 9.1
-
--- {{ Section 9.3, "Local and external references"   
-
-
-
-     
--- UsefulObjectClassReference is inlined in definedObjectClass
-data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
-                        | LocalObjectClassReference ObjectClassReference
-                        | TypeIdentifier
-                        | AbstractSyntax
-                        deriving (Eq,Ord,Show, Typeable, Data)
-definedObjectClass =
-  choice [ try $ ExternalObjectClassReference <$> moduleReferenceAndDot <*> objectclassreference
-         , LocalObjectClassReference <$> objectclassreference
-         , TypeIdentifier <$ reserved "TYPE-IDENTIFIER"
-         , AbstractSyntax <$ reserved "ABSTRACT-SYNTAX"
-         ]
-
-data DefinedObject = ExternalObjectReference ModuleReference ObjectReference
-                  | LocalObjectReference ObjectReference
-                  deriving (Eq,Ord,Show, Typeable, Data)
-definedObject = 
-  choice [ try $ ExternalObjectReference <$> moduleReferenceAndDot <*> objectreference
-         , LocalObjectReference <$> objectreference
-         ] <?> "DefinedObject"
-  
-data DefinedObjectSet = ExternalObjectSetReference ModuleReference ObjectSetReference
-                  | LocalObjectSetReference ObjectSetReference
-                  deriving (Eq,Ord,Show, Typeable, Data)
-definedObjectSet = 
-  choice [ try $ ExternalObjectSetReference <$> moduleReferenceAndDot <*> objectsetreference
-         , LocalObjectSetReference <$> objectsetreference
-         ] <?> "DefinedObjectSet"
--- }} end of section 9.3
--- } end of chapter 9
--- { Chapter 10, "Basic types"
--- {{ Section 10.1, "BOOLEAN type"
--- }} end of section 10.1
--- {{ Section 10.2, "NULL type"
--- parsers for type and value are inlined into builinType and builtinValue
--- }} end of section 10.2
--- {{ Section 10.3, "INTEGER type"
--- }} end of section 10.3
--- {{ Section 10.4, "The ENUMERATED type"
--- TODO: values
--- }} end of section 10.4
--- { X.680-0207, section 24, "Notation for sequence types"
+-- {{ X.680-0207, clause 24, "SEQUENCE"
 
 -- Checked, X.680-0207
 sequenceType = 
@@ -734,8 +627,100 @@ valueOptionality = optionMaybe $
          , reserved "DEFAULT" >> value >>= return . DefaultValue
          ] 
 
+-- Checked
+newtype SequenceValue = SequenceValue [NamedValue] deriving (Eq,Ord,Show, Typeable, Data)
+sequenceValue = SequenceValue <$> braces (commaSep namedValue)
+
+-- }} end of clause 24
+
+data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
+valueSet = braces elementSetSpecs
+elementSetSpecs = undefined
+
+newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+type NumberOrDefinedValue = Either Integer DefinedValue
+data ElementType = NamedElementType { _element_name::TypeName
+                                    , _element_body::Type
+                                    , _element_presence::Maybe ValueOptionality
+                                    } 
+                 | ComponentsOf_ Type deriving (Eq,Ord,Show, Typeable, Data)
+newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
+
+
+-- { Chapter 8.1, "Lexical tokens in ASN.1"
+data StringConst = StringConst (Maybe Char) String deriving (Eq,Ord,Show, Typeable, Data)
+stringConst allowedSet marker = 
+  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst (Just marker) body) } 
+
+type BString = StringConst
+bstring = stringConst "01" 'B' <?> "bstring"
+
+type HString = StringConst
+hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
+
+cstring = 
+  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst Nothing s) } <?> "cstring"
+
+lcaseFirstIdent = do { i <- parsecIdent
+                     ; when (isUpper $ head i) $ unexpected "uppercase first letter"
+                     ; return i
+                     }
+
+ucaseFirstIdent = do { i <- parsecIdent
+                     ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
+                     ; return i
+                     }
+
+ucaseIdent = do { i <- parsecIdent
+                ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
+                ; return i
+                }
+-- }
+
+taggedValue = value
+
+-- UsefulObjectClassReference is inlined in definedObjectClass
+data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
+                        | LocalObjectClassReference ObjectClassReference
+                        | TypeIdentifier
+                        | AbstractSyntax
+                        deriving (Eq,Ord,Show, Typeable, Data)
+definedObjectClass =
+  choice [ try $ ExternalObjectClassReference <$> moduleReferenceAndDot <*> objectclassreference
+         , LocalObjectClassReference <$> objectclassreference
+         , TypeIdentifier <$ reserved "TYPE-IDENTIFIER"
+         , AbstractSyntax <$ reserved "ABSTRACT-SYNTAX"
+         ]
+
+data DefinedObject = ExternalObjectReference ModuleReference ObjectReference
+                  | LocalObjectReference ObjectReference
+                  deriving (Eq,Ord,Show, Typeable, Data)
+definedObject = 
+  choice [ try $ ExternalObjectReference <$> moduleReferenceAndDot <*> objectreference
+         , LocalObjectReference <$> objectreference
+         ] <?> "DefinedObject"
+  
+data DefinedObjectSet = ExternalObjectSetReference ModuleReference ObjectSetReference
+                  | LocalObjectSetReference ObjectSetReference
+                  deriving (Eq,Ord,Show, Typeable, Data)
+definedObjectSet = 
+  choice [ try $ ExternalObjectSetReference <$> moduleReferenceAndDot <*> objectsetreference
+         , LocalObjectSetReference <$> objectsetreference
+         ] <?> "DefinedObjectSet"
+-- }} end of section 9.3
+-- } end of chapter 9
+-- { Chapter 10, "Basic types"
+-- {{ Section 10.1, "BOOLEAN type"
+-- }} end of section 10.1
+-- {{ Section 10.2, "NULL type"
+-- parsers for type and value are inlined into builtinType and builtinValue
+-- }} end of section 10.2
+-- {{ Section 10.3, "INTEGER type"
+-- }} end of section 10.3
+-- {{ Section 10.4, "The ENUMERATED type"
 -- TODO: values
--- }} end of section 12.2
+-- }} end of section 10.4
 -- {{ Section 12.3, "The constructor SET"
 setType = 
   choice [ try $ EmptySet <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
