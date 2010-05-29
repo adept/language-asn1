@@ -10,18 +10,18 @@ Module {
     DefinitiveOIDNamedNumber (Identifier "pkix") 7,
     DefinitiveOIDNamedNumber (Identifier "id-mod") 0,
     DefinitiveOIDNamedNumber (Identifier "id-pkix1-explicit") 18]),
-    default_tag_type = Just ExplicitTags,
+    default_tag_type = ExplicitTags,
     extensibility_implied = False,
     module_body = Just (ModuleBody {
-      module_exports = Nothing,
-      module_imports = Nothing,
+      module_exports = ExportsAll,
+      module_imports = ImportsNone,
       module_assignments = [ValueAssignment {
         value_ref = ValueReference "id-pkix",
         value_ref_type = Type {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
         ObjIdNamedNumber (NamedNumber (Identifier "identified-organization") 3),
         ObjIdNamedNumber (NamedNumber (Identifier "dod") 6),
         ObjIdNamedNumber (NamedNumber (Identifier "internet") 1),
@@ -35,7 +35,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
         ObjIdNumber 1]
         } ,
       ValueAssignment {
@@ -44,7 +44,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
         ObjIdNumber 2]
         } ,
       ValueAssignment {
@@ -53,7 +53,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
         ObjIdNumber 3]
         } ,
       ValueAssignment {
@@ -62,7 +62,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
         ObjIdNumber 48]
         } ,
       ValueAssignment {
@@ -71,7 +71,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-qt")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-qt")),
         ObjIdNumber 1]
         } ,
       ValueAssignment {
@@ -80,7 +80,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-qt")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-qt")),
         ObjIdNumber 2]
         } ,
       ValueAssignment {
@@ -89,7 +89,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
         ObjIdNumber 1]
         } ,
       ValueAssignment {
@@ -98,7 +98,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
         ObjIdNumber 2]
         } ,
       ValueAssignment {
@@ -107,7 +107,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
         ObjIdNumber 3]
         } ,
       ValueAssignment {
@@ -116,11 +116,11 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
         ObjIdNumber 5]
         } ,
       TypeAssignment (TypeReference "Attribute") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
             type_id = LocalTypeReference (TypeReference "AttributeType"),
             subtype = Nothing
@@ -148,7 +148,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AttributeTypeAndValue") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
             type_id = LocalTypeReference (TypeReference "AttributeType"),
             subtype = Nothing
@@ -170,7 +170,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-ccitt") 2),
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-ccitt") 2),
         ObjIdNamedNumber (NamedNumber (Identifier "ds") 5),
         ObjIdNumber 4]
         } ,
@@ -180,8 +180,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 41]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 41)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-surname",
@@ -189,8 +188,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 4]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 4)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-givenName",
@@ -198,8 +196,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 42]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 42)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-initials",
@@ -207,8 +204,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 43]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 43)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-generationQualifier",
@@ -216,43 +212,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 44]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 44)]
         } ,
       TypeAssignment (TypeReference "X520name") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-name"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-name"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-name"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-name"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-name"))
             } ])]
           } )]),
         subtype = Nothing
@@ -263,43 +258,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 3]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 3)]
         } ,
       TypeAssignment (TypeReference "X520CommonName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name"))
             } ])]
           } )]),
         subtype = Nothing
@@ -310,43 +304,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 7]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 7)]
         } ,
       TypeAssignment (TypeReference "X520LocalityName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-locality-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-locality-name"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-locality-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-locality-name"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-locality-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-locality-name"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-locality-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-locality-name"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-locality-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-locality-name"))
             } ])]
           } )]),
         subtype = Nothing
@@ -357,43 +350,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 8]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 8)]
         } ,
       TypeAssignment (TypeReference "X520StateOrProvinceName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-state-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-state-name"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-state-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-state-name"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-state-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-state-name"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-state-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-state-name"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-state-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-state-name"))
             } ])]
           } )]),
         subtype = Nothing
@@ -404,43 +396,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 10]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 10)]
         } ,
       TypeAssignment (TypeReference "X520OrganizationName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name"))
             } ])]
           } )]),
         subtype = Nothing
@@ -451,43 +442,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 11]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 11)]
         } ,
       TypeAssignment (TypeReference "X520OrganizationalUnitName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name"))
             } ])]
           } )]),
         subtype = Nothing
@@ -498,43 +488,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 12]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 12)]
         } ,
       TypeAssignment (TypeReference "X520Title") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-title"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-title"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-title"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-title"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-title"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-title"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-title"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-title"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-title"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-title"))
             } ])]
           } )]),
         subtype = Nothing
@@ -545,8 +534,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 46]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 46)]
         } ,
       TypeAssignment (TypeReference "X520dnQualifier") (Type {
         type_id = PrintableString,
@@ -558,8 +546,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 6]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 6)]
         } ,
       TypeAssignment (TypeReference "X520countryName") (Type {
         type_id = PrintableString,
@@ -574,14 +561,13 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 5]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 5)]
         } ,
       TypeAssignment (TypeReference "X520SerialNumber") (Type {
         type_id = PrintableString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-serial-number"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-serial-number"))
           } ])]
         } ),
       ValueAssignment {
@@ -590,43 +576,42 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "id-at")),
-        ObjIdNumber 65]
+        assigned_value = NamedValueList [NamedValue (Identifier "id-at") (SignedNumber 65)]
         } ,
       TypeAssignment (TypeReference "X520Pseudonym") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pseudonym"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-pseudonym"))
             } ])]
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pseudonym"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-pseudonym"))
             } ])]
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pseudonym"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-pseudonym"))
             } ])]
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pseudonym"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-pseudonym"))
             } ])]
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pseudonym"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-pseudonym"))
             } ])]
           } )]),
         subtype = Nothing
@@ -637,7 +622,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdNumber 0,
+        assigned_value = OID [ObjIdNumber 0,
         ObjIdNumber 9,
         ObjIdNumber 2342,
         ObjIdNumber 19200300,
@@ -655,7 +640,7 @@ Module {
           type_id = ObjectIdentifier,
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
         ObjIdNamedNumber (NamedNumber (Identifier "member-body") 2),
         ObjIdNamedNumber (NamedNumber (Identifier "us") 840),
         ObjIdNamedNumber (NamedNumber (Identifier "rsadsi") 113549),
@@ -668,14 +653,13 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = CompoundValue [ObjIdDefinedValue (LocalValueReference (ValueReference "pkcs-9")),
-        ObjIdNumber 1]
+        assigned_value = NamedValueList [NamedValue (Identifier "pkcs-9") (SignedNumber 1)]
         } ,
       TypeAssignment (TypeReference "EmailAddress") (Type {
         type_id = IA5String,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-emailaddress-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-emailaddress-length"))
           } ])]
         } ),
       TypeAssignment (TypeReference "Name") (Type {
@@ -745,7 +729,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Certificate") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "tbsCertificate") (Type {
             type_id = LocalTypeReference (TypeReference "TBSCertificate"),
             subtype = Nothing
@@ -769,7 +753,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TBSCertificate") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "version") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) Nothing (Type {
               type_id = LocalTypeReference (TypeReference "Version"),
@@ -777,7 +761,7 @@ Module {
               } ),
             subtype = Nothing
             } ),
-          element_presence = Just (DefaultValue (IntegerOrEnumeratedIdentifiedValue (Identifier "v1")))
+          element_presence = Just (DefaultValue (SomeIdentifiedValue (Identifier "v1")))
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "serialNumber") (Type {
@@ -864,7 +848,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Validity") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "notBefore") (Type {
             type_id = LocalTypeReference (TypeReference "Time"),
             subtype = Nothing
@@ -896,7 +880,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "SubjectPublicKeyInfo") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "algorithm") (Type {
             type_id = LocalTypeReference (TypeReference "AlgorithmIdentifier"),
             subtype = Nothing
@@ -923,7 +907,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Extension") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "extnID") (Type {
             type_id = ObjectIdentifier,
             subtype = Nothing
@@ -947,7 +931,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "CertificateList") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "tbsCertList") (Type {
             type_id = LocalTypeReference (TypeReference "TBSCertList"),
             subtype = Nothing
@@ -971,7 +955,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TBSCertList") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "version") (Type {
             type_id = LocalTypeReference (TypeReference "Version"),
             subtype = Nothing
@@ -1009,7 +993,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "revokedCertificates") (Type {
             type_id = SequenceOf Nothing (Type {
-              type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
                 element_type = NamedType (Identifier "userCertificate") (Type {
                   type_id = LocalTypeReference (TypeReference "CertificateSerialNumber"),
                   subtype = Nothing
@@ -1049,7 +1033,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "AlgorithmIdentifier") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "algorithm") (Type {
             type_id = ObjectIdentifier,
             subtype = Nothing
@@ -1066,7 +1050,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ORAddress") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "built-in-standard-attributes") (Type {
             type_id = LocalTypeReference (TypeReference "BuiltInStandardAttributes"),
             subtype = Nothing
@@ -1090,7 +1074,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "BuiltInStandardAttributes") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "country-name") (Type {
             type_id = LocalTypeReference (TypeReference "CountryName"),
             subtype = Nothing
@@ -1181,14 +1165,14 @@ Module {
           type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "x121-dcc-code") (Type {
             type_id = NumericString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-              range_from = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-country-name-numeric-length")),
+              range_from = Value (SomeIdentifiedValue (Identifier "ub-country-name-numeric-length")),
               range_to = UndefinedValue
               } ])]
             } ),
           NamedType (Identifier "iso-3166-alpha2-code") (Type {
             type_id = PrintableString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-              range_from = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-country-name-alpha-length")),
+              range_from = Value (SomeIdentifiedValue (Identifier "ub-country-name-alpha-length")),
               range_to = UndefinedValue
               } ])]
             } )]),
@@ -1202,14 +1186,14 @@ Module {
             type_id = NumericString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 0),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-name-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-name-length"))
               } ])]
             } ),
           NamedType (Identifier "printable") (Type {
             type_id = PrintableString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 0),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-name-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-name-length"))
               } ])]
             } )]),
           subtype = Nothing
@@ -1224,14 +1208,14 @@ Module {
         type_id = NumericString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-x121-address-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-x121-address-length"))
           } ])]
         } ),
       TypeAssignment (TypeReference "TerminalIdentifier") (Type {
         type_id = PrintableString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-terminal-id-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-terminal-id-length"))
           } ])]
         } ),
       TypeAssignment (TypeReference "PrivateDomainName") (Type {
@@ -1239,14 +1223,14 @@ Module {
           type_id = NumericString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-name-length"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-name-length"))
             } ])]
           } ),
         NamedType (Identifier "printable") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-name-length"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-name-length"))
             } ])]
           } )]),
         subtype = Nothing
@@ -1255,24 +1239,24 @@ Module {
         type_id = PrintableString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name-length"))
           } ])]
         } ),
       TypeAssignment (TypeReference "NumericUserIdentifier") (Type {
         type_id = NumericString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-numeric-user-id-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-numeric-user-id-length"))
           } ])]
         } ),
       TypeAssignment (TypeReference "PersonalName") (Type {
-        type_id = Set (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "surname") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Implicit) (Type {
               type_id = PrintableString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-surname-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-surname-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1285,7 +1269,7 @@ Module {
               type_id = PrintableString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-given-name-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-given-name-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1298,7 +1282,7 @@ Module {
               type_id = PrintableString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-initials-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-initials-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1311,7 +1295,7 @@ Module {
               type_id = PrintableString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-generation-qualifier-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-generation-qualifier-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1323,7 +1307,7 @@ Module {
       TypeAssignment (TypeReference "OrganizationalUnitNames") (Type {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-units"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-units"))
           } ]) (Type {
           type_id = LocalTypeReference (TypeReference "OrganizationalUnitName"),
           subtype = Nothing
@@ -1334,13 +1318,13 @@ Module {
         type_id = PrintableString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name-length"))
           } ])]
         } ),
       TypeAssignment (TypeReference "BuiltInDomainDefinedAttributes") (Type {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-defined-attributes"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attributes"))
           } ]) (Type {
           type_id = LocalTypeReference (TypeReference "BuiltInDomainDefinedAttribute"),
           subtype = Nothing
@@ -1348,12 +1332,12 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "BuiltInDomainDefinedAttribute") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
             type_id = PrintableString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-defined-attribute-type-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-type-length"))
               } ])]
             } ),
           element_presence = Nothing
@@ -1363,7 +1347,7 @@ Module {
             type_id = PrintableString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-defined-attribute-value-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-value-length"))
               } ])]
             } ),
           element_presence = Nothing
@@ -1373,7 +1357,7 @@ Module {
       TypeAssignment (TypeReference "ExtensionAttributes") (Type {
         type_id = SetOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-extension-attributes"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-extension-attributes"))
           } ]) (Type {
           type_id = LocalTypeReference (TypeReference "ExtensionAttribute"),
           subtype = Nothing
@@ -1381,13 +1365,13 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ExtensionAttribute") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "extension-attribute-type") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Implicit) (Type {
               type_id = TheInteger [],
               subtype = Just [ValueRange {
                 range_from = Value (SignedNumber 0),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-extension-attributes"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-extension-attributes"))
                 } ]
               } ),
             subtype = Nothing
@@ -1418,7 +1402,7 @@ Module {
         type_id = PrintableString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name-length"))
           } ])]
         } ),
       ValueAssignment {
@@ -1433,7 +1417,7 @@ Module {
         type_id = TeletexString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-common-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-common-name-length"))
           } ])]
         } ),
       ValueAssignment {
@@ -1448,7 +1432,7 @@ Module {
         type_id = TeletexString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organization-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-organization-name-length"))
           } ])]
         } ),
       ValueAssignment {
@@ -1460,13 +1444,13 @@ Module {
         assigned_value = SignedNumber 4
         } ,
       TypeAssignment (TypeReference "TeletexPersonalName") (Type {
-        type_id = Set (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "surname") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Implicit) (Type {
               type_id = TeletexString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-surname-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-surname-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1479,7 +1463,7 @@ Module {
               type_id = TeletexString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-given-name-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-given-name-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1492,7 +1476,7 @@ Module {
               type_id = TeletexString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-initials-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-initials-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1505,7 +1489,7 @@ Module {
               type_id = TeletexString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-generation-qualifier-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-generation-qualifier-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1525,7 +1509,7 @@ Module {
       TypeAssignment (TypeReference "TeletexOrganizationalUnitNames") (Type {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-units"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-units"))
           } ]) (Type {
           type_id = LocalTypeReference (TypeReference "TeletexOrganizationalUnitName"),
           subtype = Nothing
@@ -1536,7 +1520,7 @@ Module {
         type_id = TeletexString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-organizational-unit-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name-length"))
           } ])]
         } ),
       ValueAssignment {
@@ -1551,7 +1535,7 @@ Module {
         type_id = PrintableString,
         subtype = Just [SizeConstr (SizeConstraint [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pds-name-length"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-pds-name-length"))
           } ])]
         } ),
       ValueAssignment {
@@ -1566,14 +1550,14 @@ Module {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "x121-dcc-code") (Type {
           type_id = NumericString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-            range_from = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-country-name-numeric-length")),
+            range_from = Value (SomeIdentifiedValue (Identifier "ub-country-name-numeric-length")),
             range_to = UndefinedValue
             } ])]
           } ),
         NamedType (Identifier "iso-3166-alpha2-code") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-            range_from = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-country-name-alpha-length")),
+            range_from = Value (SomeIdentifiedValue (Identifier "ub-country-name-alpha-length")),
             range_to = UndefinedValue
             } ])]
           } )]),
@@ -1592,14 +1576,14 @@ Module {
           type_id = NumericString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-postal-code-length"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-postal-code-length"))
             } ])]
           } ),
         NamedType (Identifier "printable-code") (Type {
           type_id = PrintableString,
           subtype = Just [SizeConstr (SizeConstraint [ValueRange {
             range_from = Value (SignedNumber 1),
-            range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-postal-code-length"))
+            range_to = Value (SomeIdentifiedValue (Identifier "ub-postal-code-length"))
             } ])]
           } )]),
         subtype = Nothing
@@ -1685,16 +1669,16 @@ Module {
         assigned_value = SignedNumber 16
         } ,
       TypeAssignment (TypeReference "UnformattedPostalAddress") (Type {
-        type_id = Set (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "printable-address") (Type {
             type_id = SequenceOf (Just [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pds-physical-address-lines"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-pds-physical-address-lines"))
               } ]) (Type {
               type_id = PrintableString,
               subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                 range_from = Value (SignedNumber 1),
-                range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pds-parameter-length"))
+                range_to = Value (SomeIdentifiedValue (Identifier "ub-pds-parameter-length"))
                 } ])]
               } ),
             subtype = Nothing
@@ -1706,7 +1690,7 @@ Module {
             type_id = TeletexString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-unformatted-address-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-unformatted-address-length"))
               } ])]
             } ),
           element_presence = Just OptionalValue
@@ -1774,12 +1758,12 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PDSParameter") (Type {
-        type_id = Set (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "printable-string") (Type {
             type_id = PrintableString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pds-parameter-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-pds-parameter-length"))
               } ])]
             } ),
           element_presence = Just OptionalValue
@@ -1789,7 +1773,7 @@ Module {
             type_id = TeletexString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-pds-parameter-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-pds-parameter-length"))
               } ])]
             } ),
           element_presence = Just OptionalValue
@@ -1806,13 +1790,13 @@ Module {
         } ,
       TypeAssignment (TypeReference "ExtendedNetworkAddress") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "e163-4-address") (Type {
-          type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "number") (Type {
               type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Implicit) (Type {
                 type_id = NumericString,
                 subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                   range_from = Value (SignedNumber 1),
-                  range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-e163-4-number-length"))
+                  range_to = Value (SomeIdentifiedValue (Identifier "ub-e163-4-number-length"))
                   } ])]
                 } ),
               subtype = Nothing
@@ -1825,7 +1809,7 @@ Module {
                 type_id = NumericString,
                 subtype = Just [SizeConstr (SizeConstraint [ValueRange {
                   range_from = Value (SignedNumber 1),
-                  range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-e163-4-sub-address-length"))
+                  range_to = Value (SomeIdentifiedValue (Identifier "ub-e163-4-sub-address-length"))
                   } ])]
                 } ),
               subtype = Nothing
@@ -1844,7 +1828,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "PresentationAddress") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "pSelector") (Type {
             type_id = Tagged (Tag UndefinedClass (ClassNumber 0)) (Just Explicit) (Type {
               type_id = OctetString,
@@ -1909,7 +1893,7 @@ Module {
         NamedNumber (Identifier "videotex") 8],
         subtype = Just [ValueRange {
           range_from = Value (SignedNumber 0),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-integer-options"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-integer-options"))
           } ]
         } ),
       ValueAssignment {
@@ -1923,7 +1907,7 @@ Module {
       TypeAssignment (TypeReference "TeletexDomainDefinedAttributes") (Type {
         type_id = SequenceOf (Just [ValueRange {
           range_from = Value (SignedNumber 1),
-          range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-defined-attributes"))
+          range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attributes"))
           } ]) (Type {
           type_id = LocalTypeReference (TypeReference "TeletexDomainDefinedAttribute"),
           subtype = Nothing
@@ -1931,12 +1915,12 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "TeletexDomainDefinedAttribute") (Type {
-        type_id = Sequence (SimpleComponentTypeList [NamedTypeComponent {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
             type_id = TeletexString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-defined-attribute-type-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-type-length"))
               } ])]
             } ),
           element_presence = Nothing
@@ -1946,7 +1930,7 @@ Module {
             type_id = TeletexString,
             subtype = Just [SizeConstr (SizeConstraint [ValueRange {
               range_from = Value (SignedNumber 1),
-              range_to = Value (IntegerOrEnumeratedIdentifiedValue (Identifier "ub-domain-defined-attribute-value-length"))
+              range_to = Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-value-length"))
               } ])]
             } ),
           element_presence = Nothing
