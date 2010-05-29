@@ -2,7 +2,7 @@ Name:           language-asn1
 Version:        0.2.1
 Cabal-Version:  >= 1.2.3
 Build-Type:     Simple
-License:        GPL
+License:        BSD
 License-File:   LICENSE
 Copyright:      LICENSE
 Author:         Dmitry Astapov <dastapov@gmail.com>
@@ -12,7 +12,7 @@ Homepage:       http://patch-tag.com/r/adept/language-asn1
 Synopsis:       Parsing of ASN1 definitions
 Description:    Language.ASN1 is a haskell library for the analysis of ASN.1 code.
                 It features an almost-complete, somewhat tested parser for large subset of
-                ASN.1:1997 standard
+                X.680-0207 -- X.683-0207 standards
 Category:       Language
 Tested-With:    GHC==6.10.4, GHC==6.12.1
 

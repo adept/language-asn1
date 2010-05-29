@@ -12,10 +12,10 @@ module Language.ASN1.Parser {-(
 {-
  ASN.1 Parser for Haskell (C) Dmitry Astapov 2003-2010
 
- This software is distibuted under the terms of GPL license
+ This software is distibuted under the terms of BSD license
  See LICENSE for more information
 
- Based on the ASN.1 grammar for JavaCC:
+ The early versions of this parser were based on the ASN.1 grammar for JavaCC:
 /*
  *
  *  ASN.1 grammar  for JavaCC
@@ -27,19 +27,13 @@ module Language.ASN1.Parser {-(
  *  the free software, which is covered by GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or later
  *
- *  I tested it against several ASN.1 files used by CMIP;
- *  Additional work is reguired to fully support SNMP MIBs parsing
- *   
- *  Please let me know if you use this grammar: i'm using it to develop ASN.1/IDL compiler
- *  
  */
 
- JavaCC parser was semi-automatically converted into Parsec parser, and resulting
- code is being checked against the "ASN.1, Communication between Heterogeneous Systems" 
- by Olivier Dubuisson.
+ Current version is written from scratch following X.680-X.683 specification texts
+ and "ASN.1, Communication between Heterogeneous Systems" book by Olivier Dubuisson.
 
- This is work in progress, so there could be bug lurking. Definitions checked against the book
- are annotated with comments referencing to the appropriate book chapter and/or section.
+ This is still work in progress, so there could be bug lurking. However, most of the ASN1 files
+ found in the wild should be parsable.
 -}
 
 import Text.ParserCombinators.Parsec
