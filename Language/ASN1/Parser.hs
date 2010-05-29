@@ -450,6 +450,26 @@ booleanValue =
          ]
 -- }} end of clause 17
 -- {{ X.680-0207, clause 18, "Notation for the integer type"
+-- Checked
+integerType = TheInteger <$> (reserved "INTEGER" *> option [] (braces namedNumberList))
+  
+-- Checked
+namedNumberList = commaSep1 namedNumber
+
+data NamedNumber = NamedNumber Identifier Integer
+                 | NamedDefinedValue  Identifier DefinedValue
+                 deriving (Eq,Ord,Show, Typeable, Data)
+-- Checked
+namedNumber = 
+  choice [ try $ NamedNumber <$> identifier <*> parens signedNumber
+         , NamedDefinedValue <$> identifier <*> parens definedValue
+         ]
+  <?> "NamedNumber"
+  
+-- Checked  
+signedNumber = integer <?> "SignedNumber"
+
+-- Parser for integer values is inlined into builtinValue parser
 -- }} end of clause 18
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
@@ -550,18 +570,6 @@ definedObjectSet =
 -- parsers for type and value are inlined into builinType and builtinValue
 -- }} end of section 10.2
 -- {{ Section 10.3, "INTEGER type"
-integerType = TheInteger <$> (reserved "INTEGER" *> option [] (braces namedNumberList))
-  
-namedNumberList = commaSep1 namedNumber
-
-data NamedNumber = NamedNumber Identifier Integer
-                 | NamedDefinedValue  Identifier DefinedValue
-                 deriving (Eq,Ord,Show, Typeable, Data)
-namedNumber = 
-  choice [ try $ NamedNumber <$> identifier <*> parens signedNumber
-         , NamedDefinedValue <$> identifier <*> parens definedValue
-         ]
-  <?> "NamedNumber"
 -- }} end of section 10.3
 -- {{ Section 10.4, "The ENUMERATED type"
 enumeratedType = reserved "ENUMERATED" *> braces enumerations
@@ -771,8 +779,6 @@ bitStringType =
 
 
 
-signedNumber = integer
-     <?> "SignedNumber"
 
 
 
