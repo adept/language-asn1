@@ -535,6 +535,10 @@ bitStringSpecialValue =
 -- Value parser is a subset of BITSTRING value parser (hstring, bstring and CONTAINING clauses) and inlined into builtinValue
 -- and bitStringSpecialValue
 -- }} end of clause 22
+-- {{ X.680-0207, clause 23, "NULL"
+-- Type parser is inlined in builtinType parser
+-- Value parser is inlined into builtinValue parser
+-- }} end of clause 23
 
 sequenceValue = undefined
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
