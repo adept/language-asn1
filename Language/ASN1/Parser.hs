@@ -379,8 +379,12 @@ namedType = NamedType <$> identifier <*> theType
 
 data Value = BooleanValue Bool
            | NullValue
+             -- Real type
+           | RealValue Double
+           | SequenceRealValue TODO
            | PlusInfinity
            | MinusInfinity
+             -- End of Real type
            | SignedNumber Integer
            | HexString StringConst
            | BinaryString StringConst
@@ -400,7 +404,7 @@ value = builtinValue <|> referencedValue {- TODO: <|> objectClassFieldValue -}
 builtinValue =
   choice $ map try [ booleanValue >>= return . BooleanValue -- ok
                    , NullValue <$ reserved "NULL" -- ok
-                   , specialRealValue -- is this RealValue?
+                   , realValue -- ok
                      -- Integer identified by 'identifier' is described below
                    , SignedNumber <$> signedNumber -- ok
                    , hexString >>= return . HexString
@@ -497,6 +501,19 @@ enumerationItem =
 
 -- Value parser is inlined into builtinValue parser
 -- }} end of clause 19
+-- {{ X.680-0207, clause 20, "REAL"
+-- The type parser inlined into builtinType parser
+
+realValue = 
+  choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
+         , reserved "MINUS-INFINITY" >> return MinusInfinity
+         , RealValue <$> float
+         , SequenceRealValue <$> sequenceValue
+         ]
+
+-- }} end of clause 20
+
+sequenceValue = undefined
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
 elementSetSpecs = undefined
@@ -1244,10 +1261,6 @@ compoundValue = oid
 
 
 
-specialRealValue =
-  choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
-         , reserved "MINUS-INFINITY" >> return MinusInfinity
-         ]
 
 
 
@@ -1380,6 +1393,7 @@ parens          = P.parens asn1
 semi            = P.semi asn1
 natural         = P.natural asn1
 integer         = P.integer asn1
+float           = P.float asn1
 dot             = P.dot asn1
 commaSepEndBy p = p `sepEndBy` comma
 commaSepEndBy1 p = p `sepEndBy1` comma
