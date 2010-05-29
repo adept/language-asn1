@@ -1,5 +1,5 @@
 {-# LANGUAGE DeriveDataTypeable #-}
-module Language.ASN1.Parser (
+module Language.ASN1.Parser {-(
   parseASN1FromFileOrDie
   , parseASN1FromFile
   , parseASN1
@@ -8,7 +8,7 @@ module Language.ASN1.Parser (
   , Assignment(..)
     
   , TypeReference(..)
-  ) where
+  )-} where
 {-
  ASN.1 Parser for Haskell (C) Dmitry Astapov 2003-2010
 
@@ -53,7 +53,7 @@ import Control.Monad (when)
 import Data.Char (isUpper, isAlpha)
 import Data.List (isInfixOf)
 
--- { Top-level interface
+-- {{ Top-level interface
 parseASN1FromFileOrDie :: String -> IO ([Module])
 parseASN1FromFileOrDie fname =
   do result <- parseASN1FromFile fname
@@ -76,9 +76,9 @@ parseASN1 p source =
        Right x  -> Just x
   where
     p' = fixupComments *> whiteSpace *> p <* eof
--- }
+-- }}
 
--- { Top-level parser
+-- {{ Top-level parser
 asn1Input = do
   fixupComments
   whiteSpace
@@ -103,11 +103,11 @@ fixupComments = do
         checkUnterm p []             = p
         checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
         checkUnterm p (_:rest)       = checkUnterm p rest
--- }
+-- }}
         
 -- {{ X.680-0207,  Clause 11, "ASN.1 lexical items"
         -- TODO
--- }}
+-- }} end of clause 11
         
 -- {{ X.680-0207, Clause 12, "Module definition"
 data Module = Module { module_id::ModuleIdentifier
@@ -245,7 +245,8 @@ assignment =
                    -- TODO: , parameterizedAssignment
                    ]
 -- }} end of clause 12
-
+-- {{ X.680-0207, clause 13, "Referencing type and value definitions"
+-- }} end of clause 13
 
 newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 type NumberOrDefinedValue = Either Integer DefinedValue
