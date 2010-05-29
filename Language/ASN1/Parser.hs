@@ -343,7 +343,7 @@ data BuiltinType = TheInteger [NamedNumber]
 -- Checked                          
 builtinType =
   choice $ map try [ integerType -- clause 18
-                   , BitString <$> bitStringType -- clause 21
+                   , bitStringType -- clause 21
                    , try $ sequenceType -- clause 24
                    , try $ setType -- clause 26
                    , setOrSequenceOfType -- clauses 25 and 27
@@ -385,9 +385,15 @@ data Value = BooleanValue Bool
            | PlusInfinity
            | MinusInfinity
              -- End of Real type
-           | SignedNumber Integer
+             -- BitString and OctetString values:
            | HexString StringConst
            | BinaryString StringConst
+           | Containing Value
+             -- Special BitString values:
+           | IdentifierListBitString [Identifier]
+           | EmptyBitString
+             
+           | SignedNumber Integer
            | CharString StringConst
            | CompoundValue OID
              -- ReferencedValue constructors:
@@ -407,11 +413,9 @@ builtinValue =
                    , realValue -- ok
                      -- Integer identified by 'identifier' is described below
                    , SignedNumber <$> signedNumber -- ok
-                   , hexString >>= return . HexString
-                   , binaryString >>= return . BinaryString
+                   , bitStringSpecialValue -- ok
                    , characterStringValue >>= return . CharString -- ok
                    , compoundValue >>= return . CompoundValue
-                     -- TODO: bitStringValue
                      -- TODO: choiceValue
                      -- TODO: embeddedPDVValue
                      -- TODO: enumeratedValue
@@ -512,7 +516,20 @@ realValue =
          ]
 
 -- }} end of clause 20
+-- {{ X.680-0207, clause 21, "BITSTRING"
+-- NamedBitList is really a list of NamedNumbers. See definition of INTEGER for namedNumberList
+-- Checked
+bitStringType = BitString <$> ( reserved "BIT" *>  reserved "STRING" *> option [] (braces namedNumberList) )
 
+-- Checked
+bitStringSpecialValue =
+  choice [ try $ BinaryString <$> bstring
+         , HexString <$> hstring
+         , try $ EmptyBitString <$ ( lexeme (char '{') >> lexeme (char '}') )
+         , IdentifierListBitString <$> braces (commaSep1 identifier)
+         , Containing <$> (reserved "CONTAINING" *> value)
+         ]
+-- }} end of clause 21
 sequenceValue = undefined
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
@@ -530,16 +547,18 @@ data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint derivi
 
 
 -- { Chapter 8.1, "Lexical tokens in ASN.1"
-data StringConst = StringConst String deriving (Eq,Ord,Show, Typeable, Data)
+data StringConst = StringConst (Maybe Char) String deriving (Eq,Ord,Show, Typeable, Data)
 stringConst allowedSet marker = 
-  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst body) } 
+  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst (Just marker) body) } 
 
+type BString = StringConst
 bstring = stringConst "01" 'B' <?> "bstring"
 
+type HString = StringConst
 hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
 
 cstring = 
-  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst s) } <?> "cstring"
+  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst Nothing s) } <?> "cstring"
 
 lcaseFirstIdent = do { i <- parsecIdent
                      ; when (isUpper $ head i) $ unexpected "uppercase first letter"
@@ -791,11 +810,6 @@ characterStringType =
          , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
          ]
 
-bitStringType =
-  do { reserved "BIT";  reserved "STRING" 
-     ; option [] $ braces namedNumberList 
-     }
-     <?> "BitStringType"
 
 
 
