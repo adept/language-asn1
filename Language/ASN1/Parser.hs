@@ -441,7 +441,16 @@ data NamedValue = NamedValue Identifier Value deriving (Eq,Ord,Show, Typeable, D
 namedValue = NamedValue <$> identifier <*> value
              <?> "NamedValue"
 -- }} end of clause 16
-
+-- {{ X.680-0207, clause 17, "Notation for the boolean type"
+-- booleanType parser is inlined into basicType parser
+-- Checked
+booleanValue =
+  choice [ True <$ reserved "TRUE"
+         , False <$ reserved "FALSE"
+         ]
+-- }} end of clause 17
+-- {{ X.680-0207, clause 18, "Notation for the integer type"
+-- }} end of clause 18
 data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
 elementSetSpecs = undefined
@@ -536,11 +545,6 @@ definedObjectSet =
 -- } end of chapter 9
 -- { Chapter 10, "Basic types"
 -- {{ Section 10.1, "BOOLEAN type"
--- booleanType parser is inlined into basicType parser
-booleanValue =
-  choice [ True <$ reserved "TRUE"
-         , False <$ reserved "FALSE"
-         ]
 -- }} end of section 10.1
 -- {{ Section 10.2, "NULL type"
 -- parsers for type and value are inlined into builinType and builtinValue
