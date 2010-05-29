@@ -246,6 +246,33 @@ assignment =
                    ]
 -- }} end of clause 12
 -- {{ X.680-0207, clause 13, "Referencing type and value definitions"
+
+-- definedType is used only in BuiltinType. See BuiltinType for constructors.
+-- I also took libery of reusing "simpleDefinedType" for the first two
+-- alternatives of definedType.
+-- Checked, X.680-0207
+definedType = simpleDefinedType --TODO: <|> parametrizedType <|> parametrizedValueSetType
+
+-- ExternalTypeReference is inlined here
+-- Checked, X.680-0207
+simpleDefinedType = 
+  choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
+         , LocalTypeReference <$> typereference
+         ] <?> "SimpleDefinedType"
+
+data DefinedValue = ExternalValueReference ModuleReference ValueReference
+                  | LocalValueReference ValueReference
+                  deriving (Eq,Ord,Show, Typeable, Data)
+
+-- ExternalValueReference is inlined here
+-- Checked
+definedValue = 
+  choice [ try $ ExternalValueReference <$> moduleReferenceAndDot <*> valuereference
+         , LocalValueReference <$> valuereference
+         -- TODO: , parametrizedValue 
+         ] <?> "DefinedValue"
+
+
 -- }} end of clause 13
 
 newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
@@ -446,20 +473,8 @@ valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*
 
 -- {{ Section 9.3, "Local and external references"   
 
--- definedType is used only in BuiltinType. See BuiltinType for constructors.
--- I also took libery of reusing simpleDefinedType from chapter 17 for the first two
--- alternatives of definedType.
-definedType = simpleDefinedType --TODO: <|> parametrizedType <|> parametrizedValueSetType
 
 
-data DefinedValue = ExternalValueReference ModuleReference ValueReference
-                  | LocalValueReference ValueReference
-                  deriving (Eq,Ord,Show, Typeable, Data)
-definedValue = 
-  choice [ try $ ExternalValueReference <$> moduleReferenceAndDot <*> valuereference
-         , LocalValueReference <$> valuereference
-         -- TODO: , parametrizedValue 
-         ] <?> "DefinedValue"
      
 -- UsefulObjectClassReference is inlined in definedObjectClass
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
@@ -663,11 +678,6 @@ namedType = NamedType <$> identifier <*> theType
 
 
 
-simpleDefinedType = 
-  choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
-         , LocalTypeReference <$> typereference
-         ]
-  <?> "SimpleDefinedType"
 
 data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
 data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
