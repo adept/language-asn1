@@ -265,9 +265,30 @@ definedValue =
          , LocalValueReference <$> valuereference
          -- TODO: , parametrizedValue 
          ] <?> "DefinedValue"
-
-
 -- }} end of clause 13
+-- {{ X.680-0207, clause 14, "Notation to support references to ASN1 components" does not have any useful productions }} --
+-- {{ X.680-0207, clause 15, "Assigning types and values"
+
+-- Checked
+typeAssignment = TypeAssignment <$> typereference <*> (reservedOp "::=" *> theType)
+                 <?> "TypeAssignment"
+
+-- Checked
+valueAssignment = ValueAssignment <$> valuereference <*> theType <*> (reservedOp "::=" *> value)
+                  <?> "ValueAssignment"
+
+-- Checked
+valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
+  where
+    -- This alternative is defined in X.680-0207, clause 15.8
+    valueSetOrAlternative = valueSet <|> parens elementSetSpecs
+-- }} end of clause 15
+-- {{ X.680-0207, clause 16, "Definition of types and values"
+-- }} end of clause 16
+
+data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
+valueSet = braces elementSetSpecs
+elementSetSpecs = undefined
 
 newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 type NumberOrDefinedValue = Either Integer DefinedValue
@@ -314,9 +335,6 @@ ucaseIdent = do { i <- parsecIdent
 -- { Chapter 9, "Modules and assignments"
 -- {{ Section 9.1, "Assignments"
   
-typeAssignment = TypeAssignment <$> typereference <*> (reservedOp "::=" *> theType)
-                 <?> "TypeAssignment"
-
 -- ConstrainedType is merged in other parsers: "Type Constraint" alternative is encoded here,
 -- and TypeWithConstraint in implemented in SetOf/SequenceOf parsers
 data Type = Type { type_id::BuiltinType
@@ -399,8 +417,6 @@ referencedType =
   definedType <|> usefulType <|> selectionType {- TODO: <|> typeFromObject <|> valueSetFromObjects -} 
   <?> "ReferencedType"
 
-valueAssignment = ValueAssignment <$> valuereference <*> theType <*> (reservedOp "::=" *> value)
-                  <?> "ValueAssignment"
 
 data Value = BooleanValue Bool
            | NullValue
@@ -462,7 +478,6 @@ referencedValue =
 
 taggedValue = value
 
-valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
 -- }} end of section 9.1
 
 -- {{ Section 9.3, "Local and external references"   
@@ -1236,8 +1251,6 @@ reservedOIDIdentifier = do
 
 data TODO = TODO deriving (Eq,Ord,Show, Typeable, Data)
 
-data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
-valueSet = undefined
 
 binaryString = bstring <?> "BinaryString"
 hexString = hstring  <?> "HexString"
