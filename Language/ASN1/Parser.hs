@@ -181,7 +181,7 @@ exports =
 -- Checked, X.680-0207
 imports = option ImportsNone ( Imports <$> (reserved "IMPORTS" *> symbolsImported) )
           <?> "Imports"
-  where symbolsImported = (try symbolsFromModule) `endBy` semi
+  where symbolsImported = (many1 symbolsFromModule) <* semi
 
 data SymbolsFromModule = SymbolsFromModule [Symbol] GlobalModuleReference deriving (Eq,Ord,Show, Typeable, Data)
 
@@ -198,7 +198,7 @@ data AssignedIdentifier = AssignedIdentifierOID OID | AssignedIdentifierDefinedV
 assignedIdentifier = 
   optionMaybe $ 
   choice [ AssignedIdentifierOID <$> try oid
-         , AssignedIdentifierDefinedValue <$> definedValue
+         , try $ AssignedIdentifierDefinedValue <$> definedValue
          ]
 
 data Symbol = TypeReferenceSymbol TypeReference
