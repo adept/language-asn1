@@ -920,15 +920,11 @@ relativeOIDValue = RelativeOIDValue <$> braces (many1 relativeOIDComponent)
 -- }} end of clause 32  
 -- {{ X.680-0207, clause 33, "Embedded PDV"
 -- Type parser is trivial and embedded in builtinType
-embeddedPDVValue = do
-  (SequenceValue cvl) <- sequenceValue
-  return $ EmbeddedPDVValue cvl
+embeddedPDVValue = EmbeddedPDVValue <$> componentValueList
 -- }} end of clause 33
 -- {{ X.680-0207, clause 34, "EXTERNAL"
 -- Type parser is trivial and embedded in builtinType
-externalValue = do
-  (SequenceValue cvl) <- sequenceValue
-  return $ ExternalValue cvl
+externalValue = ExternalValue <$> componentValueList
 -- }} end of clause 34
 -- {{ X.680-0207, clause 35-40, "Character string types"
 restrictedCharacterStringValue =
@@ -950,9 +946,7 @@ charsDefn =
          , CharsCString <$> cstring
          ]
 
-unrestrictedCharacterStringValue = do
-  (SequenceValue cvl) <- sequenceValue
-  return $ UnrestrictedCharacterStringValue cvl
+unrestrictedCharacterStringValue = UnrestrictedCharacterStringValue <$> componentValueList
 -- }} end of clause 35-40
 -- {{ X.680-0207, clause 41-44, "Useful Types"
 usefulType = 
