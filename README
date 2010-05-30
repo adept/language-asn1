@@ -1,9 +1,50 @@
-Unsophisticated ASN.1 parser for Haskell.
+ASN.1 definitions parser for Haskell.
 
-Should cover a pretty large subset of ITU-T Rec. X.680 | ISO/IEC 8824-1
+Should cover a pretty large subset of standards 
+  ITU-T Rec. X.680 -- X.683 | ISO/IEC 8824-1 -- 8824-4
 
-This is unfinished work, so beware - here be dragons!
+This is unfinished work, so beware - there be dragons!
 
 Test code could be run like this:
 
   TestASN1Parser LDAP.asn1
+
+Configure with -ftest to build and install test suite (with code
+coverage analysis)
+
+Implementation status
+=====================
+X.680: Clauses 11, 45, 46, 47 pending
+X.681: not done
+X.682: not done
+X.683: not done
+Tests: pending
+Test code coverage: ??%
+
+Parser performs no validation/semantical analysis: for example, values
+of enumerated/choice/sequences are not checked against respective
+types. Also, all ambiguous values (see below) are not resolved to
+their more definitive forms.
+
+Type-dependent value parsing have to be introduced everywhere possible
+
+Implementation notes
+====================
+There are 24 ASN.1 types (BuiltinType + ReferencedType in X.680
+terminology), represented by the "BuiltinType" Haskell datatype.
+
+Some of the ASN1 types have several distinct variants, which is why
+"BuiltinType" has more than 24 constructors.
+
+Parsing of the ASN1 type declaration is handled by the parser
+"theType".
+
+For each type there is a single value parser, used in contexts when
+type information is easily available -- for example, when parsing
+right side of ValueAssignment one should use parser for values of the
+type of the left-hand side.
+
+There is also a value parser for situations when type information is
+not readily available. However, several types have common value forms, and
+this parser (called "value") could not differentiate between
+them. Read comments for builtinValue to find out about those.
