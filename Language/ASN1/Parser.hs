@@ -734,7 +734,7 @@ extensionAddition =
     extensionAdditionGroup = ExtensionAdditionGroup <$> ( symbol "[[" *> versionNumber ) <*> componentTypeList <* symbol "]]"
 
 -- Checked, X.680-0207
-versionNumber = optionMaybe $ number <* lexeme (char ':')
+versionNumber = optionMaybe $ number <* colon
 
 -- It is hard to ensure that this parser does not consume the trailing coma (and fail).
 -- So we let it do that and make subsequent coma optional at call site
