@@ -372,9 +372,10 @@ data BuiltinType = BitString [NamedNumber]
                  | ExternalTypeReference ModuleReference TypeReference
                    -- TODO: | ParameterizedType
                    -- TODO: | ParametrizedValueSetType
-                   -- Two UsefulType variants:
+                   -- Three UsefulType variants:
                  | GeneralizedTime
                  | UTCTime
+                 | ObjectDescriptor
                  | Selection Identifier Type
                    -- TODO: TypeFromObject constructors                   
                    -- TODO: ValueSetFromObjects constructors
@@ -456,8 +457,9 @@ data Value =
   | DefinedV DefinedValue
     -- TODO: | ParameterizedType value
     -- TODO: | ParametrizedValueSetType value
-    -- TODO: | GeneralizedTime value
-    -- TODO: | UTCTime value
+  | GeneralizedTimeValue CString -- TODO: do better, with components
+  | UTCTimeValue CString -- TODO: do better, with components
+  | ObjectDescriptorValue CString -- TODO: do better, with components
     -- Selection type value is just Value
     -- TODO: TypeFromObject constructors                   
     -- TODO: ValueSetFromObjects constructors
@@ -514,8 +516,9 @@ valueOfType (Type t _) = v t
       -- TODO: v ParameterizedType = undefined
       -- TODO: v ParametrizedValueSetType = undefined
       -- Two UsefulType variants:
-    v GeneralizedTime = undefined
-    v UTCTime = undefined
+    v GeneralizedTime = generalizedTimeValue
+    v UTCTime = utcTimeValue
+    v ObjectDescriptor = objectDescriptorValue
     v (Selection _ innerType) = valueOfType innerType
       -- TODO: TypeFromObject constructors                    = undefined
       -- TODO: ValueSetFromObjects constructors     = undefined
@@ -547,6 +550,7 @@ builtinValue =
                      -- Two types could have values denoted by a simple identified. Without semantical analysis
                      -- it is impossible to tell them apart. So they are captured by this single catch-all case below
                    , SomeIdentifiedValue <$> identifier -- ok
+                     -- TODO: need generic string value
                    ]
 
 -- Checked
@@ -944,18 +948,23 @@ unrestrictedCharacterStringValue = do
   (SequenceValue cvl) <- sequenceValue
   return $ UnrestrictedCharacterStringValue cvl
 -- }} end of clause 35-40
--- {{ X.680-0207, clause 36, TODO
--- {{ X.680-0207, clause 37, TODO
--- {{ X.680-0207, clause 38, TODO
--- {{ X.680-0207, clause 39, TODO
--- {{ X.680-0207, clause 40, TODO
--- {{ X.680-0207, clause 41, TODO
--- {{ X.680-0207, clause 42, TODO
--- {{ X.680-0207, clause 43, TODO
--- {{ X.680-0207, clause 44, TODO
--- {{ X.680-0207, clause 45, TODO
--- {{ X.680-0207, clause 46, TODO
--- {{ X.680-0207, clause 47, TODO
+-- {{ X.680-0207, clause 41-44, "Useful Types"
+usefulType = 
+  choice [ GeneralizedTime <$ reserved "GeneralizedTime"
+         , UTCTime <$ reserved "UTCTime"
+         , ObjectDescriptor <$ reserved "ObjectDescriptor"
+         ]
+-- TODO: this implementation is sloppy
+generalizedTimeValue = GeneralizedTimeValue <$> cstring
+utcTimeValue = UTCTimeValue <$> cstring
+objectDescriptorValue = ObjectDescriptorValue <$> cstring
+-- }} end of clause 41-44
+-- {{ X.680-0207, clause 45, "Constraints"
+-- }} end of clause 45
+-- {{ X.680-0207, clause 46, "Element sets"
+-- }} end of clause 46
+-- {{ X.680-0207, clause 47, "Subtype elements"
+-- }} end of clause 47
 -- {{ X.680-0207, clause 48, "The extension marker", has no useful productions }} --
 -- {{ X.680-0207, clause 49, "The exception identifier"
 -- Checked
@@ -1089,10 +1098,6 @@ newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Da
 -- Dubuisson 9.1.2
 
 -- Dubuisson 11.15.2
-usefulType = 
-  choice [ reserved "GeneralizedTime" >> return GeneralizedTime
-         , reserved "UTCTime" >> return UTCTime
-         ]
   
 moduleReferenceAndDot = 
   do { 
