@@ -1012,7 +1012,7 @@ exceptionIdentification =
          ]
 -- }} end of clause 49
 
-data ValueSet = ValueSet TODO deriving (Eq,Ord,Show, Typeable, Data)
+data ValueSet = ValueSet deriving (Eq,Ord,Show, Typeable, Data)
 valueSet = braces elementSetSpecs
 elementSetSpecs = undefined
 
@@ -1057,8 +1057,6 @@ ucaseIdent = do { i <- parsecIdent
                 ; return i
                 }
 -- }
-
-taggedValue = value
 
 -- UsefulObjectClassReference is inlined in definedObjectClass
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
@@ -1114,9 +1112,6 @@ componentsType =
      ; return t
      }
      <?> "ComponentsType"
-
-
-
 
            
 anyType = Any <$>
@@ -1251,10 +1246,6 @@ objectSetOptionality = optionMaybe $
          -- TODO: , reserved "DEFAULT" >> objectSet >>= return . DefaultObjectSet
          ] 
   
-
--- Dubuisson, 9.3.2
-
--- 
 objectAssignment = do
   or <- objectreference 
   doc <- definedObjectClass 
@@ -1437,14 +1428,6 @@ presenceConstraint =
          , do reserved "OPTIONAL"; return OptionalConstraint
          ]
   <?> "PresenceConstraint"
-
-
-
-
-
-
-data TODO = TODO deriving (Eq,Ord,Show, Typeable, Data)
-
 
 binaryString = bstring <?> "BinaryString"
 hexString = hstring  <?> "HexString"
