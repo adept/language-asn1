@@ -632,9 +632,14 @@ enumeratedValue = EnumeratedValue <$> identifier
 realValue = 
   choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
          , reserved "MINUS-INFINITY" >> return MinusInfinity
-         , RealValue <$> float
+         , RealValue <$> float'
          , SequenceRealValue <$> componentValueList
          ]
+  where
+    float' = choice [ try $ negate <$> (char '-' *> float)
+                    , try float
+                    , fromInteger <$> integer
+                    ]
 
 -- }} end of clause 20
 -- {{ X.680-0207, clause 21, "BITSTRING"
