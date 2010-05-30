@@ -535,6 +535,7 @@ builtinValue =
   choice $ map try [ booleanValue -- ok
                    , nullValue -- ok
                    , SignedNumber <$> integer -- Integer identified by 'identifier' is covered by SomeIdentifiedValue
+                   , realValue
                    , bitStringValue -- This covers OCTET STRING values as well
                    , restrictedCharacterStringValue
                    , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
