@@ -978,7 +978,10 @@ data ExceptionIdentification = ExceptionNumber Integer
 exceptionIdentification =
   choice [ ExceptionNumber <$> signedNumber 
          , ExceptionValue <$> definedValue
-         , ExceptionTypeAndValue <$> theType <*> (colon *> value)
+         , do t <- theType
+              colon 
+              v <- valueOfType t
+              return $ ExceptionTypeAndValue t v
          ]
 -- }} end of clause 49
 
