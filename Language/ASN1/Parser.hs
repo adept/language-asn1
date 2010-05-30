@@ -430,8 +430,9 @@ data Value =
   | BooleanValue Bool
   | CharString StringConst -- TODO: maybe more variants
   | ChoiceValue Identifier Value
+  | EmbeddedPDVValue ComponentValueList  
   | EnumeratedValue Identifier
-    -- TODO: ExternalValue
+  | ExternalValue ComponentValueList
     -- TODO: InstanceOf value
   | SignedNumber Integer -- this is integerValue
   | NullValue
@@ -442,7 +443,7 @@ data Value =
   | SequenceRealValue ComponentValueList
   | PlusInfinity
   | MinusInfinity
-    
+  | RelativeOIDValue [RelativeOIDComponent]  
     -- Set/Seq and SetOf/SeqOf:
   | SequenceValue ComponentValueList -- this
   | SetValue ComponentValueList
@@ -490,7 +491,7 @@ valueOfType (Type t _) = v t
     v (SimpleEnumeration _) = enumeratedValue
     v (EnumerationWithException _ _) = enumeratedValue
     v (EnumerationWithExceptionAndAddition _ _ _) = enumeratedValue
-    v External = undefined
+    v External = externalValue
     -- TODO: InstanceOf = undefined
     v (TheInteger namedNumber) = integerValue
     v Null = nullValue
@@ -533,8 +534,7 @@ builtinValue =
                    , CharString <$> characterStringValue
                    , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
                    , choiceValue
-                     -- TODO: embeddedPDVValue
-                     -- TODO: externalValue
+                     -- embeddedPDVValue and externalValue clash with sequenceValue
                      -- TODO: instanceOfValue
                      -- TODO: objectClassFieldValue
                    , OID <$> oid -- TODO: clashes with RelativeOID
@@ -892,25 +892,32 @@ reservedOIDIdentifier = do
 -- }} end of clause 31
 -- {{ X.680-0207, clause 32, "Relative OID"
 -- Type parser is primitive and inlined into builtinType
-type RelativeOIDValue = [RelativeOIDComponent]
 data RelativeOIDComponent =
   RelativeOIDNumber Integer
   | RelativeOIDNamedNumber NamedNumber
   | RelativeOIDDefinedValue DefinedValue
-    
+  deriving (Eq,Ord,Show, Typeable, Data)
+               
 relativeOIDComponent =
   choice [ RelativeOIDNamedNumber <$> try namedNumber
          , RelativeOIDNumber <$> number
          , RelativeOIDDefinedValue <$> definedValue
          ]
 
-relativeOIDValue = braces (many1 relativeOIDComponent)
+relativeOIDValue = RelativeOIDValue <$> braces (many1 relativeOIDComponent)
 -- }} end of clause 32  
 -- {{ X.680-0207, clause 33, "Embedded PDV"
 -- Type parser is trivial and embedded in builtinType
-embeddedPDVValue = sequenceValue
+embeddedPDVValue = do
+  (SequenceValue cvl) <- sequenceValue
+  return $ EmbeddedPDVValue cvl
 -- }} end of clause 33
--- {{ X.680-0207, clause 34, TODO
+-- {{ X.680-0207, clause 34, "EXTERNAL"
+-- Type parser is trivial and embedded in builtinType
+externalValue = do
+  (SequenceValue cvl) <- sequenceValue
+  return $ ExternalValue cvl
+-- }} end of clause 34
 -- {{ X.680-0207, clause 35, TODO
 -- {{ X.680-0207, clause 36, TODO
 -- {{ X.680-0207, clause 37, TODO
