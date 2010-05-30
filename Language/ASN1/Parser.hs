@@ -144,6 +144,7 @@ definitiveOIDComponent =
 
 -- Checked, X.680-0207
 -- If not set, defaults to ExplicitTags per X.680-0207, 12.2
+data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
 tagDefault = option ExplicitTags td <?> "tagDefault"
   where 
     td = choice [ ExplicitTags <$ reserved "EXPLICIT"
@@ -253,6 +254,8 @@ simpleDefinedType =
   choice [ try $ ExternalTypeReference <$> moduleReferenceAndDot <*> typereference
          , LocalTypeReference <$> typereference
          ] <?> "SimpleDefinedType"
+
+moduleReferenceAndDot = modulereference <* dot
 
 data DefinedValue = ExternalValueReference ModuleReference ValueReference
                   | LocalValueReference ValueReference
@@ -856,6 +859,13 @@ selectionType = Selection <$> identifier <*> (symbol "<" *> theType)
 -- Checked
 taggedType = Tagged <$> tag <*> tagType <*> theType
 
+data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
+tagType = 
+  optionMaybe $
+  choice [ Explicit <$ reserved "EXPLICIT"
+         , Implicit <$ reserved "IMPLICIT"
+         ]
+
 data Tag = Tag (Maybe Class) ClassNumber deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked
 tag = squares (Tag <$> optionMaybe theClass <*> classNumber)
@@ -1079,22 +1089,7 @@ definedObjectSet =
          , LocalObjectSetReference <$> objectsetreference
          ] <?> "DefinedObjectSet"
 
-data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
-data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
-tagType = 
-  optionMaybe $
-  choice [ Explicit <$ reserved "EXPLICIT"
-         , Implicit <$ reserved "IMPLICIT"
-         ]
 
-newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
-
-moduleReferenceAndDot = 
-  do { 
-     ; mref <- modulereference 
-     ; char '.'
-     ; return (mref)
-     }
 
 
 elementTypeList = commaSep1 elementType
@@ -1463,6 +1458,7 @@ identifier = lcaseFirstIdent >>= return . Identifier <?> "identifier"
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
 modulereference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
 
+newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
 typereference = ucaseFirstIdent >>= return . TypeReference <?> "typereference"
 
 newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
