@@ -18,6 +18,7 @@ Tested-With:    GHC==6.10.4, GHC==6.12.1
 
 Extra-Source-Files: LICENSE README TestASN1Parser.hs
   samples/LDAP_simplified.asn1 samples/rfc3280-PKIX1Explicit88.asn1 samples/rfc3280-PKIX1Implicit88.asn1
+  samples/rfc3525-MEDIA-GATEWAY-CONTROL.asn1 samples/rfc4511-Lightweight-Directory-Access-Protocol-V3.asn1
 
 Flag splitBase
   Description: Choose the new smaller, split-up base package.
