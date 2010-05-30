@@ -1061,28 +1061,6 @@ definedObjectSet =
   choice [ try $ ExternalObjectSetReference <$> moduleReferenceAndDot <*> objectsetreference
          , LocalObjectSetReference <$> objectsetreference
          ] <?> "DefinedObjectSet"
--- }} end of section 9.3
--- } end of chapter 9
--- { Chapter 10, "Basic types"
--- {{ Section 10.1, "BOOLEAN type"
--- }} end of section 10.1
--- {{ Section 10.2, "NULL type"
--- parsers for type and value are inlined into builtinType and builtinValue
--- }} end of section 10.2
--- {{ Section 10.3, "INTEGER type"
--- }} end of section 10.3
--- {{ Section 10.4, "The ENUMERATED type"
--- TODO: values
--- }} end of section 10.4
--- {{ Section 12.3, "The constructor SET"
--- TODO: values
--- }} end of section 12.3
--- {{ Section 12.4 and 12.5, "The constructor SEQUENCE OF" and "The constructor SET OF"
--- }}
-
-
-
-
 
 data TagDefault = ExplicitTags | ImplicitTags | AutomaticTags deriving (Eq,Ord,Show, Typeable, Data)
 data TagType = Explicit | Implicit deriving (Eq,Ord,Show, Typeable, Data)
@@ -1092,16 +1070,8 @@ tagType =
          , Implicit <$ reserved "IMPLICIT"
          ]
 
-  
-
 newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
 
-
-
--- Dubuisson 9.1.2
-
--- Dubuisson 11.15.2
-  
 moduleReferenceAndDot = 
   do { 
      ; mref <- modulereference 
@@ -1109,7 +1079,6 @@ moduleReferenceAndDot =
      ; return (mref)
      }
 
--- Dubuisson 11.13
 characterStringType = 
   choice [ reserved "BMPString" >> return BMPString
          , reserved "GeneralString" >> return GeneralString
@@ -1126,15 +1095,6 @@ characterStringType =
          , reserved "VisibleString" >> return VisibleString 
          , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
          ]
-
-
-
-
-
-
-
--- Dubuisson 12.6.2
--- }}}  
 
 elementTypeList = commaSep1 elementType
                   <?> "ElementTypeList"
