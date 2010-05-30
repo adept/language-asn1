@@ -360,7 +360,7 @@ data BuiltinType = BitString [NamedNumber]
                  | ObjectIdentifier
                  | OctetString 
                  | Real
-                   -- TODO: RelativeOID
+                 | RelativeOID
                  | Sequence ComponentTypeLists
                  | SequenceOf (Maybe SubtypeSpec) (Either Type NamedType)-- TODO: fix types when constraint is implemented properly
                  | Set ComponentTypeLists
@@ -394,6 +394,7 @@ builtinType =
                    , enumeratedType -- clause 19
                    , OctetString <$ (reserved "OCTET" *> reserved "STRING") -- clause 22
                    , ObjectIdentifier <$ (reserved "OBJECT" *> reserved "IDENTIFIER") -- clause 31
+                   , RelativeOID <$ reserved "RELATIVE-OID" -- clause 32
                    , Real <$ reserved "REAL" -- clause 20
                    , Boolean <$ reserved "BOOLEAN" -- clause 17
                    , Null <$ reserved "NULL" -- clause 23
@@ -402,7 +403,6 @@ builtinType =
                      -- TODO: , embeddedPDVType -- clause 33
                      -- TODO: , instanceOfType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
                      -- TODO: , objectClassFieldType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
-                     -- TODO: , relativeOIDType -- clause 32
                    , anyType
                    ]
 -- Checked
@@ -498,7 +498,7 @@ valueOfType (Type t _) = v t
     v ObjectIdentifier = objectIdentifierValue
     v OctetString  = octetStringValue
     v Real = realValue
-      -- TODO: RelativeOID = undefined
+    v RelativeOID = relativeOIDValue
     v (Sequence _) = sequenceValue
     v (SequenceOf _ _) = sequenceOfValue
     v (Set _) = setValue
@@ -537,8 +537,8 @@ builtinValue =
                      -- TODO: externalValue
                      -- TODO: instanceOfValue
                      -- TODO: objectClassFieldValue
-                   , OID <$> oid
-                     -- TODO: relativeOIDValue
+                   , OID <$> oid -- TODO: clashes with RelativeOID
+                     -- relativeOIDValue seems to be covered by OID value
                      -- taggedValue is not here because it is just "value" and would lead to infinie loop
                      --   TODO
                    , realValue -- ok
@@ -890,6 +890,23 @@ reservedOIDIdentifier = do
   notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
   return i
 -- }} end of clause 31
+-- {{ X.680-0207, clause 32, "Relative OID"
+-- Type parser is primitive and inlined into builtinType
+type RelativeOIDValue = [RelativeOIDComponent]
+data RelativeOIDComponent =
+  RelativeOIDNumber Integer
+  | RelativeOIDNamedNumber NamedNumber
+  | RelativeOIDDefinedValue DefinedValue
+    
+relativeOIDComponent =
+  choice [ RelativeOIDNamedNumber <$> try namedNumber
+         , RelativeOIDNumber <$> number
+         , RelativeOIDDefinedValue <$> definedValue
+         ]
+
+relativeOIDValue = braces (many1 relativeOIDComponent)
+-- }} end of clause 32  
+-- {{ X.680-0207, clause 33, TODO
 
 -- {{ X.680-0207, clause 49, "The exception identifier"
 -- Checked
