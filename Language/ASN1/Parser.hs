@@ -428,7 +428,9 @@ data Value =
   | IdentifiedNumber Identifier
     
   | BooleanValue Bool
-  | CharString StringConst -- TODO: maybe more variants
+    -- Two CharacterString values:
+  | RestrictedCharacterStringValue [CharsDefn]
+  | UnrestrictedCharacterStringValue ComponentValueList
   | ChoiceValue Identifier Value
   | EmbeddedPDVValue ComponentValueList  
   | EnumeratedValue Identifier
@@ -471,20 +473,20 @@ valueOfType (Type t _) = v t
     v (BitString _) = bitStringValue
     v Boolean = booleanValue
     -- Fourteen CharacterString variants
-    v CharacterString = undefined
-    v BMPString = undefined
-    v GeneralString = undefined
-    v GraphicString = undefined
-    v IA5String = undefined
-    v ISO646String = undefined
-    v NumericString = undefined
-    v PrintableString = undefined
-    v TeletexString = undefined
-    v T61String = undefined
-    v UniversalString = undefined
-    v UTF8String = undefined
-    v VideotexString = undefined
-    v VisibleString = undefined
+    v CharacterString = unrestrictedCharacterStringValue
+    v BMPString = restrictedCharacterStringValue
+    v GeneralString = restrictedCharacterStringValue
+    v GraphicString = restrictedCharacterStringValue
+    v IA5String = restrictedCharacterStringValue
+    v ISO646String = restrictedCharacterStringValue
+    v NumericString = restrictedCharacterStringValue
+    v PrintableString = restrictedCharacterStringValue
+    v TeletexString = restrictedCharacterStringValue
+    v T61String = restrictedCharacterStringValue
+    v UniversalString = restrictedCharacterStringValue
+    v UTF8String = restrictedCharacterStringValue
+    v VideotexString = restrictedCharacterStringValue
+    v VisibleString = restrictedCharacterStringValue
     v (Choice _) = choiceValue
     v EmbeddedPDV = embeddedPDVValue
     -- Three ENUMERATED variants
@@ -531,10 +533,10 @@ builtinValue =
                    , nullValue -- ok
                    , SignedNumber <$> integer -- Integer identified by 'identifier' is covered by SomeIdentifiedValue
                    , bitStringValue -- This covers OCTET STRING values as well
-                   , CharString <$> characterStringValue
+                   , restrictedCharacterStringValue
                    , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
                    , choiceValue
-                     -- embeddedPDVValue and externalValue clash with sequenceValue
+                     -- unrestrictedCharacterStringValue, embeddedPDVValue and externalValue clash with sequenceValue
                      -- TODO: instanceOfValue
                      -- TODO: objectClassFieldValue
                    , OID <$> oid -- TODO: clashes with RelativeOID
@@ -918,7 +920,30 @@ externalValue = do
   (SequenceValue cvl) <- sequenceValue
   return $ ExternalValue cvl
 -- }} end of clause 34
--- {{ X.680-0207, clause 35, TODO
+-- {{ X.680-0207, clause 35-40, "Character string types"
+restrictedCharacterStringValue =
+  RestrictedCharacterStringValue <$>
+  choice [ braces (many1 ( try (CharsDefinedValue <$> definedValue) <|> charsDefn ))
+         , (:[]) <$> charsDefn 
+         ]
+
+data CharsDefn =
+  Tuple {table_column::Integer, table_row::Integer}
+  | Quadruple Integer Integer Integer Integer
+  | CharsDefinedValue DefinedValue
+  | CharsCString CString
+  deriving (Eq,Ord,Show, Typeable, Data)
+
+charsDefn =
+  choice [ try $ braces ( Tuple <$> number <*> (comma *> number) )
+         , try $ braces ( Quadruple <$> number <*> (comma *> number) <*> (comma *> number) <*> (comma *> number) )
+         , CharsCString <$> cstring
+         ]
+
+unrestrictedCharacterStringValue = do
+  (SequenceValue cvl) <- sequenceValue
+  return $ UnrestrictedCharacterStringValue cvl
+-- }} end of clause 35-40
 -- {{ X.680-0207, clause 36, TODO
 -- {{ X.680-0207, clause 37, TODO
 -- {{ X.680-0207, clause 38, TODO
@@ -931,7 +956,7 @@ externalValue = do
 -- {{ X.680-0207, clause 45, TODO
 -- {{ X.680-0207, clause 46, TODO
 -- {{ X.680-0207, clause 47, TODO
--- {{ X.680-0207, clause 48, TODO
+-- {{ X.680-0207, clause 48, "The extension marker", has no useful productions }} --
 -- {{ X.680-0207, clause 49, "The exception identifier"
 -- Checked
 exceptionSpec = 
@@ -974,6 +999,7 @@ bstring = stringConst "01" 'B' <?> "bstring"
 type HString = StringConst
 hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
 
+type CString = StringConst
 cstring = 
   do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst Nothing s) } <?> "cstring"
 
@@ -1059,13 +1085,6 @@ tagType =
 newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
 
 
-embeddedPDVType = undefined
-instanceOfType = undefined
-objectClassFieldType = undefined
-relativeOIDType = undefined
-typeFromObject = undefined
-valueSetFromObjects = undefined
-objectDescriptor = undefined
 
 -- Dubuisson 9.1.2
 
