@@ -347,7 +347,7 @@ data BuiltinType = BitString [NamedNumber]
                  | VideotexString
                  | VisibleString
                  | Choice AlternativeTypeLists
-                   -- TODO: EmbeddedPDV
+                 | EmbeddedPDV
                    -- Three ENUMERATED variants
                  | SimpleEnumeration [EnumerationItem]
                  | EnumerationWithException [EnumerationItem] (Maybe ExceptionIdentification)
@@ -400,7 +400,7 @@ builtinType =
                    , Null <$ reserved "NULL" -- clause 23
                    , External <$ reserved "EXTERNAL" -- clause 34
                    , characterStringType -- clause 36
-                     -- TODO: , embeddedPDVType -- clause 33
+                   , EmbeddedPDV <$ ( reserved "EMBEDDED" *> reserved "PDV" ) -- clause 33
                      -- TODO: , instanceOfType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
                      -- TODO: , objectClassFieldType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
                    , anyType
@@ -485,7 +485,7 @@ valueOfType (Type t _) = v t
     v VideotexString = undefined
     v VisibleString = undefined
     v (Choice _) = choiceValue
-    -- TODO: EmbeddedPDV
+    v EmbeddedPDV = embeddedPDVValue
     -- Three ENUMERATED variants
     v (SimpleEnumeration _) = enumeratedValue
     v (EnumerationWithException _ _) = enumeratedValue
@@ -906,8 +906,25 @@ relativeOIDComponent =
 
 relativeOIDValue = braces (many1 relativeOIDComponent)
 -- }} end of clause 32  
--- {{ X.680-0207, clause 33, TODO
-
+-- {{ X.680-0207, clause 33, "Embedded PDV"
+-- Type parser is trivial and embedded in builtinType
+embeddedPDVValue = sequenceValue
+-- }} end of clause 33
+-- {{ X.680-0207, clause 34, TODO
+-- {{ X.680-0207, clause 35, TODO
+-- {{ X.680-0207, clause 36, TODO
+-- {{ X.680-0207, clause 37, TODO
+-- {{ X.680-0207, clause 38, TODO
+-- {{ X.680-0207, clause 39, TODO
+-- {{ X.680-0207, clause 40, TODO
+-- {{ X.680-0207, clause 41, TODO
+-- {{ X.680-0207, clause 42, TODO
+-- {{ X.680-0207, clause 43, TODO
+-- {{ X.680-0207, clause 44, TODO
+-- {{ X.680-0207, clause 45, TODO
+-- {{ X.680-0207, clause 46, TODO
+-- {{ X.680-0207, clause 47, TODO
+-- {{ X.680-0207, clause 48, TODO
 -- {{ X.680-0207, clause 49, "The exception identifier"
 -- Checked
 exceptionSpec = 
