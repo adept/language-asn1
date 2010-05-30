@@ -927,6 +927,23 @@ embeddedPDVValue = EmbeddedPDVValue <$> componentValueList
 externalValue = ExternalValue <$> componentValueList
 -- }} end of clause 34
 -- {{ X.680-0207, clause 35-40, "Character string types"
+characterStringType = 
+  choice [ reserved "BMPString" >> return BMPString
+         , reserved "GeneralString" >> return GeneralString
+         , reserved "GraphicString" >> return GraphicString
+         , reserved "IA5String" >> return IA5String 
+         , reserved "ISO646String" >> return ISO646String
+         , reserved "NumericString" >> return NumericString 
+         , reserved "PrintableString" >> return PrintableString
+         , reserved "TeletexString" >> return TeletexString 
+         , reserved "T61String" >> return T61String
+         , reserved "UniversalString" >> return UniversalString 
+         , reserved "UTF8String" >> return UTF8String
+         , reserved "VideotexString" >> return VideotexString 
+         , reserved "VisibleString" >> return VisibleString 
+         , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
+         ]
+
 restrictedCharacterStringValue =
   RestrictedCharacterStringValue <$>
   choice [ braces (many1 ( try (CharsDefinedValue <$> definedValue) <|> charsDefn ))
@@ -1079,22 +1096,6 @@ moduleReferenceAndDot =
      ; return (mref)
      }
 
-characterStringType = 
-  choice [ reserved "BMPString" >> return BMPString
-         , reserved "GeneralString" >> return GeneralString
-         , reserved "GraphicString" >> return GraphicString
-         , reserved "IA5String" >> return IA5String 
-         , reserved "ISO646String" >> return ISO646String
-         , reserved "NumericString" >> return NumericString 
-         , reserved "PrintableString" >> return PrintableString
-         , reserved "TeletexString" >> return TeletexString 
-         , reserved "T61String" >> return T61String
-         , reserved "UniversalString" >> return UniversalString 
-         , reserved "UTF8String" >> return UTF8String
-         , reserved "VideotexString" >> return VideotexString 
-         , reserved "VisibleString" >> return VisibleString 
-         , reserved "CHARACTER" >> reserved "STRING" >> return CharacterString
-         ]
 
 elementTypeList = commaSep1 elementType
                   <?> "ElementTypeList"
