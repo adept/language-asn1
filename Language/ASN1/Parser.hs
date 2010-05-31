@@ -44,8 +44,8 @@ import System.Exit (exitFailure)
 import Data.Generics
 import Control.Applicative ((<$>),(<*),(*>),(<*>),(<$))
 import Control.Monad (when)
-import Data.Char (isUpper, isAlpha, isSpace)
-import Data.List (isInfixOf)
+import Data.Char (isUpper, isAlpha, isSpace, ord)
+import Data.List (isInfixOf, intercalate)
 
 -- {{ Top-level interface
 parseASN1FromFileOrDie :: String -> IO ([Module])
@@ -85,27 +85,26 @@ asn1Input = do
 -- conditions like "comment ends on next '--' or on newline". Which is why all
 -- line comments are turned into block comments and Token parser is instructed
 -- to handle only block comments.
--- Comments betwee /* and */ are handled by similar replacement.
+-- Comments between -- and -- are replaced by /* */ comments.
 fixupComments = do
   inp <- getInput
-  setInput $ unlines $ map fixup $ lines inp
-  where 
-    fixup l
-      | "--" `isInfixOf` l && unterminated = l ++ " --"
-      | "/*" `isInfixOf` l = replStart l
-      | "*/" `isInfixOf` l = replEnd l                             
-      | otherwise = l
-      where
-        unterminated = checkUnterm False l
-        checkUnterm p []             = p
-        checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
-        checkUnterm p (_:rest)       = checkUnterm p rest
-        replStart []             = []
-        replStart ('/':'*':rest) = '-':'-':(replStart rest)
-        replStart (c:rest)       = c:(replStart rest)
-        replEnd []             = []
-        replEnd ('*':'/':rest) = '-':'-':(replEnd rest)
-        replEnd (c:rest)       = c:(replEnd rest)
+  setInput $ fixup inp
+
+fixup = repl 0 False
+  where
+    isNewline c | ord c >= 10 && ord c <= 13 = True
+                | otherwise = False
+    -- repl `level of star comments' isInDashComment                                  
+    repl 0 True []             = "*/"
+    repl starComment inDashComment [] = []        
+    repl 0 False (c:'-':'-':rest) | isSpace c  = c:'/':'*':(repl 0 True rest)
+                                  | otherwise = c:'-':'-':(repl 0 False rest)
+    repl 0 False ('-':'-':rest) = '/':'*':(repl 0 True rest)
+    repl 0 True ('-':'-':rest) = '*':'/':(repl 0 False rest)
+    repl 0 True (c:rest) | isNewline c = '*':'/':c:(repl 0 False rest)
+    repl n False ('/':'*':rest) = '/':'*':(repl (n+1) False rest)
+    repl n False ('*':'/':rest) = '*':'/':(repl (n-1) False rest)
+    repl n inDashComment (c:rest) = c:(repl n inDashComment rest)
         
 -- }}
         
@@ -156,25 +155,28 @@ cstring = CString <$> ( char '"' *> anyChar `manyTill` ( (char '"' >> notFollowe
 lcaseFirstIdent = do 
   i <- parsecIdent
   when (isUpper $ head i) $ unexpected "uppercase first letter"
+  when (last i == '-') $ unexpected "trailing hyphen"
   return i
 
 ucaseFirstIdent = do 
   i <- parsecIdent
   when (not . isUpper $ head i) $ unexpected "lowercase first letter"
+  when (last i == '-') $ unexpected "trailing hyphen"
   return i
 
 ucaseIdent = do 
   i <- parsecIdent
   when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
+  when (last i == '-') $ unexpected "trailing hyphen"
   return i
 
 asn1Style
   = emptyDef
-    { commentStart = "--"
-    , commentEnd = "--"
-    , nestedComments = False
+    { commentStart = "/*"
+    , commentEnd = "*/"
+    , nestedComments = True
     , identStart     = letter
-    , identLetter = alphaNum <|> oneOf "-"
+    , identLetter = alphaNum <|> ( char '-' <* notFollowedBy (char '-') )
     , caseSensitive = True
       -- X.680-0207, 11.27
     , reservedNames = [ "ABSENT",  "ENCODED",  "INTEGER",  "RELATIVE-OID", 

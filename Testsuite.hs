@@ -10,7 +10,8 @@ import Language.ASN1.Parser as P
 main = defaultMain tests
 
 tests = 
-  [ testGroup "X.680-0207, clause 12, Modules" moduleTests
+  [ testGroup "X.680-0207, clause 11, Lexical tokens" lexicalTests
+  , testGroup "X.680-0207, clause 12, Modules" moduleTests
   , testGroup "X.680-0207, clause 17, BOOLEAN" booleanTests
   , testGroup "X.680-0207, clause 18, INTEGER" integerTests    
   , testGroup "X.680-0207, clause 19, ENUMERATED" enumeratedTests
@@ -44,6 +45,28 @@ noAssignment = Just (ValueAssignment {value_ref = ValueReference "a", value_ref_
 --
 -- TESTS                     
 --
+-- X.680-0207, clause 11, lexical tokens
+lexicalTests =
+  [ testTypeRef "SomeType" $ Just (TypeReference "SomeType")
+  , testTypeRef "Some-Type" $ Just (TypeReference "Some-Type")
+  , testTypeRef "SomeType -- Very\n-- important" $ Just (TypeReference "SomeType")
+  , testTypeRef "Some-Type /* Even more important */" $ Just (TypeReference "Some-Type")
+  , testTypeRef "-- Leading comment --Some-Type -- Trailing comment" $ Just (TypeReference "Some-Type")
+  , testTypeRef "Some--Type" $ Nothing -- double dash
+  , testTypeRef "Some-Type-" $ Nothing -- trailing dash
+  , testTypeRef "-Some-Type" $ Nothing -- leading dash
+  , testTypeRef "someType" $ Nothing -- lower case
+  , testTypeRef "UTCTime" $ Nothing -- reserved word
+  , testIdent "someType" $ Just (Identifier "someType")
+  , testIdent "some-Type" $ Just (Identifier "some-Type")
+  , testIdent "some--Type" $ Nothing -- double dash
+  , testIdent "some-Type-" $ Nothing -- trailing dash
+  , testIdent "-some-Type" $ Nothing -- leading dash
+  , testIdent "SomeType" $ Nothing -- upper case
+  ]
+  where
+    testTypeRef val expected = testCase ("Type reference " ++ val) $ parseASN1 typereference val @?= expected
+    testIdent  val expected = testCase ("Type reference " ++ val) $ parseASN1 identifier val @?= expected
 
 -- X.680-0207, clause 12, modules
 moduleTests =
