@@ -1256,12 +1256,7 @@ exceptionIdentification =
 anyType = Any <$> ( reserved "ANY" *> optionMaybe ( reserved "DEFINED" *> reserved "BY" *> identifier ) )
 -- TODO: ANY type does not have value parser(?)
 -- }} end of DEPRECATED clause
-type NumberOrDefinedValue = Either Integer DefinedValue
-newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 
-
--- { Chapter 8.1, "Lexical tokens in ASN.1"
--- }
 
 -- UsefulObjectClassReference is inlined in definedObjectClass
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
