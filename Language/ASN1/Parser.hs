@@ -92,8 +92,6 @@ fixupComments = do
 
 fixup = repl 0 False
   where
-    isNewline c | ord c >= 10 && ord c <= 13 = True
-                | otherwise = False
     -- repl `level of star comments' isInDashComment                                  
     repl 0 True []             = "*/"
     repl starComment inDashComment [] = []        
@@ -106,6 +104,8 @@ fixup = repl 0 False
     repl n False ('*':'/':rest) = '*':'/':(repl (n-1) False rest)
     repl n inDashComment (c:rest) = c:(repl n inDashComment rest)
         
+isNewline c | ord c >= 10 && ord c <= 13 = True
+            | otherwise = False
 -- }}
         
 -- {{ X.680-0207,  Clause 11, "ASN.1 lexical items"
@@ -147,7 +147,7 @@ binString allowedSet marker = BinString marker <$> ( ( symbol "'" *> (filter (no
 
 newtype CString = CString String deriving (Eq,Ord,Show, Typeable, Data)
 -- TODO: need to fix double "" inside cstring?
-cstring = CString <$> ( char '"' *> anyChar `manyTill` ( (char '"' >> notFollowedBy (char '"') ) ) )
+cstring = CString <$> (filter (not.isNewline) <$> intercalate "\"" <$> many1 ( char '"' *> anyChar `manyTill` (char '"'))) <* whiteSpace
 
 -----------------------------------------------------------
 -- Token parser
