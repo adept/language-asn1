@@ -288,12 +288,15 @@ valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*
   where
     -- This alternative is defined in X.680-0207, clause 15.8
     valueSetOrAlternative = valueSet <|> parens elementSetSpecs
+    
+type ValueSet = ElementSets
+valueSet = braces elementSetSpecs
 -- }} end of clause 15
 -- {{ X.680-0207, clause 16, "Definition of types and values"
 -- ConstrainedType (clause 45) is merged in other parsers: "Type Constraint" alternative is encoded here,
 -- and TypeWithConstraint in implemented in SetOf/SequenceOf parsers
 data Type = Type { type_id::BuiltinType
-                 , subtype::Maybe SubtypeSpec
+                 , subtype::Maybe Constraint
                  }
                deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked
@@ -365,9 +368,9 @@ data BuiltinType = BitString [NamedNumber]
                  | Real
                  | RelativeOID
                  | Sequence ComponentTypeLists
-                 | SequenceOf (Maybe SubtypeSpec) (Either Type NamedType)-- TODO: fix types when constraint is implemented properly
+                 | SequenceOf (Maybe Constraint) (Either Type NamedType)-- TODO: fix types when constraint is implemented properly
                  | Set ComponentTypeLists
-                 | SetOf (Maybe SubtypeSpec) (Either Type NamedType) -- TODO: fix types when constraint is implemented properly
+                 | SetOf (Maybe Constraint) (Either Type NamedType) -- TODO: fix types when constraint is implemented properly
                  | Tagged Tag (Maybe TagType) Type
                    -- Referenced Type constructors:
                    -- Four defined type variants
@@ -383,7 +386,7 @@ data BuiltinType = BitString [NamedNumber]
                    -- TODO: TypeFromObject constructors                   
                    -- TODO: ValueSetFromObjects constructors
                    -- Obsolete, for backward compatibility
-                 | Any Identifier
+                 | Any (Maybe Identifier)
                  deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Checked                          
@@ -785,7 +788,8 @@ setOrSequenceOfType = do
   where
     constructor = ( SetOf <$ reserved "SET" ) <|> ( SequenceOf <$ reserved "SEQUENCE")
     setSeqConstraint =
-      choice [ reserved "SIZE" >> constraint -- TODO: This is SizeConstraint, wrap in appropriate constructor
+      choice [ -- Form of SIZE constraint without enclosing "(" ")" for backward compatibility
+               flip Constraint Nothing . ClosedSet False . Singleton . Subtype <$> sizeConstraint 
              , constraint
              ]
 
@@ -987,10 +991,131 @@ utcTimeValue = UTCTimeValue <$> cstring
 objectDescriptorValue = ObjectDescriptorValue <$> cstring
 -- }} end of clause 41-44
 -- {{ X.680-0207, clause 45, "Constraints"
+-- constrainedType parser is merged into theType and parsers for SetOf/SequenceOf
+data Constraint = Constraint ElementSets (Maybe ExceptionIdentification) deriving (Eq,Ord,Show, Typeable, Data)
+constraint = parens ( Constraint <$> constraintSpec <*> exceptionSpec )
+
+constraintSpec = subtypeConstraint {- TODO: <|> generalConstraint -}
+  where subtypeConstraint = elementSetSpecs
 -- }} end of clause 45
 -- {{ X.680-0207, clause 46, "Element sets"
+data ElementSets = 
+  ClosedSet Bool ElementSet -- extendable or not
+  | ExtendableSet ElementSet
+  | SetRange ElementSet ElementSet deriving (Eq,Ord,Show, Typeable, Data)
+elementSetSpecs = 
+  choice [ try $ SetRange <$> elementSetSpec <*> (comma *> symbol "..." *> comma *> elementSetSpec)
+         , try $ ClosedSet True <$> (elementSetSpec <* comma <* symbol "...")
+         , ClosedSet False <$> elementSetSpec
+         ]
+  
+data ElementSet = AllExcept Exclusions 
+                | Unions [[Intersection]] 
+                | Singleton Elements  -- special form of single-element union for better readability
+                deriving (Eq,Ord,Show, Typeable, Data)
+elementSetSpec =
+  choice [ AllExcept <$> ( reserved "ALL" *> exclusions )
+         , mkUnions <$> unions
+         ]
+  where
+    mkUnions ([[Intersection es Nothing]]) = Singleton es
+    mkUnions s = Unions s
+
+unions = intersections `sepBy1` unionMark
+
+intersections = intersectionElements `sepBy1` intersectionMark
+
+data Intersection = Intersection Elements (Maybe Exclusions) deriving (Eq,Ord,Show, Typeable, Data)
+intersectionElements = Intersection <$> elements <*> optionMaybe exclusions
+
+type Exclusions = Elements
+exclusions = reserved "EXCEPT" *> elements
+
+unionMark = ( () <$ symbol "|" ) <|> reserved "UNION"
+intersectionMark = ( () <$ symbol "^" ) <|> reserved "INTERSECTION"
+
+data Elements = Subset ElementSet | Subtype SubtypeElements
+  deriving (Eq,Ord,Show, Typeable, Data)
+elements =
+  choice [ Subset <$> parens elementSetSpec
+         , Subtype <$> subtypeElements
+         -- TODO: , objectSetElements
+         ]
 -- }} end of clause 46
 -- {{ X.680-0207, clause 47, "Subtype elements"
+-- TODO: apply table 9 from clause 47.1 ("Applicability of subtype value sets")
+data SubtypeElements = 
+  SingleValue Value
+  | ContainedSubtype Type
+  | ValueRange ValueRangeEndpoint ValueRangeEndpoint
+  | PermittedAlphabet Constraint
+  | SizeConstraint Constraint
+    -- TypeConstraint is not implemented because it is not distinguishable from ContainedSubtype without context
+    -- two variants of innerTypeConstraint
+  | SingleTypeConstraint Constraint
+  | MultipleTypeConstaints TypeConstraints
+  | PatternConstraint Value
+  deriving (Eq,Ord,Show, Typeable, Data)
+
+-- TODO: TypeConstraint and ContainedSubtype without "INCLUDES" are not distinguishable without context!
+-- therefore typeConstraint is not implemented
+subtypeElements =
+  choice [ valueRange
+         , permittedAlphabet
+         , sizeConstraint
+         , innerTypeConstraints
+         , containedSubtype           
+         , SingleValue <$> value
+         ]
+  
+containedSubtype = ContainedSubtype <$> ( optional (reserved "INCLUDES") *>  theType )
+
+data ValueRangeEndpoint = Closed ValueRangeEndValue | Open ValueRangeEndValue deriving (Eq,Ord,Show, Typeable, Data)
+data ValueRangeEndValue = MinValue | MaxValue | Value Value deriving (Eq,Ord,Show, Typeable, Data)
+valueRange = ValueRange <$> lowerEndpoint <*> ( symbol ".." *> upperEndpoint )
+lowerEndpoint = 
+  choice [ try $ Open <$> ( lowerEndValue <* symbol "<" )
+         , Closed <$> lowerEndValue 
+         ]
+upperEndpoint =
+  choice [ Open <$> ( symbol "<" *> upperEndValue  )
+         , Closed <$> upperEndValue
+         ]
+lowerEndValue = (MinValue <$ reserved "MIN") <|> (Value <$> value)
+upperEndValue = (MaxValue <$ reserved "MAX") <|> (Value <$> value)
+
+sizeConstraint = SizeConstraint <$> ( reserved "SIZE" *> constraint )
+
+permittedAlphabet = PermittedAlphabet <$> ( reserved "FROM" *> constraint )
+
+innerTypeConstraints = do
+  reserved "WITH" 
+  choice [ MultipleTypeConstaints <$> ( reserved "COMPONENTS" *> multipleTypeConstraints )
+         , SingleTypeConstraint <$> ( reserved "COMPONENT" *> constraint )
+         ]
+
+multipleTypeConstraints = braces(  optional (symbol "..." >> symbol ",")  >> typeConstraints )
+
+type TypeConstraints = [NamedConstraint]
+typeConstraints = commaSep1 namedConstraint
+
+data NamedConstraint = NamedConstraint Identifier ComponentConstraint  deriving (Eq,Ord,Show, Typeable, Data)
+namedConstraint = NamedConstraint <$> identifier <*> componentConstraint
+
+data ComponentConstraint = ComponentConstraint (Maybe Constraint) (Maybe PresenceConstraint) deriving (Eq,Ord,Show, Typeable, Data)
+componentConstraint = ComponentConstraint <$> optionMaybe constraint <*> optionMaybe presenceConstraint
+
+data PresenceConstraint = Present
+                        | Absent
+                        | Optional
+                        deriving (Eq,Ord,Show, Typeable, Data)
+presenceConstraint =
+  choice [ Present  <$ reserved "PRESENT"
+         , Absent   <$ reserved "ABSENT"
+         , Optional <$ reserved "OPTIONAL"
+         ]
+
+patternConstraint = PatternConstraint <$> ( reserved "PATTERN" *> value )
 -- }} end of clause 47
 -- {{ X.680-0207, clause 48, "The extension marker", has no useful productions }} --
 -- {{ X.680-0207, clause 49, "The exception identifier"
@@ -1011,20 +1136,13 @@ exceptionIdentification =
               return $ ExceptionTypeAndValue t v
          ]
 -- }} end of clause 49
-
-data ValueSet = ValueSet deriving (Eq,Ord,Show, Typeable, Data)
-valueSet = braces elementSetSpecs
-elementSetSpecs = undefined
-
-newtype TypeName = TypeName Identifier deriving (Eq,Ord,Show, Typeable, Data)
+-- {{ X.680-0207, DEPRECATED clause, "The ANY type"
+-- Deprecated ANY type could be found in many older specifications
+anyType = Any <$> ( reserved "ANY" *> optionMaybe ( reserved "DEFINED" *> reserved "BY" *> identifier ) )
+-- TODO: ANY type does not have value parser(?)
+-- }} end of DEPRECATED clause
 type NumberOrDefinedValue = Either Integer DefinedValue
-data ElementType = NamedElementType { _element_name::TypeName
-                                    , _element_body::Type
-                                    , _element_presence::Maybe ValueOptionality
-                                    } 
-                 | ComponentsOf_ Type deriving (Eq,Ord,Show, Typeable, Data)
 newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
-data SizeConstraint = SizeConstraint SubtypeSpec | UndefinedSizeContraint deriving (Eq,Ord,Show, Typeable, Data)
 
 
 -- { Chapter 8.1, "Lexical tokens in ASN.1"
@@ -1087,38 +1205,6 @@ definedObjectSet =
          , LocalObjectSetReference <$> objectsetreference
          ] <?> "DefinedObjectSet"
 
-
-
-
-elementTypeList = commaSep1 elementType
-                  <?> "ElementTypeList"
-
-elementType =
-  choice $ map try 
-           [ componentsType >>= return . ComponentsOf_
-           , do { id <- option UndefinedIdentifier (try identifier)
-                ; t <- theType
-                ; presence <- valueOptionality
-                ; return (NamedElementType (TypeName id) t presence)
-                }
-           ]
-           
-componentsType :: Parser Type
-componentsType =
-  do {
-     ; reserved "COMPONENTS"
-     ; reserved "OF"
-     ; t <- theType
-     ; return t
-     }
-     <?> "ComponentsType"
-
-           
-anyType = Any <$>
-  do { reserved "ANY"
-     ; option UndefinedIdentifier (  do {reserved "DEFINED"  ;  reserved "BY"  ; identifier  } ) 
-     }
-     <?> "AnyType"
 
 -- Dubuisson, 9.1.2
 objectClassAssignment = do
@@ -1297,137 +1383,8 @@ primitiveFieldName =
          -- TODO: , objectsetfieldreference
          ]
 
--- unchecked, 15.7.2
-type SubtypeSpec = [SubtypeValueSet]
 
--- unchecked, 15.7.2
-constraint :: Parser SubtypeSpec
-constraint = parens subtypeValueSetList
-              <?> "SubtypeSpec"
 
-subtypeValueSetList = sepBy1 subtypeValueSet (symbol "|") <?> "SubtypeValueSetList"
-
-data ValueRangeElement = MinValue | MaxValue | UndefinedValue | Value Value deriving (Eq,Ord,Show, Typeable, Data)
-
-data SubtypeValueSet = ValueRange { range_from::ValueRangeElement
-                                  , range_to::ValueRangeElement
-                                  }
-                     | ContainedSubType Type
-                     | PermittedAlphabet SubtypeSpec
-                     | SizeConstr SizeConstraint
-                     | SingleTypeConstraint SubtypeSpec 
-                     | MultipleTypeConstaint TypeConstraints
-                       deriving (Eq,Ord,Show, Typeable, Data)
-
-subtypeValueSet :: Parser SubtypeValueSet
-subtypeValueSet =
-  do {
-      choice $ map try  [ valueRange
-                        , containedSubtype >>= return . ContainedSubType
-                        , permittedAlphabet >>= return . PermittedAlphabet
-                        , sizeConstraint >>= return . SizeConstr
-                        , innerTypeConstraints
-                        ]
-     }
-     <?> "SubtypeValueSet"
-
-containedSubtype =
-  do { reserved "INCLUDES"  
-     ; theType >>= return
-     }
-     <?> "ContainedSubtype"
-
-singleValue = value <?> "SingleValue"
-
-valueRange =
-  do { from <- choice [ value >>= return . Value
-                      , do reserved "MIN"
-                           return MinValue
-                      ]
-     ; to <- option UndefinedValue ( do optional (symbol "<")
-                                        dot
-                                        dot
-                                        optional (symbol "<") 
-                                        choice [ value >>= return . Value
-                                               , do reserved "MAX"
-                                                    return MaxValue
-                                               ]
-                                   )
-     ; return (ValueRange from to)
-     }
-     <?> "ValueRange"
-
--- Dubuisson 13.5.2
-sizeConstraint :: Parser SizeConstraint
-sizeConstraint =
-  do {
-     ; reserved "SIZE" 
-     ; spec <- constraint
-     ; return (SizeConstraint spec)
-     }
-     <?> "SizeConstraint"
-
--- Dubuisson, 13.6.2
-permittedAlphabet = do
-  reserved "FROM" 
-  constraint
-  <?> "PermittedAlphabet"
-
-innerTypeConstraints =
-  do { reserved "WITH" 
-     ; choice [ do { reserved "COMPONENT" 
-                   ; singleTypeConstraint >>= return . SingleTypeConstraint
-                   }
-              , do { reserved "COMPONENTS" 
-                   ; multipleTypeConstraints >>= return . MultipleTypeConstaint
-                   }
-              ]
-     }
-     <?> "InnerTypeConstraints"
-
-singleTypeConstraint = constraint <?> "SingleTypeConstraint"
-
-multipleTypeConstraints =
-  do {
-      braces(  do { optional (  reservedOp "..." >> reservedOp "," ) 
-                  ; typeConstraints
-                  }
-            )
-     }
-     <?> "MultipleTypeConstraints"
-
-type TypeConstraints = [NamedConstraint]
-typeConstraints = commaSep1 namedConstraint <?> "TypeConstraints"
-
-data NamedConstraint = NamedConstraint Identifier Constraint  deriving (Eq,Ord,Show, Typeable, Data)
-namedConstraint =
-  do { id <- option UndefinedIdentifier identifier
-     ; c <- otherConstraint
-     ; return (NamedConstraint id c)
-     }
-     <?> "NamedConstraint"
-
-data Constraint = Constraint ValueConstraint PresenceConstraint deriving (Eq,Ord,Show, Typeable, Data)
-otherConstraint = 
-  do { vc <- option UndefinedVC (valueConstraint)  
-     ; pc <- option UndefinedContraint (presenceConstraint)
-     ; return (Constraint vc pc)
-     }
-     <?> "Constraint"
-
-data ValueConstraint = DefinedVC SubtypeSpec | UndefinedVC deriving (Eq,Ord,Show, Typeable, Data)
-valueConstraint = constraint >>= return . DefinedVC <?> "ValueConstraint"
-
-data PresenceConstraint = PresentConstraint 
-                        | AbsentConstraint 
-                        | OptionalConstraint 
-                        | UndefinedContraint deriving (Eq,Ord,Show, Typeable, Data)
-presenceConstraint =
-  choice [ do reserved "PRESENT"; return PresentConstraint
-         , do reserved "ABSENT"; return AbsentConstraint
-         , do reserved "OPTIONAL"; return OptionalConstraint
-         ]
-  <?> "PresenceConstraint"
 
 binaryString = bstring <?> "BinaryString"
 hexString = hstring  <?> "HexString"
