@@ -120,6 +120,7 @@ identifier = Identifier <$> _identifier
 -- TODO: distinguished from identifier only by context - check this
 newtype ValueReference = ValueReference String deriving (Eq,Ord,Show, Typeable, Data)
 valuereference = ValueReference <$> _identifier
+_valuereference = _identifier
 
 -- TODO: distinguished from typereference only by context - check this
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
@@ -1257,6 +1258,37 @@ anyType = Any <$> ( reserved "ANY" *> optionMaybe ( reserved "DEFINED" *> reserv
 -- TODO: ANY type does not have value parser(?)
 -- }} end of DEPRECATED clause
 
+--------------------------------------------------
+-- X.681-0207: Information Object Specification --
+--------------------------------------------------
+
+-- {{ X.681-0207, clause 7, "Lexical items"
+newtype ObjectClassReference = ObjectClassReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectclassreference = ObjectClassReference <$> ucaseIdent
+
+newtype ObjectReference = ObjectReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectreference = ObjectReference <$> _valuereference
+_objectreference = _valuereference
+
+newtype ObjectSetReference = ObjectSetReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectsetreference = ObjectSetReference <$> _typereference
+_objectsetreference = _typereference
+
+newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+typefieldreference = TypeFieldReference <$> (char '&' *> _typereference)
+
+newtype ValueFieldReference = ValueFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+valuefieldreference = ValueFieldReference <$> ( char '&' *> _valuereference)
+
+newtype ValueSetFieldReference = ValueSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+valuesetfieldreference = ValueSetFieldReference <$> ( char '&' *> _typereference )
+
+newtype ObjectFieldReference = ObjectFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectfieldreference = ObjectFieldReference <$> ( char '&' *> _objectreference )
+
+newtype ObjectSetFieldReference = ObjectSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
+objectsetfieldreference = ObjectSetFieldReference <$> ( char '&' *> _objectsetreference )
+-- }} end of clause 7
 
 -- UsefulObjectClassReference is inlined in definedObjectClass
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
