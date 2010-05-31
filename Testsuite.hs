@@ -52,21 +52,47 @@ lexicalTests =
   , testTypeRef "SomeType -- Very\n-- important" $ Just (TypeReference "SomeType")
   , testTypeRef "Some-Type /* Even more important */" $ Just (TypeReference "Some-Type")
   , testTypeRef "-- Leading comment --Some-Type -- Trailing comment" $ Just (TypeReference "Some-Type")
-  , testTypeRef "Some--Type" $ Nothing -- double dash
-  , testTypeRef "Some-Type-" $ Nothing -- trailing dash
-  , testTypeRef "-Some-Type" $ Nothing -- leading dash
-  , testTypeRef "someType" $ Nothing -- lower case
-  , testTypeRef "UTCTime" $ Nothing -- reserved word
+  , testInvTypeRef "Some--Type" -- double dash
+  , testInvTypeRef "Some-Type-" -- trailing dash
+  , testInvTypeRef "-Some-Type" -- leading dash
+  , testInvTypeRef "someType"   -- lower case
+  , testInvTypeRef "UTCTime"    -- reserved word
   , testIdent "someType" $ Just (Identifier "someType")
   , testIdent "some-Type" $ Just (Identifier "some-Type")
-  , testIdent "some--Type" $ Nothing -- double dash
-  , testIdent "some-Type-" $ Nothing -- trailing dash
-  , testIdent "-some-Type" $ Nothing -- leading dash
-  , testIdent "SomeType" $ Nothing -- upper case
+  , testInvIdent "some--Type"   -- double dash
+  , testInvIdent "some-Type-"   -- trailing dash
+  , testInvIdent "-some-Type"   -- leading dash
+  , testInvIdent "SomeType"     -- upper case
+  , testReal "0" $ Just 0
+  , testReal "10" $ Just 10.0
+  , testReal "-10" $ Just (-10.0)
+  , testReal "10.1" $ Just 10.1
+  , testReal "-10.1" $ Just (-10.1)
+  , testReal "-1.5e2" $ Just (-150.0)
+  , testBString "''B" $ Just (BinString 'B' "")
+  , testBString "'01'B" $ Just (BinString 'B' "01")
+  , testBString "'01 11'B" $ Just (BinString 'B' "0111")
+  , testBString "-- Invalid -- '01 11' B" $ Nothing
+  , testBString "-- Invalid -- '0123'B" $ Nothing
+  , testHString "''H" $ Just (BinString 'H' "")
+  , testHString "'0A'H" $ Just (BinString 'H' "0A")
+  , testHString "'0A B C'H" $ Just (BinString 'H' "0ABC")
+  , testHString "-- Invalid -- '0A' H" $ Nothing
+  , testHString "-- Invalid -- '08abc'H" $ Nothing
+  , testCString "\"\"" $ Just (CString "")  
+  , testCString "\"abc\"" $ Just (CString "abc")
+  , testCString "\"abc\ndef\"" $ Just (CString "abcdef")
+  , testCString "\"abc\"\"def\"" $ Just (CString "abc\"def")
   ]
   where
     testTypeRef val expected = testCase ("Type reference " ++ val) $ parseASN1 typereference val @?= expected
-    testIdent  val expected = testCase ("Type reference " ++ val) $ parseASN1 identifier val @?= expected
+    testIdent  val expected = testCase ("Identifier " ++ val) $ parseASN1 identifier val @?= expected
+    testInvTypeRef val = testCase ("Invalid type reference " ++ val) $ parseASN1 typereference val @?= Nothing
+    testInvIdent   val = testCase ("Invalid identifier " ++ val) $ parseASN1 identifier val @?= Nothing
+    testReal val expected = testCase ("realnumber " ++ val) $ parseASN1 realnumber val @?= expected
+    testBString val expected = testCase ("bstring " ++ val) $ parseASN1 bstring val @?= expected
+    testHString val expected = testCase ("hstring " ++ val) $ parseASN1 hstring val @?= expected
+    testCString val expected = testCase ("cstring " ++ val) $ parseASN1 cstring val @?= expected
 
 -- X.680-0207, clause 12, modules
 moduleTests =
