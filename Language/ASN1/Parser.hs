@@ -44,7 +44,7 @@ import System.Exit (exitFailure)
 import Data.Generics
 import Control.Applicative ((<$>),(<*),(*>),(<*>),(<$))
 import Control.Monad (when)
-import Data.Char (isUpper, isAlpha)
+import Data.Char (isUpper, isAlpha, isSpace)
 import Data.List (isInfixOf)
 
 -- {{ Top-level interface
@@ -85,22 +85,140 @@ asn1Input = do
 -- conditions like "comment ends on next '--' or on newline". Which is why all
 -- line comments are turned into block comments and Token parser is instructed
 -- to handle only block comments.
+-- Comments betwee /* and */ are handled by similar replacement.
 fixupComments = do
   inp <- getInput
   setInput $ unlines $ map fixup $ lines inp
   where 
     fixup l
       | "--" `isInfixOf` l && unterminated = l ++ " --"
+      | "/*" `isInfixOf` l = replStart l
+      | "*/" `isInfixOf` l = replEnd l                             
       | otherwise = l
       where
         unterminated = checkUnterm False l
         checkUnterm p []             = p
         checkUnterm p ('-':'-':rest) = checkUnterm (not p) rest
         checkUnterm p (_:rest)       = checkUnterm p rest
+        replStart []             = []
+        replStart ('/':'*':rest) = '-':'-':(replStart rest)
+        replStart (c:rest)       = c:(replStart rest)
+        replEnd []             = []
+        replEnd ('*':'/':rest) = '-':'-':(replEnd rest)
+        replEnd (c:rest)       = c:(replEnd rest)
+        
 -- }}
         
 -- {{ X.680-0207,  Clause 11, "ASN.1 lexical items"
-        -- TODO
+newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
+_typereference = ucaseFirstIdent
+typereference = TypeReference <$> _typereference
+
+newtype Identifier = Identifier String deriving (Eq,Ord,Show, Typeable, Data)
+_identifier = lcaseFirstIdent
+identifier = Identifier <$> _identifier
+
+-- TODO: distinguished from identifier only by context - check this
+newtype ValueReference = ValueReference String deriving (Eq,Ord,Show, Typeable, Data)
+valuereference = ValueReference <$> _identifier
+
+-- TODO: distinguished from typereference only by context - check this
+data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
+modulereference = ModuleReference <$> _typereference
+
+-- For comment handling see `fixupComments'
+
+number = natural <?> "number"
+realnumber = 
+  choice [ try $ negate <$> (char '-' *> float)
+         , try float
+         , fromInteger <$> integer
+         ]
+  where
+    float = P.float asn1
+
+type BString = BinString
+bstring = binString " 01" 'B' <?> "bstring"
+
+type HString = BinString
+hstring = binString " 0123456789ABCDEFabcdef" 'H' <?> "hstring"
+
+data BinString = BinString Char String deriving (Eq,Ord,Show, Typeable, Data)
+binString allowedSet marker = BinString marker <$> ( ( char '\'' *> (filter (not.isSpace) <$> many (oneOf allowedSet) ) ) <* char '\'' <* char marker)
+
+newtype CString = CString String deriving (Eq,Ord,Show, Typeable, Data)
+-- TODO: need to fix double "" inside cstring?
+cstring = CString <$> ( char '"' *> anyChar `manyTill` ( (char '"' >> notFollowedBy (char '"') ) ) )
+
+-----------------------------------------------------------
+-- Token parser
+-----------------------------------------------------------
+lcaseFirstIdent = do 
+  i <- parsecIdent
+  when (isUpper $ head i) $ unexpected "uppercase first letter"
+  return i
+
+ucaseFirstIdent = do 
+  i <- parsecIdent
+  when (not . isUpper $ head i) $ unexpected "lowercase first letter"
+  return i
+
+ucaseIdent = do 
+  i <- parsecIdent
+  when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
+  return i
+
+asn1Style
+  = emptyDef
+    { commentStart = "--"
+    , commentEnd = "--"
+    , nestedComments = False
+    , identStart     = letter
+    , identLetter = alphaNum <|> oneOf "-"
+    , caseSensitive = True
+      -- X.680-0207, 11.27
+    , reservedNames = [ "ABSENT",  "ENCODED",  "INTEGER",  "RELATIVE-OID", 
+                        "ABSTRACT-SYNTAX",  "END",  "INTERSECTION",  "SEQUENCE", 
+                        "ALL",  "ENUMERATED",  "ISO646String",  "SET", 
+                        "APPLICATION",  "EXCEPT",  "MAX",  "SIZE", 
+                        "AUTOMATIC",  "EXPLICIT",  "MIN",  "STRING", 
+                        "BEGIN",  "EXPORTS",  "MINUS-INFINITY",  "SYNTAX", 
+                        "BIT",  "EXTENSIBILITY",  "NULL",  "T61String", 
+                        "BMPString",  "EXTERNAL",  "NumericString",  "TAGS", 
+                        "BOOLEAN",  "FALSE",  "OBJECT",  "TeletexString", 
+                        "BY",  "FROM",  "ObjectDescriptor",  "TRUE", 
+                        "CHARACTER",  "GeneralizedTime",  "OCTET",  "TYPE-IDENTIFIER", 
+                        "CHOICE",  "GeneralString",  "OF",  "UNION", 
+                        "CLASS",  "GraphicString",  "OPTIONAL",  "UNIQUE", 
+                        "COMPONENT",  "IA5String",  "PATTERN",  "UNIVERSAL", 
+                        "COMPONENTS",  "IDENTIFIER",  "PDV",  "UniversalString", 
+                        "CONSTRAINED",  "IMPLICIT",  "PLUS-INFINITY",  "UTCTime", 
+                        "CONTAINING",  "IMPLIED",  "PRESENT",  "UTF8String", 
+                        "DEFAULT",  "IMPORTS",  "PrintableString",  "VideotexString", 
+                        "DEFINITIONS",  "INCLUDES",  "PRIVATE",  "VisibleString", 
+                        "EMBEDDED",  "INSTANCE",  "REAL",  "WITH" ]
+    }
+
+asn1            = P.makeTokenParser asn1Style
+            
+whiteSpace      = P.whiteSpace asn1
+lexeme          = P.lexeme asn1
+symbol          = P.symbol asn1
+parsecIdent     = P.identifier asn1
+reserved        = P.reserved asn1
+comma           = P.comma asn1
+commaSep        = P.commaSep asn1
+commaSep1       = P.commaSep1 asn1
+braces          = P.braces asn1
+squares         = P.squares asn1
+parens          = P.parens asn1
+semi            = P.semi asn1
+colon           = P.colon asn1
+natural         = P.natural asn1
+integer         = P.integer asn1
+dot             = P.dot asn1
+commaSepEndBy p = p `sepEndBy` comma
+commaSepEndBy1 p = p `sepEndBy1` comma
 -- }} end of clause 11
         
 -- {{ X.680-0207, Clause 12, "Module definition"
@@ -428,8 +546,8 @@ namedType = NamedType <$> identifier <*> theType
 
 data Value = 
   -- Five BitString (and OctetString) values:
-    HexString StringConst
-  | BinaryString StringConst
+    HexString BinString
+  | BinaryString BinString
   | Containing Value
   | IdentifierListBitString [Identifier]
   | IdentifiedNumber Identifier
@@ -638,14 +756,9 @@ enumeratedValue = EnumeratedValue <$> identifier
 realValue = 
   choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
          , reserved "MINUS-INFINITY" >> return MinusInfinity
-         , RealValue <$> float'
+         , RealValue <$> realnumber
          , SequenceRealValue <$> componentValueList
          ]
-  where
-    float' = choice [ try $ negate <$> (char '-' *> float)
-                    , try float
-                    , fromInteger <$> integer
-                    ]
 
 -- }} end of clause 20
 -- {{ X.680-0207, clause 21, "BITSTRING"
@@ -1146,34 +1259,6 @@ newtype ValueName = ValueName Identifier deriving (Eq,Ord,Show, Typeable, Data)
 
 
 -- { Chapter 8.1, "Lexical tokens in ASN.1"
-data StringConst = StringConst (Maybe Char) String deriving (Eq,Ord,Show, Typeable, Data)
-stringConst allowedSet marker = 
-  do { char '\'' ; body <- many (oneOf allowedSet) ; char '\''; char marker ; return (StringConst (Just marker) body) } 
-
-type BString = StringConst
-bstring = stringConst "01" 'B' <?> "bstring"
-
-type HString = StringConst
-hstring = stringConst "0123456789ABCDEFabcdef" 'H' <?> "hstring"
-
-type CString = StringConst
-cstring = 
-  do { char '"'; s <- anyChar `manyTill` (char '"' ); return (StringConst Nothing s) } <?> "cstring"
-
-lcaseFirstIdent = do { i <- parsecIdent
-                     ; when (isUpper $ head i) $ unexpected "uppercase first letter"
-                     ; return i
-                     }
-
-ucaseFirstIdent = do { i <- parsecIdent
-                     ; when (not . isUpper $ head i) $ unexpected "lowercase first letter"
-                     ; return i
-                     }
-
-ucaseIdent = do { i <- parsecIdent
-                ; when (not $ all isUpper $ filter isAlpha i) $ unexpected "lowercase letter"
-                ; return i
-                }
 -- }
 
 -- UsefulObjectClassReference is inlined in definedObjectClass
@@ -1384,23 +1469,6 @@ primitiveFieldName =
          ]
 
 
-
-
-binaryString = bstring <?> "BinaryString"
-hexString = hstring  <?> "HexString"
-characterStringValue = cstring <?> "CharacteStringValue"
-number = natural <?> "number"
-data Identifier = Identifier String 
-                   | UndefinedIdentifier
-                     deriving (Eq,Ord,Show, Typeable, Data)
-identifier = lcaseFirstIdent >>= return . Identifier <?> "identifier"
-
-data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
-modulereference = ucaseFirstIdent >>= return . ModuleReference <?> "modulereference"
-
-newtype TypeReference = TypeReference String deriving (Eq,Ord,Show, Typeable, Data)
-typereference = ucaseFirstIdent >>= return . TypeReference <?> "typereference"
-
 newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 typefieldreference = char '&' >> ucaseFirstIdent >>= return . TypeFieldReference <?> "typefieldreference"
 
@@ -1425,75 +1493,7 @@ objectsetfieldreference = char '&' >> ucaseFirstIdent >>= return . ObjectSetFiel
 newtype ValueSetFieldReference = ValueSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 valuesetfieldreference = char '&' >> ucaseFirstIdent >>= return . ValueSetFieldReference
 
-newtype ValueReference = ValueReference String deriving (Eq,Ord,Show, Typeable, Data)
-valuereference = lcaseFirstIdent >>= return . ValueReference
 
-
-data DefinedMacroName = ObjectType | TextualConvention deriving (Eq,Ord,Show, Typeable, Data)
-definedMacroName =
-  do {
-      choice [ reserved "OBJECT-TYPE" >> return ObjectType 
-             , reserved "TEXTUAL-CONVENTION" >> return TextualConvention
-             ]
-     }
-     <?> "DefinedMacroName"
-
------------------------------------------------------------
--- Tokens
--- Use qualified import to have token parsers on toplevel
------------------------------------------------------------
-asn1Style
-  = emptyDef
-    { commentStart = "--"
-    , commentEnd = "--"
-    , nestedComments = False
-    , identStart     = letter
-    , identLetter = alphaNum <|> oneOf "-"
-    , caseSensitive = True
-      -- X.680-0207, 11.27
-    , reservedNames = [ "ABSENT",  "ENCODED",  "INTEGER",  "RELATIVE-OID", 
-                        "ABSTRACT-SYNTAX",  "END",  "INTERSECTION",  "SEQUENCE", 
-                        "ALL",  "ENUMERATED",  "ISO646String",  "SET", 
-                        "APPLICATION",  "EXCEPT",  "MAX",  "SIZE", 
-                        "AUTOMATIC",  "EXPLICIT",  "MIN",  "STRING", 
-                        "BEGIN",  "EXPORTS",  "MINUS-INFINITY",  "SYNTAX", 
-                        "BIT",  "EXTENSIBILITY",  "NULL",  "T61String", 
-                        "BMPString",  "EXTERNAL",  "NumericString",  "TAGS", 
-                        "BOOLEAN",  "FALSE",  "OBJECT",  "TeletexString", 
-                        "BY",  "FROM",  "ObjectDescriptor",  "TRUE", 
-                        "CHARACTER",  "GeneralizedTime",  "OCTET",  "TYPE-IDENTIFIER", 
-                        "CHOICE",  "GeneralString",  "OF",  "UNION", 
-                        "CLASS",  "GraphicString",  "OPTIONAL",  "UNIQUE", 
-                        "COMPONENT",  "IA5String",  "PATTERN",  "UNIVERSAL", 
-                        "COMPONENTS",  "IDENTIFIER",  "PDV",  "UniversalString", 
-                        "CONSTRAINED",  "IMPLICIT",  "PLUS-INFINITY",  "UTCTime", 
-                        "CONTAINING",  "IMPLIED",  "PRESENT",  "UTF8String", 
-                        "DEFAULT",  "IMPORTS",  "PrintableString",  "VideotexString", 
-                        "DEFINITIONS",  "INCLUDES",  "PRIVATE",  "VisibleString", 
-                        "EMBEDDED",  "INSTANCE",  "REAL",  "WITH" ]
-    }
-
-asn1            = P.makeTokenParser asn1Style
-            
-whiteSpace      = P.whiteSpace asn1
-lexeme          = P.lexeme asn1
-symbol          = P.symbol asn1
-parsecIdent     = P.identifier asn1
-reserved        = P.reserved asn1
-comma           = P.comma asn1
-commaSep        = P.commaSep asn1
-commaSep1       = P.commaSep1 asn1
-braces          = P.braces asn1
-squares         = P.squares asn1
-parens          = P.parens asn1
-semi            = P.semi asn1
-colon           = P.colon asn1
-natural         = P.natural asn1
-integer         = P.integer asn1
-float           = P.float asn1
-dot             = P.dot asn1
-commaSepEndBy p = p `sepEndBy` comma
-commaSepEndBy1 p = p `sepEndBy1` comma
 
 -- Local Variables: 
 -- outline-regexp:"-- [{]\+"
