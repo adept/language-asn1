@@ -143,7 +143,7 @@ type HString = BinString
 hstring = binString " 0123456789ABCDEF" 'H' <?> "hstring"
 
 data BinString = BinString Char String deriving (Eq,Ord,Show, Typeable, Data)
-binString allowedSet marker = BinString marker <$> ( ( symbol "'" *> (filter (not.isSpace) <$> many (oneOf allowedSet) ) ) <* symbol "'" <* char marker <* whiteSpace)
+binString allowedSet marker = BinString marker <$> ( ( symbol "'" *> (filter (not.isSpace) <$> many (oneOf allowedSet) ) ) <* char '\'' <* char marker <* whiteSpace)
 
 newtype CString = CString String deriving (Eq,Ord,Show, Typeable, Data)
 -- TODO: need to fix double "" inside cstring?
