@@ -140,7 +140,7 @@ type BString = BinString
 bstring = binString " 01" 'B' <?> "bstring"
 
 type HString = BinString
-hstring = binString " 0123456789ABCDEFabcdef" 'H' <?> "hstring"
+hstring = binString " 0123456789ABCDEF" 'H' <?> "hstring"
 
 data BinString = BinString Char String deriving (Eq,Ord,Show, Typeable, Data)
 binString allowedSet marker = BinString marker <$> ( ( symbol "'" *> (filter (not.isSpace) <$> many (oneOf allowedSet) ) ) <* symbol "'" <* char marker <* whiteSpace)
