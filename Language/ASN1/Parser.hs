@@ -112,7 +112,7 @@ data Module = Module { module_id::ModuleIdentifier
 -- Checked, X.680-0207
 moduleDefinition = 
   Module <$> moduleIdentifier <*> (reserved "DEFINITIONS" *> tagDefault) <*> extensibility 
-         <*> (reservedOp "::=" *> reserved "BEGIN" *> moduleBody) <* reserved "END"  
+         <*> (symbol "::=" *> reserved "BEGIN" *> moduleBody) <* reserved "END"  
          <?> "ModuleDefinition"
  where
    -- Checked, X.680-0207
@@ -212,7 +212,7 @@ theSymbol =
                   ] ) <* parametrizedDesignation
  where
    -- Checked, X.683-0207, 9.1
-   parametrizedDesignation = optional (lexeme (char '{') >> lexeme (char '}'))
+   parametrizedDesignation = optional (symbol "{" >> symbol "}")
 
 -- Checked, X.680-0207
 assignmentList = many1 assignment <?> "assignmentList"
@@ -273,18 +273,18 @@ definedValue =
 -- {{ X.680-0207, clause 15, "Assigning types and values"
 
 -- Checked
-typeAssignment = TypeAssignment <$> typereference <*> (reservedOp "::=" *> theType)
+typeAssignment = TypeAssignment <$> typereference <*> (symbol "::=" *> theType)
                  <?> "TypeAssignment"
 
 -- Checked
 valueAssignment = do
   ref <- valuereference 
   t <- theType 
-  v <- (reservedOp "::=" *> valueOfType t)
+  v <- (symbol "::=" *> valueOfType t)
   return $ ValueAssignment ref t v
 
 -- Checked
-valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (reservedOp "::=" *> valueSet)
+valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (symbol "::=" *> valueSet)
   where
     -- This alternative is defined in X.680-0207, clause 15.8
     valueSetOrAlternative = valueSet <|> parens elementSetSpecs
@@ -677,7 +677,7 @@ nullValue = NullValue <$ reserved "NULL"
 -- Checked, X.680-0207
 sequenceType = 
   Sequence <$>
-  choice [ try $ Empty <$ ( reserved "SEQUENCE" >> lexeme (char '{') >> lexeme (char '}') )
+  choice [ try $ Empty <$ ( reserved "SEQUENCE" >> symbol "{" >> symbol "}" )
          , try $ JustException <$> ( reserved "SEQUENCE" *> braces (extensionAndException <* optionalExtensionMarker) )
          , (reserved "SEQUENCE" *> braces componentTypeLists)
          ]
@@ -801,7 +801,7 @@ setOfValue = setOrSequenceOfValue
 -- {{ X.680-0207, clause 26, "SET"
 setType = 
   Set <$>
-  choice [ try $ Empty <$ ( reserved "SET" >> lexeme (char '{') >> lexeme (char '}') )
+  choice [ try $ Empty <$ ( reserved "SET" >> symbol "{" >> symbol "}" )
          , try $ JustException <$> ( reserved "SET" *> braces ( extensionAndException <* optionalExtensionMarker ) )
          , (reserved "SET" *> braces componentTypeLists)
          ]
@@ -996,7 +996,7 @@ objectDescriptorValue = ObjectDescriptorValue <$> cstring
 -- {{ X.680-0207, clause 49, "The exception identifier"
 -- Checked
 exceptionSpec = 
-  optionMaybe ( lexeme (char '!') >> exceptionIdentification )
+  optionMaybe ( symbol "!" >> exceptionIdentification )
                 
 data ExceptionIdentification = ExceptionNumber Integer
                              | ExceptionValue DefinedValue
@@ -1123,7 +1123,7 @@ anyType = Any <$>
 -- Dubuisson, 9.1.2
 objectClassAssignment = do
   ref <- objectclassreference
-  reservedOp "::="
+  symbol "::="
   c <- objectClass
   return $ ObjectClassAssignment ref c
 
@@ -1249,7 +1249,7 @@ objectSetOptionality = optionMaybe $
 objectAssignment = do
   or <- objectreference 
   doc <- definedObjectClass 
-  reservedOp "::=" 
+  symbol "::=" 
   o <- object
   return $ ObjectAssignment or doc o
 
@@ -1514,8 +1514,6 @@ asn1Style
                         "DEFAULT",  "IMPORTS",  "PrintableString",  "VideotexString", 
                         "DEFINITIONS",  "INCLUDES",  "PRIVATE",  "VisibleString", 
                         "EMBEDDED",  "INSTANCE",  "REAL",  "WITH" ]
-                      
-    , reservedOpNames = [ "::=", ",", "...", "!" ]
     }
 
 asn1            = P.makeTokenParser asn1Style
@@ -1525,7 +1523,6 @@ lexeme          = P.lexeme asn1
 symbol          = P.symbol asn1
 parsecIdent     = P.identifier asn1
 reserved        = P.reserved asn1
-reservedOp      = P.reservedOp asn1
 comma           = P.comma asn1
 commaSep        = P.commaSep asn1
 commaSep1       = P.commaSep1 asn1
