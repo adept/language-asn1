@@ -163,21 +163,21 @@ realTests =
 bitStringTests =
   [ testType "BIT STRING (SIZE (12))" $ noType
   , testType "BIT STRING {sunday(0), monday (1), tuesday(2),wednesday(3), thursday(4), friday(5),saturday(6) } (SIZE (0..7))" $ noType
-  , testValue "'100110100100001110110'B" bitStringValue $ noValue
-  , testValue "'0123456789ABCDEF'H" bitStringValue $ noValue
-  , testValue "'0000 0001 0010'B" bitStringValue $ noValue
+  , testValue "'100110100100001110110'B" bitStringValue $ Just (BinaryString (BinString 'B' "100110100100001110110"))
+  , testValue "'0123456789ABCDEF'H" bitStringValue $ Just (HexString (BinString 'H' "0123456789ABCDEF"))
+  , testValue "'0000 0001 0010'B" bitStringValue $ Just (BinaryString (BinString 'B' "000000010010"))
   , testValue "{sunday, monday, wednesday}" bitStringValue $ Just (IdentifierListBitString [Identifier "sunday",Identifier "monday",Identifier "wednesday"])
   , testValue "CONTAINING NULL" bitStringValue $ Just (Containing NullValue)
-  , testAssignment "image BIT STRING ::= '1001'B" $ noAssignment
+  , testAssignment "image BIT STRING ::= '1001'B" $ Just (ValueAssignment {value_ref = ValueReference "image", value_ref_type = Type {type_id = BitString [], subtype = Nothing}, assigned_value = BinaryString (BinString 'B' "1001")})
   ]
 
 -- Clause 22
 octetStringTests =
   [ testType "OCTET STRING (SIZE (12))" $ noType
-  , testValue "'100110100100001110110'B" bitStringValue $ noValue
-  , testValue "'3FE2EBAD471005'H" bitStringValue $ noValue
+  , testValue "'100110100100001110110'B" bitStringValue $ Just (BinaryString (BinString 'B' "100110100100001110110"))
+  , testValue "'3FE2EBAD471005'H" bitStringValue $ Just (HexString (BinString 'H' "3FE2EBAD471005"))
   , testValue "CONTAINING 10.0" bitStringValue $ Just (Containing (RealValue 10.0))
-  , testAssignment "image OCTET STRING ::= '1001'B" $ noAssignment
+  , testAssignment "image OCTET STRING ::= '1001'B" $ Just (ValueAssignment {value_ref = ValueReference "image", value_ref_type = Type {type_id = OctetString, subtype = Nothing}, assigned_value = BinaryString (BinString 'B' "1001")})
   ]
 
 -- Clause 23
