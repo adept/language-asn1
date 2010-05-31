@@ -14,11 +14,11 @@ coverage analysis)
 
 Implementation status
 =====================
-X.680: Clauses 11, 45, 46, 47 pending
-X.681: not done
-X.682: not done
-X.683: not done
-Tests: pending
+X.680-0207: DONE
+X.681-0207: partially done, completeness not evaluated
+X.682-0207: partially done, completeness not evaluated
+X.683-0207: partially done, completeness not evaluated
+Tests: partially done, completeness not evaluated
 Test code coverage: ??%
 
 Parser performs no validation/semantical analysis: for example, values
@@ -26,7 +26,8 @@ of enumerated/choice/sequences are not checked against respective
 types. Also, all ambiguous values (see below) are not resolved to
 their more definitive forms.
 
-Type-dependent value parsing have to be introduced everywhere possible
+Type-dependent value parsing (as done in ValueAssignment) have to be
+introduced everywhere possible.
 
 Implementation notes
 ====================
