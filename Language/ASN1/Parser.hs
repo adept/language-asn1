@@ -205,7 +205,6 @@ asn1Style
 asn1            = P.makeTokenParser asn1Style
             
 whiteSpace      = P.whiteSpace asn1
-lexeme          = P.lexeme asn1
 symbol          = P.symbol asn1
 parsecIdent     = P.identifier asn1
 reserved        = P.reserved asn1
@@ -220,7 +219,6 @@ colon           = P.colon asn1
 natural         = P.natural asn1
 integer         = P.integer asn1
 dot             = P.dot asn1
-commaSepEndBy p = p `sepEndBy` comma
 commaSepEndBy1 p = p `sepEndBy1` comma
 -- }} end of clause 11
         
