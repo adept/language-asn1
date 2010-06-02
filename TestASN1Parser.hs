@@ -2,7 +2,7 @@ module Main where
 
 import Language.ASN1.Parser
 import Data.Generics
-import System(getArgs)
+import System.Environment(getArgs)
 
 -- Sorry, no fancy prettyprinting combinators :)
 showTerm t = showTerm' 0 $ show t

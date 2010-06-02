@@ -49,3 +49,12 @@ Executable  LanguageASN1Testsuite
     Build-Depends: base >=3 && <=5, HUnit, test-framework, test-framework-hunit, parsec >= 3.0.0, syb
   else
     Buildable: False
+
+Executable  TestASN1Parser
+  Hs-Source-Dirs: .
+  Main-Is:       TestASN1Parser.hs
+  if flag(test)
+    GHC-Options: -fhpc
+    Build-Depends: base >=3 && <=5, parsec >= 3.0.0, syb
+  else
+    Buildable: False
