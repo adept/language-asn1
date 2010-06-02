@@ -147,7 +147,6 @@ data BinString = BinString Char String deriving (Eq,Ord,Show, Typeable, Data)
 binString allowedSet marker = BinString marker <$> ( ( symbol "'" *> (filter (not.isSpace) <$> many (oneOf allowedSet) ) ) <* char '\'' <* char marker <* whiteSpace)
 
 newtype CString = CString String deriving (Eq,Ord,Show, Typeable, Data)
--- TODO: need to fix double "" inside cstring?
 cstring = CString <$> (filter (not.isNewline) <$> intercalate "\"" <$> many1 ( char '"' *> anyChar `manyTill` (char '"'))) <* whiteSpace
 
 -----------------------------------------------------------
@@ -316,18 +315,18 @@ assignedIdentifier =
          ]
 
 data Symbol = TypeReferenceSymbol TypeReference
-            -- TODO: | ValueReferenceSymbol ValueReference
-            -- it is impossible to distinguish TypeReference and ValueReference syntactically
+            | ValueReferenceSymbol ValueReference
+            -- TODO: it is impossible to distinguish TypeReference and ValueReference syntactically
             | ObjectClassReferenceSymbol ObjectClassReference
             | ObjectReferenceSymbol ObjectReference
-            -- TODO: | ObjectSetReferenceSymbol ObjectSetReference
+            | ObjectSetReferenceSymbol ObjectSetReference
             deriving (Eq,Ord,Show, Typeable, Data)
 theSymbol =
  choice ( map try [ TypeReferenceSymbol <$> typereference
                   , ObjectClassReferenceSymbol <$> objectclassreference
                   , ObjectReferenceSymbol <$> objectreference
-                  -- TODO: , ObjectSetReferenceSymbol <$> objectsetreference
-                  -- TODO: , ValueReferenceSymbol <$> valuereference
+                  , ObjectSetReferenceSymbol <$> objectsetreference
+                  , ValueReferenceSymbol <$> valuereference
                   ] ) <* parametrizedDesignation
  where
    -- Checked, X.683-0207, 9.1
@@ -487,9 +486,9 @@ data BuiltinType = BitString [NamedNumber]
                  | Real
                  | RelativeOID
                  | Sequence ComponentTypeLists
-                 | SequenceOf (Maybe Constraint) (Either Type NamedType)-- TODO: fix types when constraint is implemented properly
+                 | SequenceOf (Maybe Constraint) (Either Type NamedType)
                  | Set ComponentTypeLists
-                 | SetOf (Maybe Constraint) (Either Type NamedType) -- TODO: fix types when constraint is implemented properly
+                 | SetOf (Maybe Constraint) (Either Type NamedType)
                  | Tagged Tag (Maybe TagType) Type
                    -- Referenced Type constructors:
                    -- Four defined type variants
@@ -1378,7 +1377,7 @@ field = try objectField
         <|> try fixedTypeValueField
         <|> variableTypeValueField
         <|> try fixedTypeValueSetField
-        -- TODO: <|> variableTypeValueSetField
+        <|> variableTypeValueSetField
         <|> typeField
         <?> "Field"
         
@@ -1437,11 +1436,12 @@ fieldName = primitiveFieldName `sepBy1` dot
 objectAssignment = ObjectAssignment <$> objectreference <*> definedObjectClass <*> ( symbol "::=" *> object )
 
 data Object = ObjectDefn [FieldSetting]
+            | ObjDefinedObject DefinedObject
             | ObjectFromObject ReferencedObjects FieldName
             deriving (Eq,Ord,Show, Typeable, Data)
 object =
   choice [ objectDefn
-         -- TODO: , definedObject
+         , ObjDefinedObject <$> definedObject
          , objectFromObject
          -- TODO: , parametrizedObject
          ]
@@ -1460,14 +1460,14 @@ fieldSetting = FieldSetting <$> primitiveFieldName <*> setting
 
 
 
-data Setting = TypeSetting Type | ValueSetting Value | ValueSetSetting ValueSet | ObjectSetting Object
+data Setting = TypeSetting Type | ValueSetting Value | ValueSetSetting ValueSet | ObjectSetting Object | ObjectSetSetting ObjectSet
              deriving (Eq,Ord,Show, Typeable, Data)
 setting = 
   choice [ TypeSetting <$> theType
          , ValueSetting <$> value
          , ValueSetSetting <$> valueSet
          , ObjectSetting <$> object
-         -- TODO: , objectSet
+         , ObjectSetSetting <$> objectSet
          ]
   
 -- }} end of clause 11
