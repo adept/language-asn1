@@ -347,7 +347,7 @@ data Assignment = ValueAssignment { value_ref::ValueReference
                 | ValueSetTypeAssignment TypeReference Type ValueSet
                 | ObjectClassAssignment ObjectClassReference ObjectClass
                 | ObjectAssignment ObjectReference DefinedObjectClass Object
-                -- TODO: | ObjectSetAssignment 
+                | ObjectSetAssignment ObjectSetReference DefinedObjectClass ObjectSet
                 -- TODO: | ParameterizedAssignment
                   deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked, X.680-0207
@@ -357,7 +357,7 @@ assignment =
                    , typeAssignment
                    , objectClassAssignment
                    , valueSetTypeAssignment
-                   -- TODO: , objectSetAssignment
+                   , objectSetAssignment
                    -- TODO: , parameterizedAssignment
                    ]
 -- }} end of clause 12
@@ -480,10 +480,10 @@ data BuiltinType = BitString [NamedNumber]
                  | EnumerationWithException [EnumerationItem] (Maybe ExceptionIdentification)
                  | EnumerationWithExceptionAndAddition [EnumerationItem] (Maybe ExceptionIdentification) [EnumerationItem]
                  | External
-                   -- TODO: InstanceOf
+                 | InstanceOf DefinedObjectClass -- X.681 annex C
                  | TheInteger [NamedNumber]
                  | Null
-                   -- TODO: ObjectClassField
+                 | ObjectClassField DefinedObjectClass FieldName -- X.681 clause 14
                  | ObjectIdentifier
                  | OctetString 
                  | Real
@@ -504,8 +504,8 @@ data BuiltinType = BitString [NamedNumber]
                  | UTCTime
                  | ObjectDescriptor
                  | Selection Identifier Type
-                   -- TODO: TypeFromObject constructors                   
-                   -- TODO: ValueSetFromObjects constructors
+                 | TypeFromObject ReferencedObjects FieldName
+                 | ValueSetFromObjects ReferencedObjects FieldName
                    -- Obsolete, for backward compatibility
                  | Any (Maybe Identifier)
                  deriving (Eq,Ord,Show, Typeable, Data)
@@ -529,18 +529,17 @@ builtinType =
                    , External <$ reserved "EXTERNAL" -- clause 34
                    , characterStringType -- clause 36
                    , EmbeddedPDV <$ ( reserved "EMBEDDED" *> reserved "PDV" ) -- clause 33
-                     -- TODO: , instanceOfType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
-                     -- TODO: , objectClassFieldType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
+                   , instanceOfType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, Annex C
+                   , objectClassFieldType -- ITU-T Rec. X.681 | ISO/IEC 8824-2, 14.1
                    , anyType
                    ]
 -- Checked
 referencedType = definedType -- clause 13.1
                  <|> usefulType -- clause 41.1
                  <|> selectionType -- clause 29
-                 {- TODO: 
                  <|> typeFromObject -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
                  <|> valueSetFromObjects -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
-                 -} 
+ 
   <?> "ReferencedType"
 
 data NamedType = NamedType Identifier Type deriving (Eq,Ord,Show, Typeable, Data)
@@ -563,7 +562,7 @@ data Value =
   | EmbeddedPDVValue ComponentValueList  
   | EnumeratedValue Identifier
   | ExternalValue ComponentValueList
-    -- TODO: InstanceOf value
+  | InstanceOfValue ComponentValueList
   | SignedNumber Integer -- this is integerValue
   | NullValue
   | OID [OIDComponent]
@@ -588,9 +587,13 @@ data Value =
   | UTCTimeValue CString -- TODO: do better, with components
   | ObjectDescriptorValue CString -- TODO: do better, with components
     -- Selection type value is just Value
-    -- TODO: TypeFromObject constructors                   
-    -- TODO: ValueSetFromObjects constructors
-    -- TODO: | ValueFromObject ...
+  -- TODO: | TypeFromObjectValue - see X.681 clause 15
+  -- TODO: | ValueSetFromObjectsValue - see X.681 clause 15
+  | ValueFromObject ReferencedObjects FieldName
+    -- Two ObjectClassFieldValue variants:
+  | OpenTypeFieldValue Type Value
+  | FixedTypeFieldValue Value
+    
     -- Catch-all for Integer and Enumerated types
   | SomeIdentifiedValue Identifier
     -- TODO: catch-all for OID-like values
@@ -623,7 +626,7 @@ valueOfType (Type t _) = v t
     v (EnumerationWithException _ _) = enumeratedValue
     v (EnumerationWithExceptionAndAddition _ _ _) = enumeratedValue
     v External = externalValue
-    -- TODO: InstanceOf = undefined
+    v (InstanceOf _) = instanceOfValue
     v (TheInteger namedNumber) = integerValue
     v Null = nullValue
     -- TODO: ObjectClassField = undefined
@@ -654,7 +657,7 @@ valueOfType (Type t _) = v t
 -- TODO: When we dont know the type of value we are parsing, we could not distinguish between some
 -- of the alternatives without deep context analysis and/or semantical analysis
 -- Checked    
-value = builtinValue <|> referencedValue {- TODO: <|> objectClassFieldValue -}
+value = builtinValue <|> referencedValue <|> objectClassFieldValue
         <?> "Value"
 
 -- TODO: re-check this after implementation of all builtin types
@@ -684,7 +687,7 @@ builtinValue =
 -- Checked
 referencedValue = 
   choice [ DefinedV <$> definedValue 
-         -- TODO: , valueFromObject -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
+         , valueFromObject -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
          ]
 
 data NamedValue = NamedValue Identifier Value deriving (Eq,Ord,Show, Typeable, Data)
@@ -878,8 +881,8 @@ componentType =
 data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked, X.680-0207
 valueOptionality = optionMaybe $
-  choice [ reserved "OPTIONAL" >> return OptionalValue
-         , reserved "DEFAULT" >> value >>= return . DefaultValue
+  choice [ OptionalValue <$ reserved "OPTIONAL"
+         , DefaultValue <$> ( reserved "DEFAULT" *> value )
          ] 
 
 -- This is also used as SequenceOf value
@@ -1150,12 +1153,12 @@ exclusions = reserved "EXCEPT" *> elements
 unionMark = ( () <$ symbol "|" ) <|> reserved "UNION"
 intersectionMark = ( () <$ symbol "^" ) <|> reserved "INTERSECTION"
 
-data Elements = Subset ElementSet | Subtype SubtypeElements
+data Elements = Subset ElementSet | Subtype SubtypeElements | ObjSet ObjectSetElements
   deriving (Eq,Ord,Show, Typeable, Data)
 elements =
   choice [ Subset <$> parens elementSetSpec
          , Subtype <$> subtypeElements
-         -- TODO: , objectSetElements
+         , ObjSet <$> objectSetElements
          ]
 -- }} end of clause 46
 -- {{ X.680-0207, clause 47, "Subtype elements"
@@ -1289,8 +1292,9 @@ objectfieldreference = ObjectFieldReference <$> ( char '&' *> _objectreference )
 newtype ObjectSetFieldReference = ObjectSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
 objectsetfieldreference = ObjectSetFieldReference <$> ( char '&' *> _objectsetreference )
 -- }} end of clause 7
+-- {{ X.681-0207, clause 8, "Referencing definitions"
 
--- UsefulObjectClassReference is inlined in definedObjectClass
+-- UsefulObjectClassReference is inlined in definedObjectClass as TypeIdentifier and AbstractSyntax
 data DefinedObjectClass = ExternalObjectClassReference ModuleReference ObjectClassReference
                         | LocalObjectClassReference ObjectClassReference
                         | TypeIdentifier
@@ -1318,48 +1322,38 @@ definedObjectSet =
   choice [ try $ ExternalObjectSetReference <$> moduleReferenceAndDot <*> objectsetreference
          , LocalObjectSetReference <$> objectsetreference
          ] <?> "DefinedObjectSet"
+-- }} end of clause 8
+-- {{ X.681-0207, clause 9, "Information object class definition and assignment"
 
+objectClassAssignment = ObjectClassAssignment <$> objectclassreference <*> ( symbol "::=" *> objectClass )
 
--- Dubuisson, 9.1.2
-objectClassAssignment = do
-  ref <- objectclassreference
-  symbol "::="
-  c <- objectClass
-  return $ ObjectClassAssignment ref c
-
--- Dubuisson, 15.2.2
-data ObjectClass = ObjectClassDefn [FieldSpec] | DefinedObjectClassDefn DefinedObjectClass deriving (Eq,Ord,Show, Typeable, Data)
-
--- Dubuisson, 15.2.2
+data ObjectClass = ObjectClassDefn [Field] | DefinedObjectClassDefn DefinedObjectClass deriving (Eq,Ord,Show, Typeable, Data)
 objectClass = 
-  choice [ definedObjectClass >>= return . DefinedObjectClassDefn
+  choice [ DefinedObjectClassDefn <$> definedObjectClass
          , objectClassDefn 
-         -- , parametrizedObjectClass
+         -- TODO: , parametrizedObjectClass -- ITU-T Rec. X.683 | ISO/IEC 8824-4, 9.2.
          ]
-  <?> "ObjectClass"
 
-parametrizedObjectClass = undefined
-
--- Dubuisson, 15.2.2
 objectClassDefn = do
   reserved "CLASS"
   ObjectClassDefn <$> (braces $ commaSep1 field)
-  -- TODO : withSyntaxSpec  
+  -- TODO : optionMaybe withSyntaxSpec  
   
--- Dubuisson, 15.2.2, TODO
-data FieldSpec = TypeField TypeFieldReference (Maybe TypeOptionality) 
-               | FixedTypeValueField ValueFieldReference Type Bool {-unique or not-} (Maybe ValueOptionality)
-               | ObjectField ObjectFieldReference DefinedObjectClass (Maybe ObjectOptionality)
-               | ObjectSetField ObjectSetFieldReference DefinedObjectClass (Maybe ObjectSetOptionality)
-               | FixedTypeValueSetField ValueSetFieldReference Type (Maybe ValueSetOptionality)
-               deriving (Eq,Ord,Show, Typeable, Data)
+data Field = TypeField TypeFieldReference (Maybe TypeOptionality) 
+           | FixedTypeValueField ValueFieldReference Type Bool {-unique or not-} (Maybe ValueOptionality)
+           | VariableTypeValueField ValueFieldReference FieldName (Maybe ValueOptionality)
+           | FixedTypeValueSetField ValueSetFieldReference Type (Maybe ValueSetOptionality)
+           | VariableTypeValueSetField ValueSetFieldReference FieldName (Maybe ValueSetOptionality)
+           | ObjectField ObjectFieldReference DefinedObjectClass (Maybe ObjectOptionality)
+           | ObjectSetField ObjectSetFieldReference DefinedObjectClass (Maybe ObjectSetOptionality)
+           deriving (Eq,Ord,Show, Typeable, Data)
 data TypeOptionality = OptionalType | DefaultType Type deriving (Eq,Ord,Show, Typeable, Data)
 data ObjectOptionality = OptionalObject | DefaultObject Object deriving (Eq,Ord,Show, Typeable, Data)
-data ObjectSetOptionality = OptionalObjectSet | DefaultObjectSet {- TODO: ObjectSet -} deriving (Eq,Ord,Show, Typeable, Data)
-data ValueSetOptionality = OptionalValueSet | DefaultValueSet {- TODO: ValueSet -} deriving (Eq,Ord,Show, Typeable, Data)
+data ObjectSetOptionality = OptionalObjectSet | DefaultObjectSet ObjectSet deriving (Eq,Ord,Show, Typeable, Data)
+data ValueSetOptionality = OptionalValueSet | DefaultValueSet ValueSet deriving (Eq,Ord,Show, Typeable, Data)
 
--- Dubuisson, 15.2.2
 {-
+From Dubuisson:
 Table 15.1 says:
 If the field name   and if it is followed by   then the field of the
 starts with                                    object contains
@@ -1383,83 +1377,73 @@ starts with                                    object contains
 field = try objectField
         <|> try objectSetField
         <|> try fixedTypeValueField
-        -- TODO: <|> variableTypeValueField
+        <|> variableTypeValueField
         <|> try fixedTypeValueSetField
         -- TODO: <|> variableTypeValueSetField
         <|> typeField
         <?> "Field"
         
--- Dubuisson, 15.2.2
-typeField = do
-  ref <- typefieldreference
-  optionality <- optionMaybe $ 
-                 choice [ reserved "OPTIONAL" >> return OptionalType
-                        , reserved "DEFAULT" >> theType >>= return . DefaultType
-                        ]
-  return $ TypeField ref optionality
-  <?> "TypeField"
+typeField = TypeField <$> typefieldreference <*> optionality
+  where optionality = optionMaybe $ ( OptionalType <$ reserved "OPTIONAL" ) <|> ( DefaultType <$> ( reserved "DEFAULT" *> theType ) )
 
--- Dubuisson, 15.2.2
-fixedTypeValueField = do
-  ref <- valuefieldreference
-  t <- theType
-  u <- option False (reserved "UNIQUE" >> return True)
-  vo <- valueOptionality
-  return $ FixedTypeValueField ref t u vo
-  <?> "FixedTypeValueField"
+fixedTypeValueField = FixedTypeValueField <$> valuefieldreference <*> theType <*> uniqueness <*> valueOptionality
+  where
+    uniqueness = option False (reserved "UNIQUE" >> return True)
 
--- Dubuisson, 15.2.2
-fixedTypeValueSetField = do
-  ref <- valuesetfieldreference 
-  t <- theType
-  o <- valueSetOptionality
-  return $ FixedTypeValueSetField ref t o
+variableTypeValueField = VariableTypeValueField <$> valuefieldreference <*> fieldName <*> valueOptionality
+
+fixedTypeValueSetField = FixedTypeValueSetField <$> valuesetfieldreference <*> theType <*> valueSetOptionality
   
 valueSetOptionality =
   optionMaybe $
-  choice [ reserved "OPTIONAL" >> return OptionalValueSet
-         -- , reserved "DEFAULT" >> valueSet >>= return . DefaultValueSet
+  choice [ OptionalValueSet <$ reserved "OPTIONAL"
+         , DefaultValueSet <$> ( reserved "DEFAULT" *> valueSet )
          ] 
   
--- Dubuisson, 15.2.2
-objectField = do
-  ref <- objectfieldreference
-  c <- definedObjectClass
-  oo <- objectOptionality
-  return $ ObjectField ref c oo
+variableTypeValueSetField = VariableTypeValueSetField <$> valuesetfieldreference <*> fieldName <*> valueSetOptionality
+
+objectField = ObjectField <$> objectfieldreference <*> definedObjectClass <*> objectOptionality
   
--- Dubuisson, 15.2.2
 objectOptionality = optionMaybe $
-  choice [ reserved "OPTIONAL" >> return OptionalObject
-         , reserved "DEFAULT" >> object >>= return . DefaultObject
+  choice [ OptionalObject <$ reserved "OPTIONAL"
+         , DefaultObject <$> ( reserved "DEFAULT" *> object )
          ] 
 
--- Dubuisson, 15.2.2
-objectSetField = do
-  ref <- objectsetfieldreference 
-  c <- definedObjectClass
-  oo <- objectSetOptionality
-  return $ ObjectSetField ref c oo
+objectSetField = ObjectSetField <$> objectsetfieldreference <*> definedObjectClass <*> objectSetOptionality
 
 objectSetOptionality = optionMaybe $
-  choice [ reserved "OPTIONAL" >> return OptionalObjectSet
-         -- TODO: , reserved "DEFAULT" >> objectSet >>= return . DefaultObjectSet
+  choice [ OptionalObjectSet <$ reserved "OPTIONAL"
+         , DefaultObjectSet <$> ( reserved "DEFAULT" *> objectSet )
          ] 
   
-objectAssignment = do
-  or <- objectreference 
-  doc <- definedObjectClass 
-  symbol "::=" 
-  o <- object
-  return $ ObjectAssignment or doc o
+data PrimitiveFieldName = PrimTFR TypeFieldReference | PrimVFR ValueFieldReference | PrimOFR ObjectFieldReference
+                        | PrimVSFR ValueSetFieldReference | PrimOSFR ObjectSetFieldReference
+                        deriving (Eq,Ord,Show, Typeable, Data)
+primitiveFieldName =
+  choice [ PrimTFR <$> try typefieldreference
+         , PrimOFR <$> objectfieldreference           
+         , PrimVFR <$> valuefieldreference
+         , PrimVSFR <$> valuesetfieldreference
+         , PrimOSFR <$> objectsetfieldreference
+         ]
 
--- Dubuisson, 15.2.2, TODO
+type FieldName = [PrimitiveFieldName]
+fieldName = primitiveFieldName `sepBy1` dot
+-- }} end of clause 9
+-- {{ X.681-0207, clause 10, "Syntax List"
+-- TODO
+-- }} end of clause 10
+-- {{ X.681-0207, clause 11, "Information object definition and assignment"
+
+objectAssignment = ObjectAssignment <$> objectreference <*> definedObjectClass <*> ( symbol "::=" *> object )
+
 data Object = ObjectDefn [FieldSetting]
+            | ObjectFromObject ReferencedObjects FieldName
             deriving (Eq,Ord,Show, Typeable, Data)
 object =
   choice [ objectDefn
          -- TODO: , definedObject
-         -- TODO: , objectFromObject
+         , objectFromObject
          -- TODO: , parametrizedObject
          ]
  
@@ -1469,60 +1453,98 @@ objectDefn =
          ]
   where
     defaultSyntax = braces $ commaSep fieldSetting
+    -- definedSyntax = TODO
     
 data FieldSetting = FieldSetting PrimitiveFieldName Setting
                   deriving (Eq,Ord,Show, Typeable, Data)
-fieldSetting = do
-  pfn <- primitiveFieldName
-  s <- setting
-  return $ FieldSetting pfn s
+fieldSetting = FieldSetting <$> primitiveFieldName <*> setting
 
-data Setting = TypeSetting Type | ValueSetting Value | ObjectSetting Object
+
+
+data Setting = TypeSetting Type | ValueSetting Value | ValueSetSetting ValueSet | ObjectSetting Object
              deriving (Eq,Ord,Show, Typeable, Data)
 setting = 
   choice [ TypeSetting <$> theType
          , ValueSetting <$> value
-         -- TODO: , valueSet
+         , ValueSetSetting <$> valueSet
          , ObjectSetting <$> object
          -- TODO: , objectSet
          ]
   
-data PrimitiveFieldName = PrimTFR TypeFieldReference | PrimVFR ValueFieldReference | PrimOFR ObjectFieldReference
-                        deriving (Eq,Ord,Show, Typeable, Data)
-primitiveFieldName =
-  choice [ PrimTFR <$> try typefieldreference
-         , PrimOFR <$> objectfieldreference           
-         , PrimVFR <$> valuefieldreference
-         -- TODO: , valuesetfieldreference
-         -- TODO: , objectsetfieldreference
+-- }} end of clause 11
+-- {{ X.681-0207, clause 12, "Information object set definition and assignment"
+objectSetAssignment = ObjectSetAssignment <$> objectsetreference <*> definedObjectClass <*> ( symbol "::=" *> objectSet )
+
+objectSet = braces objectSetSpec
+
+data ObjectSet = 
+  ObjectSet ElementSet
+  | ObjectSetExtendableAtEnd ElementSet
+  | EmptyExtendableObjectSet
+  | ObjectSetExtendableAtStart ElementSet
+  | ObjectSetExtendableInTheMiddle ElementSet ElementSet
+  deriving (Eq,Ord,Show, Typeable, Data)
+objectSetSpec =
+  choice [ try $ ObjectSetExtendableAtStart <$> ( symbol "..." *> comma *> elementSetSpec )
+         , EmptyExtendableObjectSet <$ (symbol "...")
+         , try $ ObjectSetExtendableInTheMiddle <$> elementSetSpec <*> ( comma *> symbol "..." *> comma *> elementSetSpec )
+         , try $ ObjectSetExtendableAtEnd <$> elementSetSpec <* comma <* symbol "..."
+         , ObjectSet <$>  elementSetSpec
          ]
 
+data ObjectSetElements = 
+  ObjectElement Object 
+  | DefinedObjectSetElement DefinedObjectSet 
+  | ObjectSetFromObjectsElement ReferencedObjects FieldName
+  -- TODO: | ParametrizedObjectSetElement ParametrizedObjectSet 
+  deriving (Eq,Ord,Show, Typeable, Data)
+objectSetElements =
+  choice [ ObjectElement <$> object
+         , DefinedObjectSetElement <$> definedObjectSet
+         , ObjectSetFromObjectsElement <$> referencedObjects <*> ( dot *> fieldName ) -- objectSetFromObjects is inlined here
+         -- TODO: , ParametrizedObjectSetElement <$> parameterizedObjectSet
+         ]
+-- }} end of clause 12
+-- {{ X.681-0207, clause 13, "Associated tables" does not have any productions }} --
+-- {{ X.681-0207, clause 14, "Notation for the object class field type"
+objectClassFieldType = ObjectClassField <$> definedObjectClass <*> ( dot *> fieldName )
 
-newtype TypeFieldReference = TypeFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
-typefieldreference = char '&' >> ucaseFirstIdent >>= return . TypeFieldReference <?> "typefieldreference"
+objectClassFieldValue = openTypeFieldVal <|> fixedTypeFieldVal
 
-newtype ObjectClassReference = ObjectClassReference String deriving (Eq,Ord,Show, Typeable, Data)
-objectclassreference = ucaseIdent >>= return . ObjectClassReference
+openTypeFieldVal  = OpenTypeFieldValue <$> theType <*> ( colon *> value )
+fixedTypeFieldVal = FixedTypeFieldValue <$> ( builtinValue <|> referencedValue )
+  
+-- }} end of clause 14
+-- {{ X.681-0207, clause 15, "Information from objects"
+{- InformationFromObjects ::=
+   ValueFromObject
+   | ValueSetFromObjects
+   | TypeFromObject
+   | ObjectFromObject
+   | ObjectSetFromObjects -}
 
-newtype ValueFieldReference = ValueFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
-valuefieldreference = char '&' >> lcaseFirstIdent >>= return . ValueFieldReference
+valueFromObject = ValueFromObject <$> referencedObjects <*> ( dot *> fieldName )
+valueSetFromObjects = ValueSetFromObjects <$> referencedObjects <*> (dot *> fieldName )
+typeFromObject = TypeFromObject <$> referencedObjects <*> ( dot *> fieldName )
+objectFromObject = ObjectFromObject <$> referencedObjects <*> (dot *> fieldName )
+-- objectSetFromObjects is inlined into ObjectSetElements
 
-newtype ObjectFieldReference = ObjectFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
-objectfieldreference = char '&' >> lcaseFirstIdent >>= return . ObjectFieldReference
-
-newtype ObjectReference = ObjectReference String deriving (Eq,Ord,Show, Typeable, Data)
-objectreference = lcaseFirstIdent >>= return . ObjectReference
-
-newtype ObjectSetReference = ObjectSetReference String deriving (Eq,Ord,Show, Typeable, Data)
-objectsetreference = ucaseFirstIdent >>= return . ObjectSetReference
-
-newtype ObjectSetFieldReference = ObjectSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
-objectsetfieldreference = char '&' >> ucaseFirstIdent >>= return . ObjectSetFieldReference
-
-newtype ValueSetFieldReference = ValueSetFieldReference String deriving (Eq,Ord,Show, Typeable, Data)
-valuesetfieldreference = char '&' >> ucaseFirstIdent >>= return . ValueSetFieldReference
-
-
+data ReferencedObjects = 
+  ReferencedObject DefinedObject
+  | ReferencedObjectSet DefinedObjectSet
+  deriving (Eq,Ord,Show, Typeable, Data)
+referencedObjects =
+  choice [ ReferencedObject <$> definedObject
+           -- TODO : , parameterizedObject
+         , ReferencedObjectSet <$> definedObjectSet
+         -- TODO: , parameterizedObjectSet
+         ]
+-- }} end of clause 15
+-- {{ X.681-0207, annex C, "Instance Of type"
+instanceOfType = InstanceOf <$> ( reserved "INSTANCE" *> reserved "OF" *> definedObjectClass )
+-- Value of InstaceOf is the value of associated SEQUENCE type (see X.681 annex C.7)
+instanceOfValue = InstanceOfValue <$> componentValueList
+-- }} end of annex C
 
 -- Local Variables: 
 -- outline-regexp:"-- [{]\+"
