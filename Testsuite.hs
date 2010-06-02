@@ -21,6 +21,7 @@ tests =
   , testGroup "X.680-0207, clause 23, NULL" nullTests
   , testGroup "X.680-0207, clause 24, SEQUENCE" sequenceTests
   , testGroup "X.680-0207, clause 35, Character string (restricted and unrestricted)" characterStringTests
+  , testGroup "X.681-0207, clause 9, Information object class definition and assignment" classTests
   ]
 
 -- Helpers
@@ -214,3 +215,24 @@ characterStringTests =
   , testAssignment "mystring MyAlphabet ::= \"HOPE\"" $ noAssignment
   ]
 
+classTests =
+  [ testField "&TypeField" $ Just (TypeField (TypeFieldReference "TypeField") Nothing)
+  , testField "&object FIELD" $ Just (ObjectField (ObjectFieldReference "object") (LocalObjectClassReference (ObjectClassReference "FIELD")) Nothing)
+  , testField "&Object SET-FIELD" $ Just (ObjectSetField (ObjectSetFieldReference "Object") (LocalObjectClassReference (ObjectClassReference "SET-FIELD")) Nothing)
+  , testField "&fixedType ValueField" $ Just (FixedTypeValueField (ValueFieldReference "fixedType") (Type {type_id = LocalTypeReference (TypeReference "ValueField"), subtype = Nothing}) False Nothing)
+  , testField "&variable-Type &Value-Field" $ Just (VariableTypeValueField (ValueFieldReference "variable-Type") [PrimTFR (TypeFieldReference "Value-Field")] Nothing)
+  , testField "&Fixed-Type ValueSetField" $ Just (FixedTypeValueSetField (ValueSetFieldReference "Fixed-Type") (Type {type_id = LocalTypeReference (TypeReference "ValueSetField"), subtype = Nothing}) Nothing)
+  , testField "&Variable-type &Value-Set-Field" $ Just (VariableTypeValueSetField (ValueSetFieldReference "Variable-type") [PrimTFR (TypeFieldReference "Value-Set-Field")] Nothing)
+  , testField "&ArgumentType OPTIONAL" $ Just (TypeField (TypeFieldReference "ArgumentType") (Just OptionalType))
+  , testField "&Errors ERROR OPTIONAL" $ Just (ObjectSetField (ObjectSetFieldReference "Errors") (LocalObjectClassReference (ObjectClassReference "ERROR")) (Just OptionalObjectSet))
+  , testField "&resultReturned BOOLEAN DEFAULT TRUE" $ Just (FixedTypeValueField (ValueFieldReference "resultReturned") (Type {type_id = Boolean, subtype = Nothing}) False (Just (DefaultValue (BooleanValue True))))
+  , testField "&code INTEGER UNIQUE" $ Just (FixedTypeValueField (ValueFieldReference "code") (Type {type_id = TheInteger [], subtype = Nothing}) True Nothing)
+  ]
+  where
+    testField val exp = testCase ("Field definition " ++ val) $ parseASN1 field val @?= exp
+    
+{-  
+[ "OPERATION ::= CLASS { , &ResultType OPTIONAL, , &Linked OPERATION OPTIONAL, ,  }"
+  , "ERROR ::= CLASS { &ParameterType OPTIONAL, &code INTEGER UNIQUE }" 
+  ]
+    -}
