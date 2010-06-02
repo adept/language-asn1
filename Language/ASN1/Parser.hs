@@ -255,8 +255,8 @@ data DefinitiveOIDComponent = DefinitiveOIDNumber Integer
 -- Checked, X.680-0207
 definitiveOIDComponent =
   choice [ DefinitiveOIDNumber <$> number
-         , try $ DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
          , DefinitiveOIDNamedNumber <$> identifier <*> parens number
+         , DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
          ]
   <?> "DefinitiveObjectIdComponent"
 
