@@ -131,8 +131,8 @@ integerTests =
   , testValue "a" integerValue $ Just (IdentifiedNumber (Identifier "a"))
   , testAssignment "a INTEGER ::= 1" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [], subtype = Nothing}, assigned_value = SignedNumber 1})
   , testAssignment "a INTEGER {a(3), b(a)} ::= b" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [NamedNumber (Identifier "a") 3,NamedDefinedValue (Identifier "b") (LocalValueReference (ValueReference "a"))], subtype = Nothing}, assigned_value = IdentifiedNumber (Identifier "b")})
-  , testAssignment "DayOfTheMonth ::= INTEGER {first(1), last(31)} (first | last)" $ noAssignment
-  , testAssignment "DayOfTheMonth ::= INTEGER {first(1), last(31)} (first .. last)" $ noAssignment
+  , testType "INTEGER {first(1), last(31)} (first | last)" $ noType
+  , testType "INTEGER {first(1), last(31)} (first .. last)" $ noType
   ]
 
 -- X.680-0207, clause 19, "ENUMERATED"
