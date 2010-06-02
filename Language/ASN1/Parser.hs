@@ -669,7 +669,6 @@ builtinValue =
                    , choiceValue
                      -- unrestrictedCharacterStringValue, embeddedPDVValue and externalValue clash with sequenceValue
                      -- TODO: instanceOfValue
-                     -- TODO: objectClassFieldValue
                    , OID <$> oid -- TODO: clashes with RelativeOID
                      -- relativeOIDValue seems to be covered by OID value
                      -- taggedValue is not here because it is just "value" and would lead to infinie loop
@@ -1155,7 +1154,7 @@ data Elements = Subset ElementSet | Subtype SubtypeElements | ObjSet ObjectSetEl
   deriving (Eq,Ord,Show, Typeable, Data)
 elements =
   choice [ Subset <$> parens elementSetSpec
-         , Subtype <$> subtypeElements
+         , try $ Subtype <$> subtypeElements
          , ObjSet <$> objectSetElements
          ]
 -- }} end of clause 46
@@ -1372,13 +1371,13 @@ starts with                                    object contains
 -}
 
 -- Warning: ORDER IS IMPORTAND HERE
-field = try objectField
-        <|> try objectSetField
-        <|> try fixedTypeValueField
-        <|> variableTypeValueField
-        <|> try fixedTypeValueSetField
-        <|> variableTypeValueSetField
-        <|> typeField
+field = try objectField -- &lower ALL-UPPER
+        <|> try objectSetField -- &Upper ALL-UPPER
+        <|> try fixedTypeValueField -- &lower Upper
+        <|> try variableTypeValueField -- &lower &Upper
+        <|> try fixedTypeValueSetField -- &Upper Upper
+        <|> try variableTypeValueSetField -- &Upper &Upper
+        <|> typeField -- &Upper none
         <?> "Field"
         
 typeField = TypeField <$> typefieldreference <*> optionality
@@ -1418,11 +1417,11 @@ data PrimitiveFieldName = PrimTFR TypeFieldReference | PrimVFR ValueFieldReferen
                         | PrimVSFR ValueSetFieldReference | PrimOSFR ObjectSetFieldReference
                         deriving (Eq,Ord,Show, Typeable, Data)
 primitiveFieldName =
-  choice [ PrimTFR <$> try typefieldreference
-         , PrimOFR <$> objectfieldreference           
-         , PrimVFR <$> valuefieldreference
-         , PrimVSFR <$> valuesetfieldreference
-         , PrimOSFR <$> objectsetfieldreference
+  choice [ PrimTFR <$> try typefieldreference -- &Upper
+         , PrimOFR <$> objectfieldreference -- &lower       
+         , PrimVFR <$> valuefieldreference -- &lower
+         , PrimVSFR <$> valuesetfieldreference -- &Upper
+         , PrimOSFR <$> objectsetfieldreference -- &Upper
          ]
 
 type FieldName = [PrimitiveFieldName]
@@ -1454,22 +1453,23 @@ objectDefn =
     defaultSyntax = braces $ commaSep fieldSetting
     -- definedSyntax = TODO
     
-data FieldSetting = FieldSetting PrimitiveFieldName Setting
+data FieldSetting = 
+  TypeFieldSetting TypeFieldReference Type
+  | ValueFieldSetting ValueFieldReference Value
+  | ValueSetFieldSetting ValueSetFieldReference ValueSet
+  | ObjectFieldSetting ObjectFieldReference Object
+  | ObjectSetFieldSetting ObjectSetFieldReference ObjectSet
                   deriving (Eq,Ord,Show, Typeable, Data)
-fieldSetting = FieldSetting <$> primitiveFieldName <*> setting
-
-
-
-data Setting = TypeSetting Type | ValueSetting Value | ValueSetSetting ValueSet | ObjectSetting Object | ObjectSetSetting ObjectSet
-             deriving (Eq,Ord,Show, Typeable, Data)
-setting = 
-  choice [ TypeSetting <$> theType
-         , ValueSetting <$> value
-         , ValueSetSetting <$> valueSet
-         , ObjectSetting <$> object
-         , ObjectSetSetting <$> objectSet
-         ]
-  
+-- PrimitingFieldName and Setting non-terminals are inlined here to lessen the number of ambiguities:
+-- both primitiveFieldName and setting could produce several possible parses for wide variety of inputs.
+-- Combining them in the single parser helps resolve this according to clause 11.7 of X.681-0207
+fieldSetting = 
+  choice $ map try [ TypeFieldSetting <$> typefieldreference <*> theType
+                   , ValueFieldSetting <$> valuefieldreference <*> value
+                   , ValueSetFieldSetting <$> valuesetfieldreference <*> valueSet
+                   , ObjectFieldSetting <$> objectfieldreference <*> object
+                   , ObjectSetFieldSetting <$> objectsetfieldreference <*> objectSet
+                   ]
 -- }} end of clause 11
 -- {{ X.681-0207, clause 12, "Information object set definition and assignment"
 objectSetAssignment = ObjectSetAssignment <$> objectsetreference <*> definedObjectClass <*> ( symbol "::=" *> objectSet )
