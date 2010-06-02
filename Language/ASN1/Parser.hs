@@ -256,8 +256,8 @@ data DefinitiveOIDComponent = DefinitiveOIDNumber Integer
 -- Checked, X.680-0207
 definitiveOIDComponent =
   choice [ DefinitiveOIDNumber <$> number
-         , try $ DefinitiveOIDNamedNumber <$> identifier <*> parens number
-         , DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
+         , try $ DefinitiveOIDName . Identifier <$> reservedOIDIdentifier
+         , DefinitiveOIDNamedNumber <$> identifier <*> parens number
          ]
   <?> "DefinitiveObjectIdComponent"
 
@@ -662,8 +662,8 @@ value = builtinValue <|> referencedValue <|> objectClassFieldValue
 builtinValue =
   choice $ map try [ booleanValue -- ok
                    , nullValue -- ok
+                   , realValue -- should come before integer value parser
                    , SignedNumber <$> integer -- Integer identified by 'identifier' is covered by SomeIdentifiedValue
-                   , realValue
                    , bitStringValue -- This covers OCTET STRING values as well
                    , restrictedCharacterStringValue
                    , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
@@ -675,7 +675,6 @@ builtinValue =
                      -- relativeOIDValue seems to be covered by OID value
                      -- taggedValue is not here because it is just "value" and would lead to infinie loop
                      --   TODO
-                   , realValue -- ok
                      -- Two types could have values denoted by a simple identified. Without semantical analysis
                      -- it is impossible to tell them apart. So they are captured by this single catch-all case below
                    , SomeIdentifiedValue <$> identifier -- ok
@@ -1027,11 +1026,13 @@ oidComponent =
 
 -- Checked
 reservedOIDIdentifier = do
-  i <- choice $ map (try.symbol) $ [ "itu-t", "ccitt", "iso", "joint-iso-itu-t", "joint-iso-ccitt"
-                                   , "recommendation", "question", "administration", "network-operator"
-                                   , "identified-organization", "standard", "member-body"] ++ map (:[]) ['a'..'z']
-  notFollowedBy $ oneOf $ ['a'..'z']++['0'..'9']++"-."
+  (Identifier i) <- identifier
+  when (not $ i `elem` reservedIds ) $ unexpected ("non-reserved identifier "++i)
   return i
+  where
+    reservedIds = [ "itu-t", "ccitt", "iso", "joint-iso-itu-t", "joint-iso-ccitt"
+                  , "recommendation", "question", "administration", "network-operator"
+                  , "identified-organization", "standard", "member-body"] ++ map (:[]) ['a'..'z']
 -- }} end of clause 31
 -- {{ X.680-0207, clause 32, "Relative OID"
 -- Type parser is primitive and inlined into builtinType
