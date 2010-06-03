@@ -1176,7 +1176,7 @@ data SubtypeElements =
 -- TODO: TypeConstraint and ContainedSubtype without "INCLUDES" are not distinguishable without context!
 -- therefore typeConstraint is not implemented
 subtypeElements =
-  choice [ valueRange
+  choice [ try $ valueRange
          , permittedAlphabet
          , sizeConstraint
          , innerTypeConstraints
