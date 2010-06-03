@@ -10,19 +10,54 @@ import Language.ASN1.Parser as P
 main = defaultMain tests
 
 tests = 
-  [ testGroup "X.680-0207, clause 11, Lexical tokens" lexicalTests
-  , testGroup "X.680-0207, clause 12, Modules" moduleTests
-  , testGroup "X.680-0207, clause 17, BOOLEAN" booleanTests
-  , testGroup "X.680-0207, clause 18, INTEGER" integerTests    
-  , testGroup "X.680-0207, clause 19, ENUMERATED" enumeratedTests
-  , testGroup "X.680-0207, clause 20, REAL" realTests
-  , testGroup "X.680-0207, clause 21, BIT STRING" bitStringTests
-  , testGroup "X.680-0207, clause 22, OCTET STRING" octetStringTests
-  , testGroup "X.680-0207, clause 23, NULL" nullTests
-  , testGroup "X.680-0207, clause 24, SEQUENCE" sequenceTests
-  , testGroup "X.680-0207, clause 28, CHOICE" choiceTests
-  , testGroup "X.680-0207, clause 35, Character string (restricted and unrestricted)" characterStringTests
-  , testGroup "X.681-0207, clause 9, Information object class definition and assignment" classTests
+  [ 
+    -------------
+    -- X.681-0207
+    -------------
+    testGroup "X.680-0207, Abstract Syntax Notation One (ASN.1): Specification of basic notation"
+    [ testGroup "X.680-0207, clause 11, Lexical tokens" lexicalTests
+    , testGroup "X.680-0207, clause 12, Modules" moduleTests
+      -- 13, Referencing type and value definitions
+      -- 14 is SKIPPED
+      -- 15, Assigning types and values
+      -- 16, Definition of types and values
+    , testGroup "X.680-0207, clause 17, BOOLEAN" booleanTests
+    , testGroup "X.680-0207, clause 18, INTEGER" integerTests    
+    , testGroup "X.680-0207, clause 19, ENUMERATED" enumeratedTests
+    , testGroup "X.680-0207, clause 20, REAL" realTests
+    , testGroup "X.680-0207, clause 21, BIT STRING" bitStringTests
+    , testGroup "X.680-0207, clause 22, OCTET STRING" octetStringTests
+    , testGroup "X.680-0207, clause 23, NULL" nullTests
+    , testGroup "X.680-0207, clause 24, SEQUENCE" sequenceTests
+    , testGroup "X.680-0207, clause 25, SEQUENCE-OF" sequenceOfTests
+      -- 25, Notation for sequence-of types
+      -- 26, Notation for set types
+      -- 27, Notation for set-of types
+    , testGroup "X.680-0207, clause 28, CHOICE" choiceTests
+      -- 29, Notation for selection types
+      -- 30, Notation for tagged types
+      -- 31, Notation for the object identifier type
+      -- 32, Notation for the relative object identifier type
+      -- 33, Notation for the embedded-pdv type
+      -- 34, Notation for the external type
+    , testGroup "X.680-0207, clause 35, Character string (restricted and unrestricted)" characterStringTests
+      -- 36-41 are SKIPPED
+      -- 42, Generalized time
+      -- 43, Universal time
+      -- 44, The object descriptor type
+      -- 45, Constrained types
+      -- 46, Element set specification
+      -- 47, Subtype elements
+      -- 48 is SKIPPED
+      -- 48, The exception identifier
+    ]
+    
+    -------------
+    -- X.681-0207
+    -------------
+    , testGroup "X.681-0207, Abstract Syntax Notation One (ASN.1): Information object specification"
+      [ testGroup "X.681-0207, clause 9, Information object class definition and assignment" classTests
+      ]
   ]
 
 -- Helpers
@@ -204,6 +239,16 @@ sequenceTests =
   , testType "SEQUENCE {a A OPTIONAL,...!BOOLEAN : FALSE, [[ d D DEFAULT 5, e E ]] , ..., c C }" $ Just (Type {type_id = Sequence (ExtensionsInTheMiddle [NamedTypeComponent {element_type = NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "A"), subtype = Nothing}), element_presence = Just OptionalValue}] (Just (ExceptionTypeAndValue (Type {type_id = Boolean, subtype = Nothing}) (BooleanValue False))) (Just [ExtensionAdditionGroup Nothing [NamedTypeComponent {element_type = NamedType (Identifier "d") (Type {type_id = LocalTypeReference (TypeReference "D"), subtype = Nothing}), element_presence = Just (DefaultValue (SignedNumber 5))},NamedTypeComponent {element_type = NamedType (Identifier "e") (Type {type_id = LocalTypeReference (TypeReference "E"), subtype = Nothing}), element_presence = Nothing}]]) [NamedTypeComponent {element_type = NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "C"), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
   , testValue "{}" sequenceValue $ Just (SequenceValue [])
   , testValue "{a 1, b 2, c 3}" sequenceValue $ Just (SequenceValue [NamedValue (Identifier "a") (SignedNumber 1),NamedValue (Identifier "b") (SignedNumber 2),NamedValue (Identifier "c") (SignedNumber 3)])
+  ]
+
+-- Clause 25
+sequenceOfTests = 
+  [ testType "SEQUENCE OF BOOLEAN" $ Just (Type {type_id = SequenceOf Nothing (Left (Type {type_id = Boolean, subtype = Nothing})), subtype = Nothing})
+  , testType "SEQUENCE OF foo BAR" $ Just (Type {type_id = SequenceOf Nothing (Right (NamedType (Identifier "foo") (Type {type_id = LocalTypeReference (TypeReference "BAR"), subtype = Nothing}))), subtype = Nothing})
+  , testType "SEQUENCE OF foo SEQUENCE {...!BOOLEAN : FALSE}" $ Just (Type {type_id = SequenceOf Nothing (Right (NamedType (Identifier "foo") (Type {type_id = Sequence (JustException (Just (ExceptionTypeAndValue (Type {type_id = Boolean, subtype = Nothing}) (BooleanValue False)))), subtype = Nothing}))), subtype = Nothing})
+  , testValue "{}" sequenceOfValue $ Just (SequenceOfValue (Right []))
+  , testValue "{FALSE, FALSE, TRUE}" sequenceOfValue $ Just (SequenceOfValue (Left [BooleanValue False,BooleanValue False,BooleanValue True]))
+  , testValue "{a 1, b 2, c 3}" sequenceOfValue $ Just (SequenceOfValue (Right [NamedValue (Identifier "a") (SignedNumber 1),NamedValue (Identifier "b") (SignedNumber 2),NamedValue (Identifier "c") (SignedNumber 3)]))
   ]
 
 -- Clause 28, CHOICE
