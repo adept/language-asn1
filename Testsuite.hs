@@ -108,12 +108,13 @@ moduleTests =
   , testModule "A DEFINITIONS ::= BEGIN EXPORTS ALL; A ::= NULL END" $ Just (Module {module_id = ModuleIdentifier (ModuleReference "A") Nothing, default_tag_type = ExplicitTags, extensibility_implied = False, module_body = Just (ModuleBody {module_exports = ExportsAll, module_imports = ImportsNone, module_assignments = [TypeAssignment (TypeReference "A") (Type {type_id = Null, subtype = Nothing})]})})
   , testImports "IMPORTS Bi1, Bi2 FROM B Ci1 FROM C;" $ Just (Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "Bi1"),TypeReferenceSymbol (TypeReference "Bi2")] (GlobalModuleReference (ModuleReference "B") Nothing),SymbolsFromModule [TypeReferenceSymbol (TypeReference "Ci1")] (GlobalModuleReference (ModuleReference "C") Nothing)])
   , testImports "IMPORTS\nProbableCause FROM Attribute-ASN1Module {joint-iso-itu-t ms(9) smi(3) part2(2) asn1Module(2) 1}\nTimePeriod FROM MetricModule\nsomeLocalValue Foo FROM BAR External.value;" $ Just (Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "ProbableCause")] (GlobalModuleReference (ModuleReference "Attribute-ASN1Module") (Just (AssignedIdentifierOID [ObjIdName (Identifier "joint-iso-itu-t"),ObjIdNamedNumber (NamedNumber (Identifier "ms") 9),ObjIdNamedNumber (NamedNumber (Identifier "smi") 3),ObjIdNamedNumber (NamedNumber (Identifier "part2") 2),ObjIdNamedNumber (NamedNumber (Identifier "asn1Module") 2),ObjIdNumber 1]))),SymbolsFromModule [TypeReferenceSymbol (TypeReference "TimePeriod")] (GlobalModuleReference (ModuleReference "MetricModule") (Just (AssignedIdentifierDefinedValue (LocalValueReference (ValueReference "someLocalValue"))))),SymbolsFromModule [TypeReferenceSymbol (TypeReference "Foo")] (GlobalModuleReference (ModuleReference "BAR") (Just (AssignedIdentifierDefinedValue (ExternalValueReference (ModuleReference "External") (ValueReference "value")))))])
+ , testDefinitiveIdentifier "{ iso(1) dod(6) }" $ Just (Just [DefinitiveOIDNamedNumber (Identifier "iso") 1,DefinitiveOIDNamedNumber (Identifier "dod") 6])
  ]
   where
     testModule  val expected = testCase ("Module definition " ++ val) $ parseASN1 moduleDefinition val @?= expected
     testInvModule val = testCase ("Invalid module definition " ++ val) $ parseASN1 moduleDefinition val @?= Nothing
     testImports val expected = testCase ("Imports " ++ val) $ parseASN1 imports val @?= expected
-
+    testDefinitiveIdentifier val expected = testCase ("Definitive identifier " ++ val) $ parseASN1 definitiveIdentifier val @?= expected
 
 -- Clause 17
 booleanTests =
