@@ -20,6 +20,7 @@ tests =
   , testGroup "X.680-0207, clause 22, OCTET STRING" octetStringTests
   , testGroup "X.680-0207, clause 23, NULL" nullTests
   , testGroup "X.680-0207, clause 24, SEQUENCE" sequenceTests
+  , testGroup "X.680-0207, clause 28, CHOICE" choiceTests
   , testGroup "X.680-0207, clause 35, Character string (restricted and unrestricted)" characterStringTests
   , testGroup "X.681-0207, clause 9, Information object class definition and assignment" classTests
   ]
@@ -204,6 +205,18 @@ sequenceTests =
   , testValue "{a 1, b 2, c 3}" sequenceValue $ Just (SequenceValue [NamedValue (Identifier "a") (SignedNumber 1),NamedValue (Identifier "b") (SignedNumber 2),NamedValue (Identifier "c") (SignedNumber 3)])
   ]
 
+-- Clause 28, CHOICE
+choiceTests =
+  [ testType "CHOICE { a Ta, b Tb, c Tc }" $ Just (Type {type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "Ta"), subtype = Nothing}),NamedType (Identifier "b") (Type {type_id = LocalTypeReference (TypeReference "Tb"), subtype = Nothing}),NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "Tc"), subtype = Nothing})]), subtype = Nothing})
+  , testType "CHOICE { a Ta, b Tb,..., c Tc }" $ Just (Type {type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "Ta"), subtype = Nothing}),NamedType (Identifier "b") (Type {type_id = LocalTypeReference (TypeReference "Tb"), subtype = Nothing})] Nothing (Just [ExtensionAdditionAlternativesType (NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "Tc"), subtype = Nothing}))])), subtype = Nothing})
+  , testType "CHOICE { a Ta, b Tb,..., c Tc, ... }" $ Just (Type {type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "Ta"), subtype = Nothing}),NamedType (Identifier "b") (Type {type_id = LocalTypeReference (TypeReference "Tb"), subtype = Nothing})] Nothing (Just [ExtensionAdditionAlternativesType (NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "Tc"), subtype = Nothing}))])), subtype = Nothing})
+  , testType "CHOICE {d [0] NULL,e [1] NULL}" $ Just (Type {type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "d") (Type {type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {type_id = Null, subtype = Nothing}), subtype = Nothing}),NamedType (Identifier "e") (Type {type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {type_id = Null, subtype = Nothing}), subtype = Nothing})]), subtype = Nothing})
+  , testValue "vmd-specific: basicVMD-specific: \"M_DAYTIME\"" choiceValue $ Just (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_DAYTIME")])))
+  , testValue "foo: bar: baz: a: b: c: NULL" choiceValue $ Just (ChoiceValue (Identifier "foo") (ChoiceValue (Identifier "bar") (ChoiceValue (Identifier "baz") (ChoiceValue (Identifier "a") (ChoiceValue (Identifier "b") (ChoiceValue (Identifier "c") NullValue))))))
+  , testValue "foo: TRUE" choiceValue $ Just (ChoiceValue (Identifier "foo") (BooleanValue True))
+  , testValue "foo: \":\"" choiceValue $ Just (ChoiceValue (Identifier "foo") (RestrictedCharacterStringValue [CharsCString (CString ":")]))
+  ]
+
 -- Clause 35
 characterStringTests =
   [ testType "Cyrillic (Level1)" $ noType
@@ -231,9 +244,3 @@ classTests =
   ]
   where
     testField val exp = testCase ("Field definition " ++ val) $ parseASN1 field val @?= exp
-    
-{-  
-[ "OPERATION ::= CLASS { , &ResultType OPTIONAL, , &Linked OPERATION OPTIONAL, ,  }"
-  , "ERROR ::= CLASS { &ParameterType OPTIONAL, &code INTEGER UNIQUE }" 
-  ]
-    -}
