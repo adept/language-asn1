@@ -573,8 +573,8 @@ data Value =
     -- Set/Seq and SetOf/SeqOf:
   | SequenceValue ComponentValueList -- this
   | SetValue ComponentValueList
-  | NamedValueList ComponentValueList
-  | ValueList [Value]
+  | SequenceOfValue (Either [Value] ComponentValueList)
+  | SetOfValue (Either [Value] ComponentValueList)
     -- Tagged value is just Value
     -- ReferencedValue constructors:
   | DefinedV DefinedValue
@@ -591,8 +591,11 @@ data Value =
   | OpenTypeFieldValue Type Value
   | FixedTypeFieldValue Value
     
-    -- Catch-all for Integer and Enumerated types
-  | SomeIdentifiedValue Identifier
+    -- Constructors for ambiguous values
+  | SomeIntegerNumber Integer -- Integer or Real
+  | SomeNamedValueList ComponentValueList
+  | SomeValueList [Value]
+  | SomeIdentifiedValue Identifier -- Integer or Enumerated
     -- TODO: catch-all for OID-like values
   deriving (Eq,Ord,Show, Typeable, Data)
 
@@ -659,13 +662,16 @@ value = builtinValue <|> referencedValue <|> objectClassFieldValue
 
 -- TODO: re-check this after implementation of all builtin types
 builtinValue =
-  choice $ map try [ booleanValue -- ok
-                   , nullValue -- ok
+  choice $ map try [ booleanValue -- unambiguous
+                   , nullValue -- unambiguous
+                   , try $ SomeIntegerNumber <$> integer
                    , realValue -- should come before integer value parser
-                   , SignedNumber <$> integer -- Integer identified by 'identifier' is covered by SomeIdentifiedValue
                    , bitStringValue -- This covers OCTET STRING values as well
                    , restrictedCharacterStringValue
-                   , setOrSequenceOfValue -- this covers the plain SET/SEQUENCE as well
+                   , sequenceValue
+                   , sequenceOfValue
+                   , setValue
+                   , setOfValue
                    , choiceValue
                      -- unrestrictedCharacterStringValue, embeddedPDVValue and externalValue clash with sequenceValue
                      -- TODO: instanceOfValue
@@ -908,13 +914,13 @@ setOrSequenceOfType = do
              ]
 
 -- Checked      
-setOrSequenceOfValue = 
-  choice [ try $ NamedValueList <$> componentValueList
-         , ValueList <$> braces (commaSep value)
+setOrSequenceOfValue =
+  choice [ try $ Right <$> componentValueList
+         , Left <$> braces (commaSep value)
          ]
 
-sequenceOfValue = setOrSequenceOfValue
-setOfValue = setOrSequenceOfValue
+sequenceOfValue = SequenceOfValue <$> setOrSequenceOfValue
+setOfValue = SetOfValue <$> setOrSequenceOfValue
 -- }} end of clause 25, end of clause 27
 -- {{ X.680-0207, clause 26, "SET"
 setType = 
