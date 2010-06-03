@@ -1132,16 +1132,16 @@ elementSetSpecs =
          ]
   
 data ElementSet = AllExcept Exclusions 
-                | Unions [[Intersection]] 
+                | Union [[Intersection]] 
                 | Singleton Elements  -- special form of single-element union for better readability
                 deriving (Eq,Ord,Show, Typeable, Data)
 elementSetSpec =
   choice [ AllExcept <$> ( reserved "ALL" *> exclusions )
-         , mkUnions <$> unions
+         , mkUnion <$> unions
          ]
   where
-    mkUnions ([[Intersection es Nothing]]) = Singleton es
-    mkUnions s = Unions s
+    mkUnion ([[Intersection es Nothing]]) = Singleton es
+    mkUnion s = Union s
 
 unions = intersections `sepBy1` unionMark
 
