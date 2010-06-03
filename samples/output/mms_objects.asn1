@@ -1,0 +1,1631 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "MMS-Object-Module-1") (Just [DefinitiveOIDName (Identifier "iso"),
+    DefinitiveOIDName (Identifier "standard"),
+    DefinitiveOIDNumber 9506,
+    DefinitiveOIDNamedNumber (Identifier "part") 1,
+    DefinitiveOIDNamedNumber (Identifier "mms-object-model-version1") 2]),
+    default_tag_type = ExplicitTags,
+    extensibility_implied = False,
+    module_body = Just (ModuleBody {
+      module_exports = Exports [ExportedSymbol (TypeReferenceSymbol (TypeReference "AccessCondition")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "AdditionalCBBOptions")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "AdditionalSupportOptions")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Address")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "AlarmAckRule")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Control-State")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "DomainState")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "EC-State")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "EC-Class")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "EE-Duration")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "EE-Class")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "EventTime")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Journal-Variable")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "LogicalStatus")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Modifier")),
+      ExportedSymbol (ObjectReferenceSymbol (ObjectReference "normalPriority")),
+      ExportedSymbol (ObjectReferenceSymbol (ObjectReference "normalSeverity")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "ParameterSupportOptions")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "PhysicalStatus")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Priority")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "ProgramInvocationState")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Running-Mode")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "ServiceSupportOptions")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Severity")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "Transitions")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "TypeDescription")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "ULState")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "VMDState"))],
+      module_imports = Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "ApplicationReference"),
+      TypeReferenceSymbol (TypeReference "AuthenticationValue")] (GlobalModuleReference (ModuleReference "MMS-Environment-1") (Just (AssignedIdentifierOID [ObjIdName (Identifier "iso"),
+      ObjIdName (Identifier "standard"),
+      ObjIdNumber 9506,
+      ObjIdNamedNumber (NamedNumber (Identifier "part") 2),
+      ObjIdNamedNumber (NamedNumber (Identifier "mms-environment-version1") 4)]))),
+      SymbolsFromModule [TypeReferenceSymbol (TypeReference "AlternateAccess"),
+      TypeReferenceSymbol (TypeReference "ConfirmedServiceRequest"),
+      TypeReferenceSymbol (TypeReference "AttachToSemaphore"),
+      TypeReferenceSymbol (TypeReference "AttachToEventCondition"),
+      TypeReferenceSymbol (TypeReference "Data"),
+      TypeReferenceSymbol (TypeReference "EE-State"),
+      TypeReferenceSymbol (TypeReference "Identifier"),
+      TypeReferenceSymbol (TypeReference "Integer8"),
+      TypeReferenceSymbol (TypeReference "Integer32"),
+      TypeReferenceSymbol (TypeReference "MMSString"),
+      TypeReferenceSymbol (TypeReference "ObjectName"),
+      TypeReferenceSymbol (TypeReference "TimeOfDay"),
+      TypeReferenceSymbol (TypeReference "TypeSpecification"),
+      TypeReferenceSymbol (TypeReference "Unsigned32"),
+      TypeReferenceSymbol (TypeReference "Unsigned8")] (GlobalModuleReference (ModuleReference "ISO-9506-MMS-1") (Just (AssignedIdentifierOID [ObjIdName (Identifier "iso"),
+      ObjIdName (Identifier "standard"),
+      ObjIdNumber 9506,
+      ObjIdNamedNumber (NamedNumber (Identifier "part") 2),
+      ObjIdNamedNumber (NamedNumber (Identifier "mms-abstract-syntax-version1") 1)])))],
+      module_assignments = [ObjectClassAssignment (ObjectClassReference "VMD") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "executiveFunction") (Type {
+        type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "vendorName") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "modelName") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "revision") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "AbstractSyntaxes") AbstractSyntax Nothing,
+      ObjectSetField (ObjectSetFieldReference "EATransactions") (LocalObjectClassReference (ObjectClassReference "TRANSACTION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Associations") (LocalObjectClassReference (ObjectClassReference "APPLICATION-ASSOCIATION")) Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "logicalStatus") (Type {
+        type_id = LocalTypeReference (TypeReference "LogicalStatus"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueSetField (ValueSetFieldReference "Capabilities") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) Nothing,
+      FixedTypeValueField (ValueFieldReference "physicalStatus") (Type {
+        type_id = LocalTypeReference (TypeReference "PhysicalStatus"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "local-detail") (Type {
+        type_id = BitString [],
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "AccessControlLists") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Domains") (LocalObjectClassReference (ObjectClassReference "DOMAIN")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "ProgramInvocations") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "UnitControls") (LocalObjectClassReference (ObjectClassReference "UNIT-CONTROL")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "UnnamedVariables") (LocalObjectClassReference (ObjectClassReference "UNNAMED-VARIABLE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariables") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariableLists") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedTypes") (LocalObjectClassReference (ObjectClassReference "NAMED-TYPE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "DataExchanges") (LocalObjectClassReference (ObjectClassReference "DATA-EXCHANGE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Semaphores") (LocalObjectClassReference (ObjectClassReference "SEMAPHORE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "OperatorStations") (LocalObjectClassReference (ObjectClassReference "OPERATOR-STATION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditions") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventActions") (LocalObjectClassReference (ObjectClassReference "EVENT-ACTION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventEnrollments") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Journals") (LocalObjectClassReference (ObjectClassReference "JOURNAL")) Nothing,
+      FixedTypeValueField (ValueFieldReference "operationState") (Type {
+        type_id = LocalTypeReference (TypeReference "VMDState"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "safety-Interlocks-Violated") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "any-Resource-Power-On") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "all-Resources-Calibrated") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "local-Control") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "selected-Program-Invocation") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing]),
+      TypeAssignment (TypeReference "LogicalStatus") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+          type_id = TheInteger [NamedNumber (Identifier "state-changes-allowed") 0,
+          NamedNumber (Identifier "no-state-changes-allowed") 1,
+          NamedNumber (Identifier "limited-services-permitted") 2,
+          NamedNumber (Identifier "support-services-allowed") 3],
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PhysicalStatus") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+          type_id = TheInteger [NamedNumber (Identifier "operational") 0,
+          NamedNumber (Identifier "partially-operational") 1,
+          NamedNumber (Identifier "inoperable") 2,
+          NamedNumber (Identifier "needs-commissioning") 3],
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "VMDState") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "idle") 0,
+        NamedNumber (Identifier "loaded") 1,
+        NamedNumber (Identifier "ready") 2,
+        NamedNumber (Identifier "executing") 3,
+        NamedNumber (Identifier "motion-paused") 4,
+        NamedNumber (Identifier "manualInterventionRequired") 5],
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "NULL-OBJECT") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "null") (Type {
+        type_id = Null,
+        subtype = Nothing
+        } ) False Nothing]),
+      ObjectAssignment (ObjectReference "null-instance") (LocalObjectClassReference (ObjectClassReference "NULL-OBJECT")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "null") NullValue]),
+      ObjectClassAssignment (ObjectClassReference "TRANSACTION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "invokeID") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueSetField (ValueSetFieldReference "Pre-excutionModifiers") (Type {
+        type_id = LocalTypeReference (TypeReference "Modifier"),
+        subtype = Nothing
+        } ) Nothing,
+      FixedTypeValueField (ValueFieldReference "currentModifier") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "modifier") (Type {
+          type_id = LocalTypeReference (TypeReference "Modifier"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "none") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "confirmedService-Request") (Type {
+        type_id = LocalTypeReference (TypeReference "ConfirmedServiceRequest"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueSetField (ValueSetFieldReference "Post-executionModifiers") (Type {
+        type_id = LocalTypeReference (TypeReference "Modifier"),
+        subtype = Nothing
+        } ) Nothing,
+      FixedTypeValueField (ValueFieldReference "cancelable") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing]),
+      TypeAssignment (TypeReference "Modifier") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "modifierID") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "modifier") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "eventModifier") (Type {
+              type_id = LocalTypeReference (TypeReference "AttachToEventCondition"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "semaphoreModifier") (Type {
+              type_id = LocalTypeReference (TypeReference "AttachToSemaphore"),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "APPLICATION-ASSOCIATION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "aaIdentifier") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "client") (Type {
+        type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "abstractSyntax") AbstractSyntax Nothing,
+      FixedTypeValueField (ValueFieldReference "authenticationValue") (Type {
+        type_id = LocalTypeReference (TypeReference "AuthenticationValue"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      ObjectSetField (ObjectSetFieldReference "Transactions") (LocalObjectClassReference (ObjectClassReference "TRANSACTION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariables") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariableLists") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedTypes") (LocalObjectClassReference (ObjectClassReference "NAMED-TYPE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "DataExchanges") (LocalObjectClassReference (ObjectClassReference "DATA-EXCHANGE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditions") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventActions") (LocalObjectClassReference (ObjectClassReference "EVENT-ACTION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventEnrollments") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Journals") (LocalObjectClassReference (ObjectClassReference "JOURNAL")) Nothing,
+      FixedTypeValueField (ValueFieldReference "services") (Type {
+        type_id = LocalTypeReference (TypeReference "ServiceSupportOptions"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "parameters") (Type {
+        type_id = LocalTypeReference (TypeReference "ParameterSupportOptions"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "nest") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "Ulsms") (LocalObjectClassReference (ObjectClassReference "ULSM")) Nothing,
+      FixedTypeValueField (ValueFieldReference "extendedServices") (Type {
+        type_id = LocalTypeReference (TypeReference "AdditionalSupportOptions"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "extendedParameters") (Type {
+        type_id = LocalTypeReference (TypeReference "AdditionalCBBOptions"),
+        subtype = Nothing
+        } ) False Nothing]),
+      TypeAssignment (TypeReference "ServiceSupportOptions") (Type {
+        type_id = BitString [NamedNumber (Identifier "status") 0,
+        NamedNumber (Identifier "getNameList") 1,
+        NamedNumber (Identifier "identify") 2,
+        NamedNumber (Identifier "rename") 3,
+        NamedNumber (Identifier "read") 4,
+        NamedNumber (Identifier "write") 5,
+        NamedNumber (Identifier "getVariableAccessAttributes") 6,
+        NamedNumber (Identifier "defineNamedVariable") 7,
+        NamedNumber (Identifier "defineScatteredAccess") 8,
+        NamedNumber (Identifier "getScatteredAccessAttributes") 9,
+        NamedNumber (Identifier "deleteVariableAccess") 10,
+        NamedNumber (Identifier "defineNamedVariableList") 11,
+        NamedNumber (Identifier "getNamedVariableListAttributes") 12,
+        NamedNumber (Identifier "deleteNamedVariableList") 13,
+        NamedNumber (Identifier "defineNamedType") 14,
+        NamedNumber (Identifier "getNamedTypeAttributes") 15,
+        NamedNumber (Identifier "deleteNamedType") 16,
+        NamedNumber (Identifier "input") 17,
+        NamedNumber (Identifier "output") 18,
+        NamedNumber (Identifier "takeControl") 19,
+        NamedNumber (Identifier "relinquishControl") 20,
+        NamedNumber (Identifier "defineSemaphore") 21,
+        NamedNumber (Identifier "deleteSemaphore") 22,
+        NamedNumber (Identifier "reportSemaphoreStatus") 23,
+        NamedNumber (Identifier "reportPoolSemaphoreStatus") 24,
+        NamedNumber (Identifier "reportSemaphoreEntryStatus") 25,
+        NamedNumber (Identifier "initiateDownloadSequence") 26,
+        NamedNumber (Identifier "downloadSegment") 27,
+        NamedNumber (Identifier "terminateDownloadSequence") 28,
+        NamedNumber (Identifier "initiateUploadSequence") 29,
+        NamedNumber (Identifier "uploadSegment") 30,
+        NamedNumber (Identifier "terminateUploadSequence") 31,
+        NamedNumber (Identifier "requestDomainDownload") 32,
+        NamedNumber (Identifier "requestDomainUpload") 33,
+        NamedNumber (Identifier "loadDomainContent") 34,
+        NamedNumber (Identifier "storeDomainContent") 35,
+        NamedNumber (Identifier "deleteDomain") 36,
+        NamedNumber (Identifier "getDomainAttributes") 37,
+        NamedNumber (Identifier "createProgramInvocation") 38,
+        NamedNumber (Identifier "deleteProgramInvocation") 39,
+        NamedNumber (Identifier "start") 40,
+        NamedNumber (Identifier "stop") 41,
+        NamedNumber (Identifier "resume") 42,
+        NamedNumber (Identifier "reset") 43,
+        NamedNumber (Identifier "kill") 44,
+        NamedNumber (Identifier "getProgramInvocationAttributes") 45,
+        NamedNumber (Identifier "obtainFile") 46,
+        NamedNumber (Identifier "defineEventCondition") 47,
+        NamedNumber (Identifier "deleteEventCondition") 48,
+        NamedNumber (Identifier "getEventConditionAttributes") 49,
+        NamedNumber (Identifier "reportEventConditionStatus") 50,
+        NamedNumber (Identifier "alterEventConditionMonitoring") 51,
+        NamedNumber (Identifier "triggerEvent") 52,
+        NamedNumber (Identifier "defineEventAction") 53,
+        NamedNumber (Identifier "deleteEventAction") 54,
+        NamedNumber (Identifier "getEventActionAttributes") 55,
+        NamedNumber (Identifier "reportEventActionStatus") 56,
+        NamedNumber (Identifier "defineEventEnrollment") 57,
+        NamedNumber (Identifier "deleteEventEnrollment") 58,
+        NamedNumber (Identifier "alterEventEnrollment") 59,
+        NamedNumber (Identifier "reportEventEnrollmentStatus") 60,
+        NamedNumber (Identifier "getEventEnrollmentAttributes") 61,
+        NamedNumber (Identifier "acknowledgeEventNotification") 62,
+        NamedNumber (Identifier "getAlarmSummary") 63,
+        NamedNumber (Identifier "getAlarmEnrollmentSummary") 64,
+        NamedNumber (Identifier "readJournal") 65,
+        NamedNumber (Identifier "writeJournal") 66,
+        NamedNumber (Identifier "initializeJournal") 67,
+        NamedNumber (Identifier "reportJournalStatus") 68,
+        NamedNumber (Identifier "createJournal") 69,
+        NamedNumber (Identifier "deleteJournal") 70,
+        NamedNumber (Identifier "getCapabilityList") 71,
+        NamedNumber (Identifier "fileOpen") 72,
+        NamedNumber (Identifier "fileRead") 73,
+        NamedNumber (Identifier "fileClose") 74,
+        NamedNumber (Identifier "fileRename") 75,
+        NamedNumber (Identifier "fileDelete") 76,
+        NamedNumber (Identifier "fileDirectory") 77,
+        NamedNumber (Identifier "unsolicitedStatus") 78,
+        NamedNumber (Identifier "informationReport") 79,
+        NamedNumber (Identifier "eventNotification") 80,
+        NamedNumber (Identifier "attachToEventCondition") 81,
+        NamedNumber (Identifier "attachToSemaphore") 82,
+        NamedNumber (Identifier "conclude") 83,
+        NamedNumber (Identifier "cancel") 84,
+        NamedNumber (Identifier "getDataExchangeAttributes") 85,
+        NamedNumber (Identifier "exchangeData") 86,
+        NamedNumber (Identifier "defineAccessControlList") 87,
+        NamedNumber (Identifier "getAccessControlListAttributes") 88,
+        NamedNumber (Identifier "reportAccessControlledObjects") 89,
+        NamedNumber (Identifier "deleteAccessControlList") 90,
+        NamedNumber (Identifier "alterAccessControl") 91,
+        NamedNumber (Identifier "reconfigureProgramInvocation") 92],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ParameterSupportOptions") (Type {
+        type_id = BitString [NamedNumber (Identifier "str1") 0,
+        NamedNumber (Identifier "str2") 1,
+        NamedNumber (Identifier "vnam") 2,
+        NamedNumber (Identifier "valt") 3,
+        NamedNumber (Identifier "vadr") 4,
+        NamedNumber (Identifier "vsca") 5,
+        NamedNumber (Identifier "tpy") 6,
+        NamedNumber (Identifier "vlis") 7,
+        NamedNumber (Identifier "cei") 10,
+        NamedNumber (Identifier "aco") 11,
+        NamedNumber (Identifier "sem") 12,
+        NamedNumber (Identifier "csr") 13,
+        NamedNumber (Identifier "csnc") 14,
+        NamedNumber (Identifier "csplc") 15,
+        NamedNumber (Identifier "cspi") 16],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AdditionalSupportOptions") (Type {
+        type_id = BitString [NamedNumber (Identifier "vMDStop") 0,
+        NamedNumber (Identifier "vMDReset") 1,
+        NamedNumber (Identifier "select") 2,
+        NamedNumber (Identifier "alterProgramInvocationAttributes") 3,
+        NamedNumber (Identifier "initiateUnitControlLoad") 4,
+        NamedNumber (Identifier "unitControlLoadSegment") 5,
+        NamedNumber (Identifier "unitControlUpload") 6,
+        NamedNumber (Identifier "startUnitControl") 7,
+        NamedNumber (Identifier "stopUnitControl") 8,
+        NamedNumber (Identifier "createUnitControl") 9,
+        NamedNumber (Identifier "addToUnitControl") 10,
+        NamedNumber (Identifier "removeFromUnitControl") 11,
+        NamedNumber (Identifier "getUnitControlAttributes") 12,
+        NamedNumber (Identifier "loadUnitControlFromFile") 13,
+        NamedNumber (Identifier "storeUnitControlToFile") 14,
+        NamedNumber (Identifier "deleteUnitControl") 15,
+        NamedNumber (Identifier "defineEventConditionList") 16,
+        NamedNumber (Identifier "deleteEventConditionList") 17,
+        NamedNumber (Identifier "addEventConditionListReference") 18,
+        NamedNumber (Identifier "removeEventConditionListReference") 19,
+        NamedNumber (Identifier "getEventConditionListAttributes") 20,
+        NamedNumber (Identifier "reportEventConditionListStatus") 21,
+        NamedNumber (Identifier "alterEventConditionListMonitoring") 22],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AdditionalCBBOptions") (Type {
+        type_id = BitString [NamedNumber (Identifier "des") 0,
+        NamedNumber (Identifier "dei") 1,
+        NamedNumber (Identifier "recl") 2],
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "ACCESS-CONTROL-LIST") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "readAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "storeAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "writeAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "loadAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "executeAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "deleteAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "editAccessCondition") (Type {
+        type_id = Tagged (Tag Nothing (ClassNumber 6)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "AccessCondition"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      ObjectSetField (ObjectSetFieldReference "AccessControlLists") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Domains") (LocalObjectClassReference (ObjectClassReference "DOMAIN")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "ProgramInvocations") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "UnitControls") (LocalObjectClassReference (ObjectClassReference "UNIT-CONTROL")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "UnnamedVariables") (LocalObjectClassReference (ObjectClassReference "UNNAMED-VARIABLE")) (Just OptionalObjectSet),
+      ObjectSetField (ObjectSetFieldReference "NamedVariables") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariableLists") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedTypes") (LocalObjectClassReference (ObjectClassReference "NAMED-TYPE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "DataExchanges") (LocalObjectClassReference (ObjectClassReference "DATA-EXCHANGE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Semaphores") (LocalObjectClassReference (ObjectClassReference "SEMAPHORE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "OperatorStations") (LocalObjectClassReference (ObjectClassReference "OPERATOR-STATION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditions") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventActions") (LocalObjectClassReference (ObjectClassReference "EVENT-ACTION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventEnrollments") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Journals") (LocalObjectClassReference (ObjectClassReference "JOURNAL")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) Nothing]),
+      TypeAssignment (TypeReference "AccessCondition") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "never") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "semaphore") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "user") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "association") (Type {
+              type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "none") (Type {
+              type_id = Null,
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "password") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AuthenticationValue"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "joint") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 4)) (Just Implicit) (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "AccessCondition"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "alternate") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 5)) (Just Implicit) (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "AccessCondition"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "DOMAIN") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueSetField (ValueSetFieldReference "Capabilities") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) Nothing,
+      FixedTypeValueField (ValueFieldReference "state") (Type {
+        type_id = LocalTypeReference (TypeReference "DomainState"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "aAssociation") (LocalObjectClassReference (ObjectClassReference "APPLICATION-ASSOCIATION")) (Just OptionalObject),
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "sharable") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "ProgramInvocations") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing,
+      FixedTypeValueField (ValueFieldReference "uploadsInProgress") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariables") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedVariableLists") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "NamedTypes") (LocalObjectClassReference (ObjectClassReference "NAMED-TYPE")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditions") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventActions") (LocalObjectClassReference (ObjectClassReference "EVENT-ACTION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventEnrollments") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) Nothing]),
+      TypeAssignment (TypeReference "DomainState") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "non-existent") 0,
+        NamedNumber (Identifier "loading") 1,
+        NamedNumber (Identifier "ready") 2,
+        NamedNumber (Identifier "in-use") 3,
+        NamedNumber (Identifier "complete") 4,
+        NamedNumber (Identifier "incomplete") 5,
+        NamedNumber (Identifier "d1") 7,
+        NamedNumber (Identifier "d2") 8,
+        NamedNumber (Identifier "d3") 9,
+        NamedNumber (Identifier "d4") 10,
+        NamedNumber (Identifier "d5") 11,
+        NamedNumber (Identifier "d6") 12,
+        NamedNumber (Identifier "d7") 13,
+        NamedNumber (Identifier "d8") 14,
+        NamedNumber (Identifier "d9") 15],
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "ULSM") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "ulsmID") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) True Nothing,
+      ObjectField (ObjectFieldReference "domain") (LocalObjectClassReference (ObjectClassReference "DOMAIN")) Nothing,
+      FixedTypeValueField (ValueFieldReference "ulsmState") (Type {
+        type_id = LocalTypeReference (TypeReference "ULState"),
+        subtype = Nothing
+        } ) False Nothing]),
+      TypeAssignment (TypeReference "ULState") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "non-existent") 0,
+        NamedNumber (Identifier "uploading") 1,
+        NamedNumber (Identifier "uploaded") 2,
+        NamedNumber (Identifier "u1") 3,
+        NamedNumber (Identifier "u2") 4,
+        NamedNumber (Identifier "u3") 5,
+        NamedNumber (Identifier "u4") 6],
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "PROGRAM-INVOCATION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "programInvocationState") (Type {
+        type_id = LocalTypeReference (TypeReference "ProgramInvocationState"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "Domains") (LocalObjectClassReference (ObjectClassReference "DOMAIN")) Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "reusable") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "monitor") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "eventCondition") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) (Just OptionalObject),
+      ObjectField (ObjectFieldReference "eventAction") (LocalObjectClassReference (ObjectClassReference "EVENT-ACTION")) (Just OptionalObject),
+      ObjectField (ObjectFieldReference "eventEnrollment") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) (Just OptionalObject),
+      FixedTypeValueField (ValueFieldReference "executionArgument") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "errorCode") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "control") (Type {
+        type_id = LocalTypeReference (TypeReference "Control-State"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "controlling-Program-Invocation") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Controlled-Program-Invocations") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) (Just OptionalObjectSet),
+      FixedTypeValueField (ValueFieldReference "program-Location") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "running-Mode") (Type {
+        type_id = LocalTypeReference (TypeReference "Running-Mode"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "remaining-Cycle-Count") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "remaining-Step-Count") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False (Just OptionalValue)]),
+      TypeAssignment (TypeReference "ProgramInvocationState") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "non-existent") 0,
+        NamedNumber (Identifier "unrunnable") 1,
+        NamedNumber (Identifier "idle") 2,
+        NamedNumber (Identifier "running") 3,
+        NamedNumber (Identifier "stopped") 4,
+        NamedNumber (Identifier "starting") 5,
+        NamedNumber (Identifier "stopping") 6,
+        NamedNumber (Identifier "resuming") 7,
+        NamedNumber (Identifier "resetting") 8],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Control-State") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "normal") 0,
+        NamedNumber (Identifier "controlling") 1,
+        NamedNumber (Identifier "controlled") 2],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Running-Mode") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "free-run") 0,
+        NamedNumber (Identifier "cycle-limited") 1,
+        NamedNumber (Identifier "step-limited") 2],
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "UNIT-CONTROL") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Domains") (LocalObjectClassReference (ObjectClassReference "DOMAIN")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "ProgramInvocations") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "UNNAMED-VARIABLE") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "address") (Type {
+        type_id = LocalTypeReference (TypeReference "Address"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "typeDescription") (Type {
+        type_id = LocalTypeReference (TypeReference "TypeDescription"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "value") (Type {
+        type_id = LocalTypeReference (TypeReference "Data"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "accessMethod") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "public") 0)],
+        subtype = Nothing
+        } ) False Nothing]),
+      TypeAssignment (TypeReference "Address") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numericAddress") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Unsigned32"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "symbolicAddress") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "unconstrainedAddress") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "NAMED-VARIABLE") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "typeDescription") (Type {
+        type_id = LocalTypeReference (TypeReference "TypeDescription"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "value") (Type {
+        type_id = LocalTypeReference (TypeReference "Data"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "accessMethod") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "public") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "anythingElse") 1)] Nothing,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "address") (Type {
+        type_id = LocalTypeReference (TypeReference "Address"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "meaning") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False (Just OptionalValue)]),
+      ObjectClassAssignment (ObjectClassReference "NAMED-VARIABLE-LIST") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      ObjectField (ObjectFieldReference "listOfVariables") (LocalObjectClassReference (ObjectClassReference "VARIABLE-LIST-ITEM")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "VARIABLE-LIST-ITEM") (ObjectClassDefn [ObjectField (ObjectFieldReference "unnamedItem") (LocalObjectClassReference (ObjectClassReference "UNNAMED-VARIABLE")) (Just OptionalObject),
+      ObjectField (ObjectFieldReference "namedItem") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) (Just OptionalObject),
+      FixedTypeValueField (ValueFieldReference "alternateAccess") (Type {
+        type_id = LocalTypeReference (TypeReference "AlternateAccess"),
+        subtype = Nothing
+        } ) False (Just OptionalValue)]),
+      ObjectClassAssignment (ObjectClassReference "NAMED-TYPE") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "typeDescription") (Type {
+        type_id = LocalTypeReference (TypeReference "TypeDescription"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "meaning") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False (Just OptionalValue)]),
+      TypeAssignment (TypeReference "TypeDescription") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "array") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "packed") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Just (DefaultValue (BooleanValue False))
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "numberOfElements") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+                  type_id = LocalTypeReference (TypeReference "Unsigned32"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "elementType") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+                  type_id = LocalTypeReference (TypeReference "TypeSpecification"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "structure") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "packed") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Just (DefaultValue (BooleanValue False))
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "components") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                      element_type = NamedType (Identifier "componentName") (Type {
+                        type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+                          type_id = LocalTypeReference (TypeReference "Identifier"),
+                          subtype = Nothing
+                          } ),
+                        subtype = Nothing
+                        } ),
+                      element_presence = Just OptionalValue
+                      } ,
+                    NamedTypeComponent {
+                      element_type = NamedType (Identifier "componentType") (Type {
+                        type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+                          type_id = LocalTypeReference (TypeReference "TypeSpecification"),
+                          subtype = Nothing
+                          } ),
+                        subtype = Nothing
+                        } ),
+                      element_presence = Nothing
+                      } ]),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "boolean") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Implicit) (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "bit-string") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 4)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Integer32"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "integer") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 5)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Unsigned8"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "unsigned") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 6)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Unsigned8"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "floating-point") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 7)) (Just Implicit) (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "format-width") (Type {
+                type_id = LocalTypeReference (TypeReference "Unsigned8"),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "exponent-width") (Type {
+                type_id = LocalTypeReference (TypeReference "Unsigned8"),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "octet-string") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 9)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Integer32"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "visible-string") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 10)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Integer32"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "generalized-time") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 11)) (Just Implicit) (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "binary-time") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 12)) (Just Implicit) (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "bcd") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 13)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Unsigned8"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "objId") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 15)) (Just Implicit) (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )] Nothing (Just [ExtensionAdditionAlternativesType (NamedType (Identifier "mMSString") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 16)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "Integer32"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ))])),
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "DATA-EXCHANGE") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "inUse") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "request") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "TypeDescription"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "response") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "TypeDescription"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "linked") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "programInvocation") (LocalObjectClassReference (ObjectClassReference "PROGRAM-INVOCATION")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "SEMAPHORE") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "class") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "token") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "pool") 1)],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "numberOfTokens") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "numberOfOwnedTokens") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      ObjectSetField (ObjectSetFieldReference "NamedTokens") (LocalObjectClassReference (ObjectClassReference "NAMED-TOKEN")) (Just OptionalObjectSet),
+      ObjectSetField (ObjectSetFieldReference "Owners") (LocalObjectClassReference (ObjectClassReference "SEMAPHORE-ENTRY")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Requesters") (LocalObjectClassReference (ObjectClassReference "SEMAPHORE-ENTRY")) Nothing,
+      ObjectField (ObjectFieldReference "eventCondition") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "NAMED-TOKEN") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "state") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "free") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "owned") 1)],
+        subtype = Nothing
+        } ) False Nothing]),
+      ObjectClassAssignment (ObjectClassReference "SEMAPHORE-ENTRY") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "entryID") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "class") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "simple") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "modifier") 1)],
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "semaphore") (LocalObjectClassReference (ObjectClassReference "SEMAPHORE")) Nothing,
+      FixedTypeValueField (ValueFieldReference "requester") (Type {
+        type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "aaIdentifier") (LocalObjectClassReference (ObjectClassReference "APPLICATION-ASSOCIATION")) Nothing,
+      ObjectField (ObjectFieldReference "invokeID") (LocalObjectClassReference (ObjectClassReference "TRANSACTION")) Nothing,
+      ObjectField (ObjectFieldReference "named-token") (LocalObjectClassReference (ObjectClassReference "NAMED-TOKEN")) (Just OptionalObject),
+      FixedTypeValueField (ValueFieldReference "priority") (Type {
+        type_id = LocalTypeReference (TypeReference "Priority"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "entryState") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "queued") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "owner") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "hung") 2)],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "remainingAcqDelay") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "time") (Type {
+          type_id = LocalTypeReference (TypeReference "Unsigned32"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "forever") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "remainingTimeOut") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "time") (Type {
+          type_id = LocalTypeReference (TypeReference "Unsigned32"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "forever") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "abortOnTimeOut") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "relinquishIfLost") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False Nothing]),
+      TypeAssignment (TypeReference "Priority") (Type {
+        type_id = LocalTypeReference (TypeReference "Unsigned8"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "normalPriority",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "Priority"),
+          subtype = Nothing
+          } ,
+        assigned_value = RealValue 64.0
+        } ,
+      ObjectClassAssignment (ObjectClassReference "OPERATOR-STATION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "stationType") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "entry") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "display") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "entry-display") 2)],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "inputBuffer") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "outputBuffers") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "MMSString"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "state") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "idle") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "display-prompt-data") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "waiting-for-input") 2),
+        EnumerationItemNumber (NamedNumber (Identifier "input-buffer-filled") 3),
+        EnumerationItemNumber (NamedNumber (Identifier "output-buffers-filled") 4)],
+        subtype = Nothing
+        } ) False Nothing]),
+      ObjectClassAssignment (ObjectClassReference "EVENT-CONDITION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "ecClass") (Type {
+        type_id = LocalTypeReference (TypeReference "EC-Class"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "ecState") (Type {
+        type_id = LocalTypeReference (TypeReference "EC-State"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "priority") (Type {
+        type_id = LocalTypeReference (TypeReference "Priority"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "severity") (Type {
+        type_id = LocalTypeReference (TypeReference "Severity"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventEnrollments") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) Nothing,
+      FixedTypeValueField (ValueFieldReference "enabled") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "alarmSummaryReports") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "monitoredVariable") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "named") (Type {
+          type_id = LocalTypeReference (TypeReference "NAMED-VARIABLE"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "unnamed") (Type {
+          type_id = LocalTypeReference (TypeReference "UNNAMED-VARIABLE"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "unspecified") (Type {
+          type_id = LocalTypeReference (TypeReference "NULL-OBJECT"),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "evaluationInterval") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "timeToActive") (Type {
+        type_id = LocalTypeReference (TypeReference "EventTime"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "timeToIdle") (Type {
+        type_id = LocalTypeReference (TypeReference "EventTime"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "displayEnhancement") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "text") (Type {
+          type_id = LocalTypeReference (TypeReference "MMSString"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "number") (Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "none") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "group-Priority-Override") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "priority") (Type {
+          type_id = LocalTypeReference (TypeReference "Priority"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "undefined") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      ObjectSetField (ObjectSetFieldReference "ReferencingEventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) (Just OptionalObjectSet)]),
+      TypeAssignment (TypeReference "EC-Class") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "network-triggered") 0,
+        NamedNumber (Identifier "monitored") 1],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EC-State") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "disabled") 0,
+        NamedNumber (Identifier "idle") 1,
+        NamedNumber (Identifier "active") 2],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Severity") (Type {
+        type_id = LocalTypeReference (TypeReference "Integer8"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "normalSeverity",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "Severity"),
+          subtype = Nothing
+          } ,
+        assigned_value = RealValue 64.0
+        } ,
+      TypeAssignment (TypeReference "EventTime") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "timeOfDay") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "TimeOfDay"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "timeSequenceIdentifier") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "Unsigned32"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "undefined") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "EVENT-ACTION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "confirmedServiceRequest") (Type {
+        type_id = LocalTypeReference (TypeReference "ConfirmedServiceRequest"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueSetField (ValueSetFieldReference "Modifiers") (Type {
+        type_id = LocalTypeReference (TypeReference "Modifier"),
+        subtype = Nothing
+        } ) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventEnrollments") (LocalObjectClassReference (ObjectClassReference "EVENT-ENROLLMENT")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "EVENT-ENROLLMENT") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      FixedTypeValueField (ValueFieldReference "eeClass") (Type {
+        type_id = LocalTypeReference (TypeReference "EE-Class"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "eventCondition") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing,
+      FixedTypeValueField (ValueFieldReference "ecTransitions") (Type {
+        type_id = LocalTypeReference (TypeReference "Transitions"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "aAssociation") (LocalObjectClassReference (ObjectClassReference "APPLICATION-ASSOCIATION")) Nothing,
+      FixedTypeValueField (ValueFieldReference "invokeID") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "remainingDelay") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "time") (Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "forever") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "notificationLost") (Type {
+        type_id = Boolean,
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      ObjectField (ObjectFieldReference "eventAction") (LocalObjectClassReference (ObjectClassReference "EVENT-ACTION")) (Just OptionalObject),
+      FixedTypeValueField (ValueFieldReference "duration") (Type {
+        type_id = LocalTypeReference (TypeReference "EE-Duration"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "clientApplication") (Type {
+        type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "aaRule") (Type {
+        type_id = LocalTypeReference (TypeReference "AlarmAckRule"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "timeActiveAck") (Type {
+        type_id = LocalTypeReference (TypeReference "EventTime"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "timeIdleAck") (Type {
+        type_id = LocalTypeReference (TypeReference "EventTime"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "ackState") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "acked") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "noAckA") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "noAckI") 2)],
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "lastState") (Type {
+        type_id = LocalTypeReference (TypeReference "EC-State"),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "displayEnhancement") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "text") (Type {
+          type_id = LocalTypeReference (TypeReference "MMSString"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "number") (Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "none") (Type {
+          type_id = Null,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ) False (Just OptionalValue)]),
+      TypeAssignment (TypeReference "EE-Class") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "modifier") 0,
+        NamedNumber (Identifier "notification") 1],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Transitions") (Type {
+        type_id = BitString [NamedNumber (Identifier "idle-to-disabled") 0,
+        NamedNumber (Identifier "active-to-disabled") 1,
+        NamedNumber (Identifier "disabled-to-idle") 2,
+        NamedNumber (Identifier "active-to-idle") 3,
+        NamedNumber (Identifier "disabled-to-active") 4,
+        NamedNumber (Identifier "idle-to-active") 5,
+        NamedNumber (Identifier "any-to-deleted") 6],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EE-Duration") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "current") 0,
+        NamedNumber (Identifier "permanent") 1],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AlarmAckRule") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "none") 0,
+        NamedNumber (Identifier "simple") 1,
+        NamedNumber (Identifier "ack-active") 2,
+        NamedNumber (Identifier "ack-all") 3],
+        subtype = Nothing
+        } ),
+      ObjectClassAssignment (ObjectClassReference "EVENT-CONDITION-LIST") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "ObjectName"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditions") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "EventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "ReferencingEventConditionLists") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION-LIST")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "JOURNAL") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
+        type_id = LocalTypeReference (TypeReference "Identifier"),
+        subtype = Nothing
+        } ) False Nothing,
+      ObjectField (ObjectFieldReference "accessControl") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) Nothing,
+      ObjectSetField (ObjectSetFieldReference "Entries") (LocalObjectClassReference (ObjectClassReference "JOURNAL-ENTRY")) Nothing]),
+      ObjectClassAssignment (ObjectClassReference "JOURNAL-ENTRY") (ObjectClassDefn [ObjectField (ObjectFieldReference "journal") (LocalObjectClassReference (ObjectClassReference "JOURNAL")) Nothing,
+      FixedTypeValueField (ValueFieldReference "entry") (Type {
+        type_id = OctetString,
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "clientApplication") (Type {
+        type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "timeStamp") (Type {
+        type_id = LocalTypeReference (TypeReference "TimeOfDay"),
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "orderOfReceipt") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ) True Nothing,
+      FixedTypeValueField (ValueFieldReference "informationType") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "annotation") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "event-data") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "data") 2)],
+        subtype = Nothing
+        } ) False Nothing,
+      FixedTypeValueField (ValueFieldReference "textComment") (Type {
+        type_id = LocalTypeReference (TypeReference "MMSString"),
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue 0.0))) (Closed (Value (RealValue 255.0))))))) Nothing))))) Nothing)
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "eventTransitionRecord") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "ObjectName"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "currentState") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "EC-State"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ) False (Just OptionalValue),
+      FixedTypeValueField (ValueFieldReference "journalVariables") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "Journal-Variable"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ) False (Just OptionalValue)]),
+      TypeAssignment (TypeReference "Journal-Variable") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "variableTag") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue 1.0))) (Closed (Value (RealValue 32.0))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "valueSpecification") (Type {
+            type_id = LocalTypeReference (TypeReference "Data"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "mMSNamedVariable",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdName (Identifier "iso"),
+        ObjIdName (Identifier "standard"),
+        ObjIdNumber 9506,
+        ObjIdNamedNumber (NamedNumber (Identifier "part") 1),
+        ObjIdNamedNumber (NamedNumber (Identifier "symbols-version1") 5),
+        ObjIdNamedNumber (NamedNumber (Identifier "named-variable") 1)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "mMSAccessControlList",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdName (Identifier "iso"),
+        ObjIdName (Identifier "standard"),
+        ObjIdNumber 9506,
+        ObjIdNamedNumber (NamedNumber (Identifier "part") 1),
+        ObjIdNamedNumber (NamedNumber (Identifier "symbols-version1") 5),
+        ObjIdNamedNumber (NamedNumber (Identifier "access-control-list") 2)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "mMSEventCondition",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdName (Identifier "iso"),
+        ObjIdName (Identifier "standard"),
+        ObjIdNumber 9506,
+        ObjIdNamedNumber (NamedNumber (Identifier "part") 1),
+        ObjIdNamedNumber (NamedNumber (Identifier "symbols-version1") 5),
+        ObjIdNamedNumber (NamedNumber (Identifier "event-condition") 3)]
+        } ,
+      ObjectAssignment (ObjectReference "m-powerProblem") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_powerProblem")]))),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-ReadOnly")),
+      ValueFieldSetting (ValueFieldReference "typeDescription") (ChoiceValue (Identifier "boolean") NullValue),
+      ValueFieldSetting (ValueFieldReference "accessMethod") (SomeIdentifiedValue (Identifier "anythingElse")),
+      ValueFieldSetting (ValueFieldReference "value") (ChoiceValue (Identifier "boolean") (BooleanValue False))]),
+      ObjectAssignment (ObjectReference "m-ELT") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_ELT")]))),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-ReadOnly")),
+      ValueFieldSetting (ValueFieldReference "typeDescription") (ChoiceValue (Identifier "integer") (RealValue 32.0)),
+      ValueFieldSetting (ValueFieldReference "accessMethod") (SomeIdentifiedValue (Identifier "anythingElse")),
+      ValueFieldSetting (ValueFieldReference "value") (ChoiceValue (Identifier "integer") (RealValue 0.0))]),
+      ObjectAssignment (ObjectReference "m-DAYTIME") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_DAYTIME")]))),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-NonDeletable")),
+      ValueFieldSetting (ValueFieldReference "typeDescription") (ChoiceValue (Identifier "generalized-time") NullValue),
+      ValueFieldSetting (ValueFieldReference "accessMethod") (SomeIdentifiedValue (Identifier "anythingElse")),
+      ValueFieldSetting (ValueFieldReference "value") (ChoiceValue (Identifier "generalized-time") (RestrictedCharacterStringValue [CharsCString (CString "199901311200")]))]),
+      ObjectAssignment (ObjectReference "m-Deletable") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "basic") (RestrictedCharacterStringValue [CharsCString (CString "M_Deletable")])),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-Never")),
+      ValueSetFieldSetting (ValueSetFieldReference "AccessControlLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Domains") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "ProgramInvocations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "UnitControls") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariables") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariableLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedTypes") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "DataExchanges") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Semaphores") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "OperatorStations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventActions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventEnrollments") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditionLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Journals") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance")))))))]),
+      ObjectAssignment (ObjectReference "m-NonDeletable") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "basic") (RestrictedCharacterStringValue [CharsCString (CString "M_NonDeletable")])),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-Never")),
+      ValueFieldSetting (ValueFieldReference "deleteAccessCondition") (ChoiceValue (Identifier "never") NullValue),
+      ValueSetFieldSetting (ValueSetFieldReference "AccessControlLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Domains") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "ProgramInvocations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "UnitControls") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariables") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariableLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedTypes") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "DataExchanges") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Semaphores") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "OperatorStations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventActions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventEnrollments") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditionLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Journals") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance")))))))]),
+      ObjectAssignment (ObjectReference "m-ReadOnly") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "basic") (RestrictedCharacterStringValue [CharsCString (CString "M_ReadOnly")])),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-Never")),
+      ValueFieldSetting (ValueFieldReference "writeAccessCondition") (ChoiceValue (Identifier "never") NullValue),
+      ValueFieldSetting (ValueFieldReference "deleteAccessCondition") (ChoiceValue (Identifier "never") NullValue),
+      ValueFieldSetting (ValueFieldReference "editAccessCondition") (ChoiceValue (Identifier "never") NullValue),
+      ValueSetFieldSetting (ValueSetFieldReference "AccessControlLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Domains") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "ProgramInvocations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "UnitControls") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariables") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariableLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedTypes") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "DataExchanges") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Semaphores") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "OperatorStations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventActions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventEnrollments") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditionLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Journals") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance")))))))]),
+      ObjectAssignment (ObjectReference "m-Never") (LocalObjectClassReference (ObjectClassReference "ACCESS-CONTROL-LIST")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "basic") (RestrictedCharacterStringValue [CharsCString (CString "M_Never")])),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-Never")),
+      ValueFieldSetting (ValueFieldReference "deleteAccessCondition") (ChoiceValue (Identifier "never") NullValue),
+      ValueFieldSetting (ValueFieldReference "editAccessCondition") (ChoiceValue (Identifier "never") NullValue),
+      ValueSetFieldSetting (ValueSetFieldReference "AccessControlLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Domains") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "ProgramInvocations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "UnitControls") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariables") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedVariableLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "NamedTypes") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "DataExchanges") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Semaphores") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "OperatorStations") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventActions") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventEnrollments") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "EventConditionLists") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance"))))))),
+      ValueSetFieldSetting (ValueSetFieldReference "Journals") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance")))))))]),
+      ObjectAssignment (ObjectReference "m-Violation") (LocalObjectClassReference (ObjectClassReference "EVENT-CONDITION")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_Violation")]))),
+      ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-Never")),
+      ValueFieldSetting (ValueFieldReference "ecClass") (SomeIdentifiedValue (Identifier "network-triggered")),
+      ValueFieldSetting (ValueFieldReference "ecState") (SomeIdentifiedValue (Identifier "active")),
+      ValueFieldSetting (ValueFieldReference "priority") (SomeIdentifiedValue (Identifier "normalPriority")),
+      ValueFieldSetting (ValueFieldReference "severity") (SomeIdentifiedValue (Identifier "normalSeverity")),
+      ValueSetFieldSetting (ValueSetFieldReference "EventEnrollments") (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "null-instance")))))))])]
+      } )
+    } 
+===========================
+Types defined in the module
+LogicalStatus
+PhysicalStatus
+VMDState
+Modifier
+ServiceSupportOptions
+ParameterSupportOptions
+AdditionalSupportOptions
+AdditionalCBBOptions
+AccessCondition
+DomainState
+ULState
+ProgramInvocationState
+Control-State
+Running-Mode
+Address
+TypeDescription
+Priority
+EC-Class
+EC-State
+Severity
+EventTime
+EE-Class
+Transitions
+EE-Duration
+AlarmAckRule
+Journal-Variable
