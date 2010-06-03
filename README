@@ -14,8 +14,8 @@ coverage analysis)
 
 Implementation status
 =====================
-X.680-0207: DONE
-X.681-0207: partially done, completeness not evaluated
+X.680-0207: DONE, medium test coverage
+X.681-0207: DONE, poor test coverage
 X.682-0207: partially done, completeness not evaluated
 X.683-0207: partially done, completeness not evaluated
 Tests: partially done, completeness not evaluated
@@ -27,7 +27,7 @@ types. Also, all ambiguous values (see below) are not resolved to
 their more definitive forms.
 
 Type-dependent value parsing (as done in ValueAssignment) have to be
-introduced everywhere possible.
+introduced everywhere possible, especially in subtyping constraints.
 
 Implementation notes
 ====================
