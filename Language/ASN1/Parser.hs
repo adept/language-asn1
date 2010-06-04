@@ -46,6 +46,7 @@ import Control.Applicative ((<$>),(<*),(*>),(<*>),(<$))
 import Control.Monad (when)
 import Data.Char (isUpper, isAlpha, isSpace, ord)
 import Data.List (isInfixOf, intercalate)
+import Data.Maybe (fromJust)
 
 -- {{ Top-level interface
 parseASN1FromFileOrDie :: String -> IO ([Module])
@@ -876,17 +877,16 @@ data ComponentType = NamedTypeComponent { element_type::NamedType
 -- Checked, X.680-0207
 componentType =
   choice [ try $ ComponentsOf <$> (reserved "COMPONENTS" *> reserved "OF" *> theType)
-         , NamedTypeComponent <$> namedType <*> valueOptionality
+         , NamedTypeComponent <$> namedType <*> valueOptionality Nothing -- TODO: add type context
          ]
 
 data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked, X.680-0207
-valueOptionality = optionMaybe $
+valueOptionality t = optionMaybe $
   choice [ OptionalValue <$ reserved "OPTIONAL"
-         , DefaultValue <$> ( reserved "DEFAULT" *> value )
+         , DefaultValue <$> ( reserved "DEFAULT" *> if t == Nothing then value else valueOfType (fromJust t))
          ] 
 
--- This is also used as SequenceOf value
 -- Checked
 type ComponentValueList = [NamedValue]
 componentValueList = braces (commaSep namedValue)
@@ -1116,9 +1116,11 @@ objectDescriptorValue = ObjectDescriptorValue <$> cstring
 -- constrainedType parser is merged into theType and parsers for SetOf/SequenceOf
 data Constraint = Constraint ElementSets (Maybe ExceptionIdentification) deriving (Eq,Ord,Show, Typeable, Data)
 constraint = parens ( Constraint <$> constraintSpec <*> exceptionSpec )
+onlySubtypeConstraint = parens ( Constraint <$> subtypeConstraint <*> exceptionSpec )
 
 constraintSpec = subtypeConstraint {- TODO: <|> generalConstraint -}
-  where subtypeConstraint = elementSetSpecs
+
+subtypeConstraint = elementSetSpecs
 -- }} end of clause 45
 -- {{ X.680-0207, clause 46, "Element sets"
 data ElementSets = 
@@ -1176,7 +1178,7 @@ data SubtypeElements =
     -- two variants of innerTypeConstraint
   | SingleTypeConstraint Constraint
   | MultipleTypeConstaints TypeConstraints
-  | PatternConstraint Value
+  | PatternConstraint CString
   deriving (Eq,Ord,Show, Typeable, Data)
 
 -- TODO: TypeConstraint and ContainedSubtype without "INCLUDES" are not distinguishable without context!
@@ -1206,9 +1208,9 @@ upperEndpoint =
 lowerEndValue = (MinValue <$ reserved "MIN") <|> (Value <$> value)
 upperEndValue = (MaxValue <$ reserved "MAX") <|> (Value <$> value)
 
-sizeConstraint = SizeConstraint <$> ( reserved "SIZE" *> constraint )
+sizeConstraint = SizeConstraint <$> ( reserved "SIZE" *> onlySubtypeConstraint )
 
-permittedAlphabet = PermittedAlphabet <$> ( reserved "FROM" *> constraint )
+permittedAlphabet = PermittedAlphabet <$> ( reserved "FROM" *> onlySubtypeConstraint )
 
 innerTypeConstraints = do
   reserved "WITH" 
@@ -1237,7 +1239,7 @@ presenceConstraint =
          , Optional <$ reserved "OPTIONAL"
          ]
 
-patternConstraint = PatternConstraint <$> ( reserved "PATTERN" *> value )
+patternConstraint = PatternConstraint <$> ( reserved "PATTERN" *> cstring )
 -- }} end of clause 47
 -- {{ X.680-0207, clause 48, "The extension marker", has no useful productions }} --
 -- {{ X.680-0207, clause 49, "The exception identifier"
@@ -1389,11 +1391,14 @@ field = try objectField -- &lower ALL-UPPER
 typeField = TypeField <$> typefieldreference <*> optionality
   where optionality = optionMaybe $ ( OptionalType <$ reserved "OPTIONAL" ) <|> ( DefaultType <$> ( reserved "DEFAULT" *> theType ) )
 
-fixedTypeValueField = FixedTypeValueField <$> valuefieldreference <*> theType <*> uniqueness <*> valueOptionality
+fixedTypeValueField = do
+  vfr <- valuefieldreference
+  t <- theType
+  FixedTypeValueField vfr t <$> uniqueness <*> valueOptionality (Just t)
   where
     uniqueness = option False (reserved "UNIQUE" >> return True)
 
-variableTypeValueField = VariableTypeValueField <$> valuefieldreference <*> fieldName <*> valueOptionality
+variableTypeValueField = VariableTypeValueField <$> valuefieldreference <*> fieldName <*> valueOptionality Nothing -- TODO: can add type context here?
 
 fixedTypeValueSetField = FixedTypeValueSetField <$> valuesetfieldreference <*> theType <*> valueSetOptionality
   
