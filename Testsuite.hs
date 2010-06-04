@@ -167,8 +167,8 @@ booleanTests =
 integerTests =
   [ testType "INTEGER" $ Just (Type {type_id = TheInteger [], subtype = Nothing})
   , testType "INTEGER { a(3), b(a) }" $ Just (Type {type_id = TheInteger [NamedNumber (Identifier "a") 3,NamedDefinedValue (Identifier "b") (LocalValueReference (ValueReference "a"))], subtype = Nothing})
-  , testAmbiguousValue "10" integerValue  (Just (SignedNumber 10)) $ Just (SomeIntegerNumber 10)
-  , testAmbiguousValue "-10" integerValue (Just (SignedNumber (-10))) $ Just (SomeIntegerNumber (-10))
+  , testAmbiguousValue "10" integerValue  (Just (SignedNumber 10)) $ Just (SomeNumber 10)
+  , testAmbiguousValue "-10" integerValue (Just (SignedNumber (-10))) $ Just (SomeNumber (-10))
   , testAmbiguousValue "a" integerValue (Just (IdentifiedNumber (Identifier "a"))) $ Just (SomeIdentifiedValue (Identifier "a"))
   , testAssignment "a INTEGER ::= 1" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [], subtype = Nothing}, assigned_value = SignedNumber 1})
   , testAssignment "a INTEGER {a(3), b(a)} ::= b" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [NamedNumber (Identifier "a") 3,NamedDefinedValue (Identifier "b") (LocalValueReference (ValueReference "a"))], subtype = Nothing}, assigned_value = IdentifiedNumber (Identifier "b")})
@@ -181,7 +181,7 @@ enumeratedTests =
   [ testType "ENUMERATED {a(1),b(2)}" $ Just (Type {type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)], subtype = Nothing})
   , testType "ENUMERATED {a(1),b(2),...}" $ Just (Type {type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)] Nothing, subtype = Nothing})
   , testType "ENUMERATED {a(1),b(2),...,someIdent}" $ Just (Type {type_id = EnumerationWithExceptionAndAddition [EnumerationItemNumber (NamedNumber (Identifier "a") 1),EnumerationItemNumber (NamedNumber (Identifier "b") 2)] Nothing [EnumerationItemIdentifier (Identifier "someIdent")], subtype = Nothing})
-  , testValue "a" enumeratedValue $ Just (EnumeratedValue (Identifier "a"))  
+  , testAmbiguousValue "a" enumeratedValue (Just (EnumeratedValue (Identifier "a")))  $ Just (SomeIdentifiedValue (Identifier "a"))
   , testAssignment "x ENUMERATED {a, b(3), ..., c(1)} ::= c" $ Just (ValueAssignment {value_ref = ValueReference "x", value_ref_type = Type {type_id = EnumerationWithExceptionAndAddition [EnumerationItemIdentifier (Identifier "a"),EnumerationItemNumber (NamedNumber (Identifier "b") 3)] Nothing [EnumerationItemNumber (NamedNumber (Identifier "c") 1)], subtype = Nothing}, assigned_value = EnumeratedValue (Identifier "c")})
   ]
   
@@ -189,36 +189,36 @@ enumeratedTests =
 realTests =
   [ testType "REAL" $ Just (Type {type_id = Real, subtype = Nothing})
   , testType "REAL (WITH COMPONENTS {mantissa (−16777215..16777215),base (2),exponent (−125..128) } )" $ noType
-  , testValue "10.0" realValue  $ Just (RealValue 10.0)
-  , testValue "-10.0" realValue $ Just (RealValue (-10.0))
-  , testValue "10" realValue  $ Just (RealValue 10.0)
-  , testValue "-10" realValue $ Just (RealValue (-10.0))
+  , testAmbiguousValue "10.0" realValue  (Just (RealValue 10.0)) $ Just (SomeNumber (10.0))
+  , testAmbiguousValue "-10.0" realValue (Just (RealValue (-10.0))) $ Just (SomeNumber (-10.0))
+  , testAmbiguousValue "10" realValue  (Just (RealValue 10.0)) $ Just (SomeNumber 10)
+  , testAmbiguousValue "-10" realValue (Just (RealValue (-10.0))) $ Just (SomeNumber (-10))
   , testValue "PLUS-INFINITY" realValue  $ Just (PlusInfinity)
   , testValue "MINUS-INFINITY" realValue $ Just (MinusInfinity)
-  , testValue "{}" realValue $ Just (SequenceRealValue [])
-  , testValue "{mantissa 1, base 10, exponent 10}" realValue $ Just (SequenceRealValue [NamedValue (Identifier "mantissa") (SignedNumber 1),NamedValue (Identifier "base") (SignedNumber 10),NamedValue (Identifier "exponent") (SignedNumber 10)])
+  , testAmbiguousValue "{}" realValue (Just (SequenceRealValue [])) $ Just (SomeNamedValueList [])
+  , testAmbiguousValue "{mantissa 1, base 10, exponent 10}" realValue (Just (SequenceRealValue [NamedValue (Identifier "mantissa") (SomeNumber 1.0),NamedValue (Identifier "base") (SomeNumber 10.0),NamedValue (Identifier "exponent") (SomeNumber 10.0)])) $ Just (SomeNamedValueList [NamedValue (Identifier "mantissa") (SomeNumber 1.0),NamedValue (Identifier "base") (SomeNumber 10.0),NamedValue (Identifier "exponent") (SomeNumber 10.0)])
   , testAssignment "a REAL ::= PLUS-INFINITY" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = Real, subtype = Nothing}, assigned_value = PlusInfinity})
   , testAssignment "a REAL ::= -10e5" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = Real, subtype = Nothing}, assigned_value = RealValue (-1000000.0)})
   ]
 
 -- Clause 21
 bitStringTests =
-  [ testType "BIT STRING (SIZE (12))" $ noType
-  , testType "BIT STRING {sunday(0), monday (1), tuesday(2),wednesday(3), thursday(4), friday(5),saturday(6) } (SIZE (0..7))" $ noType
+  [ testType "BIT STRING (SIZE (12))" $ Just (Type {type_id = BitString [], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeNumber 12.0))))) Nothing))))) Nothing)})
+  , testType "BIT STRING {sunday(0), monday (1), tuesday(2),wednesday(3), thursday(4), friday(5),saturday(6) } (SIZE (0..7))" $ Just (Type {type_id = BitString [NamedNumber (Identifier "sunday") 0,NamedNumber (Identifier "monday") 1,NamedNumber (Identifier "tuesday") 2,NamedNumber (Identifier "wednesday") 3,NamedNumber (Identifier "thursday") 4,NamedNumber (Identifier "friday") 5,NamedNumber (Identifier "saturday") 6], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeNumber 0.0))) (Closed (Value (SomeNumber 7.0))))))) Nothing))))) Nothing)})
   , testValue "'100110100100001110110'B" bitStringValue $ Just (BinaryString (BinString 'B' "100110100100001110110"))
   , testValue "'0123456789ABCDEF'H" bitStringValue $ Just (HexString (BinString 'H' "0123456789ABCDEF"))
   , testValue "'0000 0001 0010'B" bitStringValue $ Just (BinaryString (BinString 'B' "000000010010"))
-  , testValue "{sunday, monday, wednesday}" bitStringValue $ Just (IdentifierListBitString [Identifier "sunday",Identifier "monday",Identifier "wednesday"])
+  , testAmbiguousValue "{sunday, monday, wednesday}" bitStringValue (Just (IdentifierListBitString [Identifier "sunday",Identifier "monday",Identifier "wednesday"])) $ Just (SomeValueList [SomeIdentifiedValue (Identifier "sunday"),SomeIdentifiedValue (Identifier "monday"),SomeIdentifiedValue (Identifier "wednesday")])
   , testValue "CONTAINING NULL" bitStringValue $ Just (Containing NullValue)
   , testAssignment "image BIT STRING ::= '1001'B" $ Just (ValueAssignment {value_ref = ValueReference "image", value_ref_type = Type {type_id = BitString [], subtype = Nothing}, assigned_value = BinaryString (BinString 'B' "1001")})
   ]
 
 -- Clause 22
 octetStringTests =
-  [ testType "OCTET STRING (SIZE (12))" $ noType
+  [ testType "OCTET STRING (SIZE (12))" $ Just (Type {type_id = OctetString, subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeNumber 12.0))))) Nothing))))) Nothing)})
   , testValue "'100110100100001110110'B" bitStringValue $ Just (BinaryString (BinString 'B' "100110100100001110110"))
   , testValue "'3FE2EBAD471005'H" bitStringValue $ Just (HexString (BinString 'H' "3FE2EBAD471005"))
-  , testValue "CONTAINING 10.0" bitStringValue $ Just (Containing (RealValue 10.0))
+  , testValue "CONTAINING 10.0" bitStringValue $ Just (Containing (SomeNumber 10.0))
   , testAssignment "image OCTET STRING ::= '1001'B" $ Just (ValueAssignment {value_ref = ValueReference "image", value_ref_type = Type {type_id = OctetString, subtype = Nothing}, assigned_value = BinaryString (BinString 'B' "1001")})
   ]
 
@@ -238,9 +238,9 @@ sequenceTests =
   , testType "SEQUENCE {a A,...,b B}" $ Just (Type {type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {element_type = NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "A"), subtype = Nothing}), element_presence = Nothing}] Nothing (Just [ExtensionAdditionType (NamedTypeComponent {element_type = NamedType (Identifier "b") (Type {type_id = LocalTypeReference (TypeReference "B"), subtype = Nothing}), element_presence = Nothing})])), subtype = Nothing})
   , testType "SEQUENCE {a A,...,[[b B, c C]]}" $ Just (Type {type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {element_type = NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "A"), subtype = Nothing}), element_presence = Nothing}] Nothing (Just [ExtensionAdditionGroup Nothing [NamedTypeComponent {element_type = NamedType (Identifier "b") (Type {type_id = LocalTypeReference (TypeReference "B"), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "C"), subtype = Nothing}), element_presence = Nothing}]])), subtype = Nothing})
   , testType "SEQUENCE {...!BOOLEAN : FALSE, [[ d D, e E ]] , ..., c C }" $ Just (Type {type_id = Sequence (ExtensionsAtStart (Just (ExceptionTypeAndValue (Type {type_id = Boolean, subtype = Nothing}) (BooleanValue False))) (Just [ExtensionAdditionGroup Nothing [NamedTypeComponent {element_type = NamedType (Identifier "d") (Type {type_id = LocalTypeReference (TypeReference "D"), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "e") (Type {type_id = LocalTypeReference (TypeReference "E"), subtype = Nothing}), element_presence = Nothing}]]) [NamedTypeComponent {element_type = NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "C"), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
-  , testType "SEQUENCE {a A OPTIONAL,...!BOOLEAN : FALSE, [[ d D DEFAULT 5, e E ]] , ..., c C }" $ Just (Type {type_id = Sequence (ExtensionsInTheMiddle [NamedTypeComponent {element_type = NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "A"), subtype = Nothing}), element_presence = Just OptionalValue}] (Just (ExceptionTypeAndValue (Type {type_id = Boolean, subtype = Nothing}) (BooleanValue False))) (Just [ExtensionAdditionGroup Nothing [NamedTypeComponent {element_type = NamedType (Identifier "d") (Type {type_id = LocalTypeReference (TypeReference "D"), subtype = Nothing}), element_presence = Just (DefaultValue (SignedNumber 5))},NamedTypeComponent {element_type = NamedType (Identifier "e") (Type {type_id = LocalTypeReference (TypeReference "E"), subtype = Nothing}), element_presence = Nothing}]]) [NamedTypeComponent {element_type = NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "C"), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
-  , testValue "{}" sequenceValue $ Just (SequenceValue [])
-  , testValue "{a 1, b 2, c 3}" sequenceValue $ Just (SequenceValue [NamedValue (Identifier "a") (SignedNumber 1),NamedValue (Identifier "b") (SignedNumber 2),NamedValue (Identifier "c") (SignedNumber 3)])
+  , testType "SEQUENCE {a A OPTIONAL,...!BOOLEAN : FALSE, [[ d D DEFAULT 5, e E ]] , ..., c C }" $ Just (Type {type_id = Sequence (ExtensionsInTheMiddle [NamedTypeComponent {element_type = NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "A"), subtype = Nothing}), element_presence = Just OptionalValue}] (Just (ExceptionTypeAndValue (Type {type_id = Boolean, subtype = Nothing}) (BooleanValue False))) (Just [ExtensionAdditionGroup Nothing [NamedTypeComponent {element_type = NamedType (Identifier "d") (Type {type_id = LocalTypeReference (TypeReference "D"), subtype = Nothing}), element_presence = Just (DefaultValue (SomeNumber 5.0))},NamedTypeComponent {element_type = NamedType (Identifier "e") (Type {type_id = LocalTypeReference (TypeReference "E"), subtype = Nothing}), element_presence = Nothing}]]) [NamedTypeComponent {element_type = NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "C"), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
+  , testAmbiguousValue "{}" sequenceValue (Just (SequenceValue [])) $ Just (SomeNamedValueList [])
+  , testAmbiguousValue "{a 1, b 2, c 3}" sequenceValue (Just (SequenceValue [NamedValue (Identifier "a") (SomeNumber 1.0),NamedValue (Identifier "b") (SomeNumber 2.0),NamedValue (Identifier "c") (SomeNumber 3.0)])) $ Just (SomeNamedValueList [NamedValue (Identifier "a") (SomeNumber 1.0),NamedValue (Identifier "b") (SomeNumber 2.0),NamedValue (Identifier "c") (SomeNumber 3.0)])
   ]
 
 -- Clause 25
@@ -248,17 +248,17 @@ sequenceOfTests =
   [ testType "SEQUENCE OF BOOLEAN" $ Just (Type {type_id = SequenceOf Nothing (Left (Type {type_id = Boolean, subtype = Nothing})), subtype = Nothing})
   , testType "SEQUENCE OF foo BAR" $ Just (Type {type_id = SequenceOf Nothing (Right (NamedType (Identifier "foo") (Type {type_id = LocalTypeReference (TypeReference "BAR"), subtype = Nothing}))), subtype = Nothing})
   , testType "SEQUENCE OF foo SEQUENCE {...!BOOLEAN : FALSE}" $ Just (Type {type_id = SequenceOf Nothing (Right (NamedType (Identifier "foo") (Type {type_id = Sequence (JustException (Just (ExceptionTypeAndValue (Type {type_id = Boolean, subtype = Nothing}) (BooleanValue False)))), subtype = Nothing}))), subtype = Nothing})
-  , testValue "{}" sequenceOfValue $ Just (SequenceOfValue (Right []))
-  , testValue "{FALSE, FALSE, TRUE}" sequenceOfValue $ Just (SequenceOfValue (Left [BooleanValue False,BooleanValue False,BooleanValue True]))
-  , testValue "{a 1, b 2, c 3}" sequenceOfValue $ Just (SequenceOfValue (Right [NamedValue (Identifier "a") (SignedNumber 1),NamedValue (Identifier "b") (SignedNumber 2),NamedValue (Identifier "c") (SignedNumber 3)]))
+  , testAmbiguousValue "{}" sequenceOfValue (Just (SequenceOfValue (Right []))) $ Just (SomeNamedValueList [])
+  , testAmbiguousValue "{FALSE, FALSE, TRUE}" sequenceOfValue (Just (SequenceOfValue (Left [BooleanValue False,BooleanValue False,BooleanValue True]))) $ Just (SomeValueList [BooleanValue False,BooleanValue False,BooleanValue True])
+  , testAmbiguousValue "{a 1, b 2, c 3}" sequenceOfValue (Just (SequenceOfValue (Right [NamedValue (Identifier "a") (SomeNumber 1.0),NamedValue (Identifier "b") (SomeNumber 2.0),NamedValue (Identifier "c") (SomeNumber 3.0)]))) $ Just (SomeNamedValueList [NamedValue (Identifier "a") (SomeNumber 1.0),NamedValue (Identifier "b") (SomeNumber 2.0),NamedValue (Identifier "c") (SomeNumber 3.0)])
   ]
 
 -- Clause 26
 setTests = 
   [ testType "SET {}" $ Just (Type {type_id = Set Empty, subtype = Nothing})
   , testType "SET {personalName [0] VisibleString, organizationName [1] VisibleString, countryName [2] VisibleString}" $ Just (Type {type_id = Set (ComponentTypeList [NamedTypeComponent {element_type = NamedType (Identifier "personalName") (Type {type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {type_id = VisibleString, subtype = Nothing}), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "organizationName") (Type {type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {type_id = VisibleString, subtype = Nothing}), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "countryName") (Type {type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {type_id = VisibleString, subtype = Nothing}), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
-  , testValue "{}" setValue $ Just (SetValue [])
-  , testValue "{a 1, b 2, c 3}" setValue $ Just (SetValue [NamedValue (Identifier "a") (SomeIntegerNumber 1),NamedValue (Identifier "b") (SomeIntegerNumber 2),NamedValue (Identifier "c") (SomeIntegerNumber 3)])
+  , testAmbiguousValue "{}" setValue (Just (SetValue [])) $ Just (SomeNamedValueList [])
+  , testAmbiguousValue "{a 1, b 2, c 3}" setValue (Just (SetValue [NamedValue (Identifier "a") (SomeNumber 1),NamedValue (Identifier "b") (SomeNumber 2),NamedValue (Identifier "c") (SomeNumber 3)])) $ Just (SomeNamedValueList [NamedValue (Identifier "a") (SomeNumber 1.0),NamedValue (Identifier "b") (SomeNumber 2.0),NamedValue (Identifier "c") (SomeNumber 3.0)])
   , testAssignment "someASN1Keywords SET {aaa BOOLEAN, bbb NULL OPTIONAL} ::= {bbb NULL, aaa FALSE}" $ Just (ValueAssignment {value_ref = ValueReference "someASN1Keywords", value_ref_type = Type {type_id = Set (ComponentTypeList [NamedTypeComponent {element_type = NamedType (Identifier "aaa") (Type {type_id = Boolean, subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "bbb") (Type {type_id = Null, subtype = Nothing}), element_presence = Just OptionalValue}]), subtype = Nothing}, assigned_value = SetValue [NamedValue (Identifier "bbb") NullValue,NamedValue (Identifier "aaa") (BooleanValue False)]})
   ]
 
@@ -266,7 +266,7 @@ setTests =
 setOfTests =
   [ testType "SET OF keyword VisibleString" $ Just (Type {type_id = SetOf Nothing (Right (NamedType (Identifier "keyword") (Type {type_id = VisibleString, subtype = Nothing}))), subtype = Nothing})
   , testAssignment "someASN1Keywords2 SET OF keyword VisibleString ::= {keyword \"INTEGER\", keyword \"BOOLEAN\", keyword \"REAL\"}" $ Just (ValueAssignment {value_ref = ValueReference "someASN1Keywords2", value_ref_type = Type {type_id = SetOf Nothing (Right (NamedType (Identifier "keyword") (Type {type_id = VisibleString, subtype = Nothing}))), subtype = Nothing}, assigned_value = SetOfValue (Right [NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "INTEGER")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "BOOLEAN")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "REAL")])])})
-  , testValue "{keyword \"INTEGER\", keyword \"BOOLEAN\", keyword \"REAL\"}" setOfValue $ Just (SetOfValue (Right [NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "INTEGER")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "BOOLEAN")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "REAL")])]))
+  , testAmbiguousValue "{keyword \"INTEGER\", keyword \"BOOLEAN\", keyword \"REAL\"}" setOfValue (Just (SetOfValue (Right [NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "INTEGER")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "BOOLEAN")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "REAL")])]))) $ Just (SomeNamedValueList [NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "INTEGER")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "BOOLEAN")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "REAL")])])
   ]
 
 -- Clause 28, CHOICE
@@ -290,15 +290,15 @@ selectionTests =
 -- Clause 31, OID
 oidTests = 
   [ testType "OBJECT IDENTIFIER" $ Just (Type {type_id = ObjectIdentifier, subtype = Nothing})
-  , testValue "{ 1 0 8571 1 }" objectIdentifierValue $ Just (OID [ObjIdNumber 1,ObjIdNumber 0,ObjIdNumber 8571,ObjIdNumber 1])
-  , testValue "{ iso standard 8571 pci (1) }" objectIdentifierValue $ Just (OID [ObjIdName (Identifier "iso"),ObjIdName (Identifier "standard"),ObjIdNumber 8571,ObjIdNamedNumber (NamedNumber (Identifier "pci") 1)])
+  , testAmbiguousValue "{ 1 0 8571 1 }" objectIdentifierValue (Just (OID [ObjIdNumber 1,ObjIdNumber 0,ObjIdNumber 8571,ObjIdNumber 1])) $ Just (SomeOIDLikeValue [ObjIdNumber 1,ObjIdNumber 0,ObjIdNumber 8571,ObjIdNumber 1])
+  , testAmbiguousValue "{ iso standard 8571 pci (1) }" objectIdentifierValue (Just (OID [ObjIdName (Identifier "iso"),ObjIdName (Identifier "standard"),ObjIdNumber 8571,ObjIdNamedNumber (NamedNumber (Identifier "pci") 1)])) $ Just (SomeOIDLikeValue [ObjIdName (Identifier "iso"),ObjIdName (Identifier "standard"),ObjIdNumber 8571,ObjIdNamedNumber (NamedNumber (Identifier "pci") 1)])
   , testAssignment "foo OBJECT IDENTIFIER ::= { iso standard 8571 pci (1) }" $ Just (ValueAssignment {value_ref = ValueReference "foo", value_ref_type = Type {type_id = ObjectIdentifier, subtype = Nothing}, assigned_value = OID [ObjIdName (Identifier "iso"),ObjIdName (Identifier "standard"),ObjIdNumber 8571,ObjIdNamedNumber (NamedNumber (Identifier "pci") 1)]})
   ]
 
 -- Clause 32, RELATIVE-OID
 relativeOIDTests = 
   [ testType "RELATIVE-OID" $ Just (Type {type_id = RelativeOID, subtype = Nothing})
-  , testValue "{science-fac(4) maths-dept(3)}" relativeOIDValue $ Just (RelativeOIDValue [RelativeOIDNamedNumber (NamedNumber (Identifier "science-fac") 4),RelativeOIDNamedNumber (NamedNumber (Identifier "maths-dept") 3)])
+  , testAmbiguousValue "{science-fac(4) maths-dept(3)}" relativeOIDValue (Just (RelativeOIDValue [RelativeOIDNamedNumber (NamedNumber (Identifier "science-fac") 4),RelativeOIDNamedNumber (NamedNumber (Identifier "maths-dept") 3)])) $ Just (SomeOIDLikeValue [ObjIdNamedNumber (NamedNumber (Identifier "science-fac") 4),ObjIdNamedNumber (NamedNumber (Identifier "maths-dept") 3)])
   , testAssignment "firstgroup RELATIVE-OID ::= {science-fac(4) maths-dept(3)}" $ Just (ValueAssignment {value_ref = ValueReference "firstgroup", value_ref_type = Type {type_id = RelativeOID, subtype = Nothing}, assigned_value = RelativeOIDValue [RelativeOIDNamedNumber (NamedNumber (Identifier "science-fac") 4),RelativeOIDNamedNumber (NamedNumber (Identifier "maths-dept") 3)]})
   ]
 
