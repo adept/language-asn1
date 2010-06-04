@@ -62,15 +62,17 @@ tests =
 -- Helpers
 testType val expected = testCase ("Type "++val) $ parseASN1 theType val @?= expected
   
-testValue val parser expected = 
+testAmbiguousValue val parser expected expected_amb = 
   testGroup ("Value " ++ val)
     [ tsValue val parser expected
-    , gValue val expected
+    , gValue val expected_amb
     ]
   where
     tsValue val parser expected = testCase "Type-specific parser" $ parseASN1 parser val @?= expected
     gValue val expected         = testCase "Generic value parser" $ parseASN1 value  val @?= expected
     
+testValue val parser expected = testAmbiguousValue val parser expected expected
+
 testAssignment val expected = testCase ("Assignment "++val) $ parseASN1 assignment val @?= expected
 
 -- Expected values for type, value and assignment tests that does not produce anything useful yet.
@@ -164,9 +166,9 @@ booleanTests =
 integerTests =
   [ testType "INTEGER" $ Just (Type {type_id = TheInteger [], subtype = Nothing})
   , testType "INTEGER { a(3), b(a) }" $ Just (Type {type_id = TheInteger [NamedNumber (Identifier "a") 3,NamedDefinedValue (Identifier "b") (LocalValueReference (ValueReference "a"))], subtype = Nothing})
-  , testValue "10" integerValue  $ Just (SignedNumber 10)
-  , testValue "-10" integerValue $ Just (SignedNumber (-10))
-  , testValue "a" integerValue $ Just (IdentifiedNumber (Identifier "a"))
+  , testAmbiguousValue "10" integerValue  (Just (SignedNumber 10)) $ Just (SomeIntegerNumber 10)
+  , testAmbiguousValue "-10" integerValue (Just (SignedNumber (-10))) $ Just (SomeIntegerNumber (-10))
+  , testAmbiguousValue "a" integerValue (Just (IdentifiedNumber (Identifier "a"))) $ Just (SomeIdentifiedValue (Identifier "a"))
   , testAssignment "a INTEGER ::= 1" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [], subtype = Nothing}, assigned_value = SignedNumber 1})
   , testAssignment "a INTEGER {a(3), b(a)} ::= b" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [NamedNumber (Identifier "a") 3,NamedDefinedValue (Identifier "b") (LocalValueReference (ValueReference "a"))], subtype = Nothing}, assigned_value = IdentifiedNumber (Identifier "b")})
   , testType "INTEGER {first(1), last(31)} (first | last)" $ noType
