@@ -531,7 +531,7 @@ builtinType =
                    , anyType
                    ]
 -- Checked
-referencedType = definedType -- clause 13.1
+referencedType = try definedType -- clause 13.1
                  <|> usefulType -- clause 41.1
                  <|> selectionType -- clause 29
                  <|> typeFromObject -- ITU-T Rec. X.681 | ISO/IEC 8824-2, clause 15
