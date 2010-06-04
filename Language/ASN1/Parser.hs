@@ -1521,7 +1521,10 @@ objectClassFieldType = ObjectClassField <$> definedObjectClass <*> ( dot *> fiel
 
 objectClassFieldValue = openTypeFieldVal <|> fixedTypeFieldVal
 
-openTypeFieldVal  = OpenTypeFieldValue <$> theType <*> ( colon *> value )
+openTypeFieldVal  = do
+  t <- theType
+  OpenTypeFieldValue t <$> ( colon *> valueOfType t )
+  
 fixedTypeFieldVal = FixedTypeFieldValue <$> ( builtinValue <|> referencedValue )
   
 -- }} end of clause 14
