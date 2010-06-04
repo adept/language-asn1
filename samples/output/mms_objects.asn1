@@ -1092,7 +1092,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "Priority"),
           subtype = Nothing
           } ,
-        assigned_value = RealValue 64.0
+        assigned_value = SomeIntegerNumber 64
         } ,
       ObjectClassAssignment (ObjectClassReference "OPERATOR-STATION") (ObjectClassDefn [FixedTypeValueField (ValueFieldReference "name") (Type {
         type_id = LocalTypeReference (TypeReference "Identifier"),
@@ -1229,7 +1229,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "Severity"),
           subtype = Nothing
           } ,
-        assigned_value = RealValue 64.0
+        assigned_value = SomeIntegerNumber 64
         } ,
       TypeAssignment (TypeReference "EventTime") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "timeOfDay") (Type {
@@ -1415,7 +1415,7 @@ Module {
         } ) False Nothing,
       FixedTypeValueField (ValueFieldReference "textComment") (Type {
         type_id = LocalTypeReference (TypeReference "MMSString"),
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue 0.0))) (Closed (Value (RealValue 255.0))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 255))))))) Nothing))))) Nothing)
         } ) False (Just OptionalValue),
       FixedTypeValueField (ValueFieldReference "eventTransitionRecord") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
@@ -1451,7 +1451,7 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "variableTag") (Type {
             type_id = LocalTypeReference (TypeReference "MMSString"),
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue 1.0))) (Closed (Value (RealValue 32.0))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 32))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
@@ -1510,9 +1510,9 @@ Module {
       ValueFieldSetting (ValueFieldReference "value") (ChoiceValue (Identifier "boolean") (BooleanValue False))]),
       ObjectAssignment (ObjectReference "m-ELT") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_ELT")]))),
       ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-ReadOnly")),
-      ValueFieldSetting (ValueFieldReference "typeDescription") (ChoiceValue (Identifier "integer") (RealValue 32.0)),
+      ValueFieldSetting (ValueFieldReference "typeDescription") (ChoiceValue (Identifier "integer") (SomeIntegerNumber 32)),
       ValueFieldSetting (ValueFieldReference "accessMethod") (SomeIdentifiedValue (Identifier "anythingElse")),
-      ValueFieldSetting (ValueFieldReference "value") (ChoiceValue (Identifier "integer") (RealValue 0.0))]),
+      ValueFieldSetting (ValueFieldReference "value") (ChoiceValue (Identifier "integer") (SomeIntegerNumber 0))]),
       ObjectAssignment (ObjectReference "m-DAYTIME") (LocalObjectClassReference (ObjectClassReference "NAMED-VARIABLE")) (ObjectDefn [ValueFieldSetting (ValueFieldReference "name") (ChoiceValue (Identifier "vmd-specific") (ChoiceValue (Identifier "basicVMD-specific") (RestrictedCharacterStringValue [CharsCString (CString "M_DAYTIME")]))),
       ValueFieldSetting (ValueFieldReference "accessControl") (SomeIdentifiedValue (Identifier "m-NonDeletable")),
       ValueFieldSetting (ValueFieldReference "typeDescription") (ChoiceValue (Identifier "generalized-time") NullValue),

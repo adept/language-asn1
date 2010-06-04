@@ -173,10 +173,7 @@ Module {
         ObjIdNumber 0]
         } ,
       TypeAssignment (TypeReference "CertificatePolicies") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "PolicyInformation"),
           subtype = Nothing
           } )),
@@ -192,10 +189,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "policyQualifiers") (Type {
-            type_id = SequenceOf (Just [ValueRange {
-              range_from = Value (SignedNumber 1),
-              range_to = MaxValue
-              } ]) (Left (Type {
+            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
               type_id = LocalTypeReference (TypeReference "PolicyQualifierInfo"),
               subtype = Nothing
               } )),
@@ -219,7 +213,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "qualifier") (Type {
-            type_id = Any (Identifier "policyQualifierId"),
+            type_id = Any (Just (Identifier "policyQualifierId")),
             subtype = Nothing
             } ),
           element_presence = Nothing
@@ -228,14 +222,8 @@ Module {
         } ),
       TypeAssignment (TypeReference "PolicyQualifierId") (Type {
         type_id = ObjectIdentifier,
-        subtype = Just [ValueRange {
-          range_from = Value (SomeIdentifiedValue (Identifier "id-qt-cps")),
-          range_to = UndefinedValue
-          } ,
-        ValueRange {
-          range_from = Value (SomeIdentifiedValue (Identifier "id-qt-unotice")),
-          range_to = UndefinedValue
-          } ]
+        subtype = Just (Constraint (ClosedSet False (Union [[Intersection (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "id-qt-cps"))))) Nothing],
+        [Intersection (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "id-qt-unotice"))))) Nothing]])) Nothing)
         } ),
       TypeAssignment (TypeReference "CPSuri") (Type {
         type_id = IA5String,
@@ -281,31 +269,19 @@ Module {
       TypeAssignment (TypeReference "DisplayText") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "ia5String") (Type {
           type_id = IA5String,
-          subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-            range_from = Value (SignedNumber 1),
-            range_to = Value (SignedNumber 200)
-            } ])]
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 200))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "visibleString") (Type {
           type_id = VisibleString,
-          subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-            range_from = Value (SignedNumber 1),
-            range_to = Value (SignedNumber 200)
-            } ])]
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 200))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-            range_from = Value (SignedNumber 1),
-            range_to = Value (SignedNumber 200)
-            } ])]
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 200))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just [SizeConstr (SizeConstraint [ValueRange {
-            range_from = Value (SignedNumber 1),
-            range_to = Value (SignedNumber 200)
-            } ])]
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 200))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -319,10 +295,7 @@ Module {
         ObjIdNumber 33]
         } ,
       TypeAssignment (TypeReference "PolicyMappings") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "issuerDomainPolicy") (Type {
               type_id = LocalTypeReference (TypeReference "CertPolicyId"),
@@ -355,10 +328,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralNames") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "GeneralName"),
           subtype = Nothing
           } )),
@@ -441,7 +411,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "value") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Explicit) (Type {
-              type_id = Any (Identifier "type-id"),
+              type_id = Any (Just (Identifier "type-id")),
               subtype = Nothing
               } ),
             subtype = Nothing
@@ -496,10 +466,7 @@ Module {
         ObjIdNumber 9]
         } ,
       TypeAssignment (TypeReference "SubjectDirectoryAttributes") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "Attribute"),
           subtype = Nothing
           } )),
@@ -525,10 +492,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "pathLenConstraint") (Type {
             type_id = TheInteger [],
-            subtype = Just [ValueRange {
-              range_from = Value (SignedNumber 0),
-              range_to = MaxValue
-              } ]
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed MaxValue))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ]),
@@ -567,10 +531,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "GeneralSubtrees") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "GeneralSubtree"),
           subtype = Nothing
           } )),
@@ -592,7 +553,7 @@ Module {
               } ),
             subtype = Nothing
             } ),
-          element_presence = Just (DefaultValue (SignedNumber 0))
+          element_presence = Just (DefaultValue (SomeIntegerNumber 0))
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "maximum") (Type {
@@ -608,10 +569,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "BaseDistance") (Type {
         type_id = TheInteger [],
-        subtype = Just [ValueRange {
-          range_from = Value (SignedNumber 0),
-          range_to = MaxValue
-          } ]
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed MaxValue))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "id-ce-policyConstraints",
@@ -647,10 +605,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "SkipCerts") (Type {
         type_id = TheInteger [],
-        subtype = Just [ValueRange {
-          range_from = Value (SignedNumber 0),
-          range_to = MaxValue
-          } ]
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed MaxValue))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "id-ce-cRLDistributionPoints",
@@ -662,10 +617,7 @@ Module {
         ObjIdNumber 31]
         } ,
       TypeAssignment (TypeReference "CRLDistributionPoints") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "DistributionPoint"),
           subtype = Nothing
           } )),
@@ -743,10 +695,7 @@ Module {
         ObjIdNumber 37]
         } ,
       TypeAssignment (TypeReference "ExtKeyUsageSyntax") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "KeyPurposeId"),
           subtype = Nothing
           } )),
@@ -855,10 +804,7 @@ Module {
         ObjIdNumber 1]
         } ,
       TypeAssignment (TypeReference "AuthorityInfoAccessSyntax") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "AccessDescription"),
           subtype = Nothing
           } )),
@@ -891,10 +837,7 @@ Module {
         ObjIdNumber 11]
         } ,
       TypeAssignment (TypeReference "SubjectInfoAccessSyntax") (Type {
-        type_id = SequenceOf (Just [ValueRange {
-          range_from = Value (SignedNumber 1),
-          range_to = MaxValue
-          } ]) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "AccessDescription"),
           subtype = Nothing
           } )),
@@ -911,10 +854,7 @@ Module {
         } ,
       TypeAssignment (TypeReference "CRLNumber") (Type {
         type_id = TheInteger [],
-        subtype = Just [ValueRange {
-          range_from = Value (SignedNumber 0),
-          range_to = MaxValue
-          } ]
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed MaxValue))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "id-ce-issuingDistributionPoint",

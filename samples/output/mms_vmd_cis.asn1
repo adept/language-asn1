@@ -1695,7 +1695,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "textComment") (Type {
             type_id = LocalTypeReference (TypeReference "MMSString"),
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue 0.0))) (Closed (Value (RealValue 255.0))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 255))))))) Nothing))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -1731,7 +1731,7 @@ Module {
               type_id = Sequence (ComponentTypeList [NamedTypeComponent {
                 element_type = NamedType (Identifier "variableTag") (Type {
                   type_id = LocalTypeReference (TypeReference "MMSString"),
-                  subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue 1.0))) (Closed (Value (RealValue 32.0))))))) Nothing))))) Nothing)
+                  subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 32))))))) Nothing))))) Nothing)
                   } ),
                 element_presence = Nothing
                 } ,
