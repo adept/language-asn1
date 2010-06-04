@@ -593,10 +593,11 @@ data Value =
   | FixedTypeFieldValue Value
     
     -- Constructors for ambiguous values
-  | SomeIntegerNumber Integer -- Integer or Real
-  | SomeNamedValueList ComponentValueList
-  | SomeValueList [Value]
+  | SomeNumber Double -- Integer or Real
+  | SomeNamedValueList ComponentValueList -- SequenceRealValue, SequenceValue, SequenceOfValue (named values), SetValue, SetOfValue (named values)
+  | SomeValueList [Value] -- IdentifierListBitString, SequenceOfValue (values only), SetOfValue (values only)
   | SomeIdentifiedValue Identifier -- Integer or Enumerated
+  | SomeOIDLikeValue OID -- OID or RELATIVE-OID
     -- TODO: catch-all for OID-like values
   deriving (Eq,Ord,Show, Typeable, Data)
 
@@ -665,25 +666,17 @@ value = builtinValue <|> referencedValue <|> objectClassFieldValue
 builtinValue =
   choice $ map try [ booleanValue -- unambiguous
                    , nullValue -- unambiguous
-                   , try $ SomeIntegerNumber <$> integer
-                   , realValue -- should come before integer value parser
-                   , bitStringValue -- This covers OCTET STRING values as well
-                   , restrictedCharacterStringValue
-                   , sequenceValue
-                   , sequenceOfValue
-                   , setValue
-                   , setOfValue
+                   , SomeNumber <$> realnumber -- comes before integer to parse "10.0" as 10.0 and not 10
+                   , PlusInfinity <$ reserved "PLUS-INFINITY"
+                   , MinusInfinity <$ reserved "MINUS-INFINITY"
+                   , restrictedCharacterStringValue -- TODO: need generic string value
                    , choiceValue
-                     -- unrestrictedCharacterStringValue, embeddedPDVValue and externalValue clash with sequenceValue
-                     -- TODO: instanceOfValue
-                   , OID <$> oid -- TODO: clashes with RelativeOID
-                     -- relativeOIDValue seems to be covered by OID value
-                     -- taggedValue is not here because it is just "value" and would lead to infinie loop
-                     --   TODO
-                     -- Two types could have values denoted by a simple identified. Without semantical analysis
-                     -- it is impossible to tell them apart. So they are captured by this single catch-all case below
-                   , SomeIdentifiedValue <$> identifier -- ok
-                     -- TODO: need generic string value
+                   , SomeNamedValueList <$> componentValueList
+                   , SomeValueList <$> braces (commaSep value)
+                   , SomeOIDLikeValue <$> oid -- Either OID or RELATIVE-OID
+                     -- taggedValue and instanceOfValue are not here because they are just "value" and would lead to infinie loop
+                   , bitStringValue -- This covers OCTET STRING values as well
+                   , SomeIdentifiedValue <$> identifier -- Integer or ENUMERATED
                    ]
 
 -- Checked
@@ -762,8 +755,8 @@ enumeratedValue = EnumeratedValue <$> identifier
 -- The type parser inlined into builtinType parser
 
 realValue = 
-  choice [ reserved "PLUS-INFINITY" >> return PlusInfinity
-         , reserved "MINUS-INFINITY" >> return MinusInfinity
+  choice [ PlusInfinity <$ reserved "PLUS-INFINITY"
+         , MinusInfinity <$ reserved "MINUS-INFINITY"
          , RealValue <$> realnumber
          , SequenceRealValue <$> componentValueList
          ]
