@@ -188,7 +188,7 @@ enumeratedTests =
 -- Clause 20
 realTests =
   [ testType "REAL" $ Just (Type {type_id = Real, subtype = Nothing})
-  , testType "REAL (WITH COMPONENTS {mantissa (−16777215..16777215),base (2),exponent (−125..128) } )" $ noType
+  , testType "REAL (WITH COMPONENTS {mantissa (-16777215..16777215),base (2),exponent (-125..128) } )" $ Just (Type {type_id = Real, subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (MultipleTypeConstaints [NamedConstraint (Identifier "mantissa") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeNumber (-1.6777215e7)))) (Closed (Value (SomeNumber 1.6777215e7))))))) Nothing)) Nothing),NamedConstraint (Identifier "base") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeNumber 2.0))))) Nothing)) Nothing),NamedConstraint (Identifier "exponent") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeNumber (-125.0)))) (Closed (Value (SomeNumber 128.0))))))) Nothing)) Nothing)])))) Nothing)})
   , testAmbiguousValue "10.0" realValue  (Just (RealValue 10.0)) $ Just (SomeNumber (10.0))
   , testAmbiguousValue "-10.0" realValue (Just (RealValue (-10.0))) $ Just (SomeNumber (-10.0))
   , testAmbiguousValue "10" realValue  (Just (RealValue 10.0)) $ Just (SomeNumber 10)
