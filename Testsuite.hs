@@ -30,14 +30,13 @@ tests =
     , testGroup "X.680-0207, clause 23, NULL" nullTests
     , testGroup "X.680-0207, clause 24, SEQUENCE" sequenceTests
     , testGroup "X.680-0207, clause 25, SEQUENCE-OF" sequenceOfTests
-      -- 25, Notation for sequence-of types
-      -- 26, Notation for set types
-      -- 27, Notation for set-of types
+    , testGroup "X.680-0207, clause 26, SET" setTests
+    , testGroup "X.680-0207, clause 27, SET-OF" setOfTests
     , testGroup "X.680-0207, clause 28, CHOICE" choiceTests
-      -- 29, Notation for selection types
+    , testGroup "X.680-0207, clause 29, CHOICE" selectionTests
       -- 30, Notation for tagged types
-      -- 31, Notation for the object identifier type
-      -- 32, Notation for the relative object identifier type
+    , testGroup "X.680-0207, clause 31, OID" oidTests
+    , testGroup "X.680-0207, clause 32, RELATIVE-OID" relativeOIDTests
       -- 33, Notation for the embedded-pdv type
       -- 34, Notation for the external type
     , testGroup "X.680-0207, clause 35, Character string (restricted and unrestricted)" characterStringTests
@@ -251,6 +250,22 @@ sequenceOfTests =
   , testValue "{a 1, b 2, c 3}" sequenceOfValue $ Just (SequenceOfValue (Right [NamedValue (Identifier "a") (SignedNumber 1),NamedValue (Identifier "b") (SignedNumber 2),NamedValue (Identifier "c") (SignedNumber 3)]))
   ]
 
+-- Clause 26
+setTests = 
+  [ testType "SET {}" $ Just (Type {type_id = Set Empty, subtype = Nothing})
+  , testType "SET {personalName [0] VisibleString, organizationName [1] VisibleString, countryName [2] VisibleString}" $ Just (Type {type_id = Set (ComponentTypeList [NamedTypeComponent {element_type = NamedType (Identifier "personalName") (Type {type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {type_id = VisibleString, subtype = Nothing}), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "organizationName") (Type {type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {type_id = VisibleString, subtype = Nothing}), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "countryName") (Type {type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {type_id = VisibleString, subtype = Nothing}), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
+  , testValue "{}" setValue $ Just (SetValue [])
+  , testValue "{a 1, b 2, c 3}" setValue $ Just (SetValue [NamedValue (Identifier "a") (SomeIntegerNumber 1),NamedValue (Identifier "b") (SomeIntegerNumber 2),NamedValue (Identifier "c") (SomeIntegerNumber 3)])
+  , testAssignment "someASN1Keywords SET {aaa BOOLEAN, bbb NULL OPTIONAL} ::= {bbb NULL, aaa FALSE}" $ Just (ValueAssignment {value_ref = ValueReference "someASN1Keywords", value_ref_type = Type {type_id = Set (ComponentTypeList [NamedTypeComponent {element_type = NamedType (Identifier "aaa") (Type {type_id = Boolean, subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "bbb") (Type {type_id = Null, subtype = Nothing}), element_presence = Just OptionalValue}]), subtype = Nothing}, assigned_value = SetValue [NamedValue (Identifier "bbb") NullValue,NamedValue (Identifier "aaa") (BooleanValue False)]})
+  ]
+
+-- Clause 27
+setOfTests =
+  [ testType "SET OF keyword VisibleString" $ Just (Type {type_id = SetOf Nothing (Right (NamedType (Identifier "keyword") (Type {type_id = VisibleString, subtype = Nothing}))), subtype = Nothing})
+  , testAssignment "someASN1Keywords2 SET OF keyword VisibleString ::= {keyword \"INTEGER\", keyword \"BOOLEAN\", keyword \"REAL\"}" $ Just (ValueAssignment {value_ref = ValueReference "someASN1Keywords2", value_ref_type = Type {type_id = SetOf Nothing (Right (NamedType (Identifier "keyword") (Type {type_id = VisibleString, subtype = Nothing}))), subtype = Nothing}, assigned_value = SetOfValue (Right [NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "INTEGER")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "BOOLEAN")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "REAL")])])})
+  , testValue "{keyword \"INTEGER\", keyword \"BOOLEAN\", keyword \"REAL\"}" setOfValue $ Just (SetOfValue (Right [NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "INTEGER")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "BOOLEAN")]),NamedValue (Identifier "keyword") (RestrictedCharacterStringValue [CharsCString (CString "REAL")])]))
+  ]
+
 -- Clause 28, CHOICE
 choiceTests =
   [ testType "CHOICE { a Ta, b Tb, c Tc }" $ Just (Type {type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "a") (Type {type_id = LocalTypeReference (TypeReference "Ta"), subtype = Nothing}),NamedType (Identifier "b") (Type {type_id = LocalTypeReference (TypeReference "Tb"), subtype = Nothing}),NamedType (Identifier "c") (Type {type_id = LocalTypeReference (TypeReference "Tc"), subtype = Nothing})]), subtype = Nothing})
@@ -261,6 +276,27 @@ choiceTests =
   , testValue "foo: bar: baz: a: b: c: NULL" choiceValue $ Just (ChoiceValue (Identifier "foo") (ChoiceValue (Identifier "bar") (ChoiceValue (Identifier "baz") (ChoiceValue (Identifier "a") (ChoiceValue (Identifier "b") (ChoiceValue (Identifier "c") NullValue))))))
   , testValue "foo: TRUE" choiceValue $ Just (ChoiceValue (Identifier "foo") (BooleanValue True))
   , testValue "foo: \":\"" choiceValue $ Just (ChoiceValue (Identifier "foo") (RestrictedCharacterStringValue [CharsCString (CString ":")]))
+  ]
+
+-- Clause 29, selection
+selectionTests =
+  [ testType "date-last-used < FileAttribute" $ Just (Type {type_id = Selection (Identifier "date-last-used") (Type {type_id = LocalTypeReference (TypeReference "FileAttribute"), subtype = Nothing}), subtype = Nothing})
+  , testType "SEQUENCE {first-attribute date-last-used < FileAttribute, second-attribute file-name < FileAttribute }" $ Just (Type {type_id = Sequence (ComponentTypeList [NamedTypeComponent {element_type = NamedType (Identifier "first-attribute") (Type {type_id = Selection (Identifier "date-last-used") (Type {type_id = LocalTypeReference (TypeReference "FileAttribute"), subtype = Nothing}), subtype = Nothing}), element_presence = Nothing},NamedTypeComponent {element_type = NamedType (Identifier "second-attribute") (Type {type_id = Selection (Identifier "file-name") (Type {type_id = LocalTypeReference (TypeReference "FileAttribute"), subtype = Nothing}), subtype = Nothing}), element_presence = Nothing}]), subtype = Nothing})
+  ]
+
+-- Clause 31, OID
+oidTests = 
+  [ testType "OBJECT IDENTIFIER" $ Just (Type {type_id = ObjectIdentifier, subtype = Nothing})
+  , testValue "{ 1 0 8571 1 }" objectIdentifierValue $ Just (OID [ObjIdNumber 1,ObjIdNumber 0,ObjIdNumber 8571,ObjIdNumber 1])
+  , testValue "{ iso standard 8571 pci (1) }" objectIdentifierValue $ Just (OID [ObjIdName (Identifier "iso"),ObjIdName (Identifier "standard"),ObjIdNumber 8571,ObjIdNamedNumber (NamedNumber (Identifier "pci") 1)])
+  , testAssignment "foo OBJECT IDENTIFIER ::= { iso standard 8571 pci (1) }" $ Just (ValueAssignment {value_ref = ValueReference "foo", value_ref_type = Type {type_id = ObjectIdentifier, subtype = Nothing}, assigned_value = OID [ObjIdName (Identifier "iso"),ObjIdName (Identifier "standard"),ObjIdNumber 8571,ObjIdNamedNumber (NamedNumber (Identifier "pci") 1)]})
+  ]
+
+-- Clause 32, RELATIVE-OID
+relativeOIDTests = 
+  [ testType "RELATIVE-OID" $ Just (Type {type_id = RelativeOID, subtype = Nothing})
+  , testValue "{science-fac(4) maths-dept(3)}" relativeOIDValue $ Just (RelativeOIDValue [RelativeOIDNamedNumber (NamedNumber (Identifier "science-fac") 4),RelativeOIDNamedNumber (NamedNumber (Identifier "maths-dept") 3)])
+  , testAssignment "firstgroup RELATIVE-OID ::= {science-fac(4) maths-dept(3)}" $ Just (ValueAssignment {value_ref = ValueReference "firstgroup", value_ref_type = Type {type_id = RelativeOID, subtype = Nothing}, assigned_value = RelativeOIDValue [RelativeOIDNamedNumber (NamedNumber (Identifier "science-fac") 4),RelativeOIDNamedNumber (NamedNumber (Identifier "maths-dept") 3)]})
   ]
 
 -- Clause 35
