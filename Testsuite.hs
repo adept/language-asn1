@@ -172,8 +172,8 @@ integerTests =
   , testAmbiguousValue "a" integerValue (Just (IdentifiedNumber (Identifier "a"))) $ Just (SomeIdentifiedValue (Identifier "a"))
   , testAssignment "a INTEGER ::= 1" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [], subtype = Nothing}, assigned_value = SignedNumber 1})
   , testAssignment "a INTEGER {a(3), b(a)} ::= b" $ Just (ValueAssignment {value_ref = ValueReference "a", value_ref_type = Type {type_id = TheInteger [NamedNumber (Identifier "a") 3,NamedDefinedValue (Identifier "b") (LocalValueReference (ValueReference "a"))], subtype = Nothing}, assigned_value = IdentifiedNumber (Identifier "b")})
-  , testType "INTEGER {first(1), last(31)} (first | last)" $ noType
-  , testType "INTEGER {first(1), last(31)} (first .. last)" $ noType
+  , testType "INTEGER {first(1), last(31)} (first | last)" $ Just (Type {type_id = TheInteger [NamedNumber (Identifier "first") 1,NamedNumber (Identifier "last") 31], subtype = Just (Constraint (ClosedSet False (Union [[Intersection (Subtype (SingleValue (IdentifiedNumber (Identifier "first")))) Nothing],[Intersection (Subtype (SingleValue (IdentifiedNumber (Identifier "last")))) Nothing]])) Nothing)})
+  , testType "INTEGER {first(1), last(31)} (first .. last)" $ Just (Type {type_id = TheInteger [NamedNumber (Identifier "first") 1,NamedNumber (Identifier "last") 31], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (IdentifiedNumber (Identifier "first")))) (Closed (Value (IdentifiedNumber (Identifier "last")))))))) Nothing)})
   ]
 
 -- X.680-0207, clause 19, "ENUMERATED"
@@ -188,7 +188,7 @@ enumeratedTests =
 -- Clause 20
 realTests =
   [ testType "REAL" $ Just (Type {type_id = Real, subtype = Nothing})
-  , testType "REAL (WITH COMPONENTS {mantissa (-16777215..16777215),base (2),exponent (-125..128) } )" $ Just (Type {type_id = Real, subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (MultipleTypeConstaints [NamedConstraint (Identifier "mantissa") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeNumber (-1.6777215e7)))) (Closed (Value (SomeNumber 1.6777215e7))))))) Nothing)) Nothing),NamedConstraint (Identifier "base") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeNumber 2.0))))) Nothing)) Nothing),NamedConstraint (Identifier "exponent") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeNumber (-125.0)))) (Closed (Value (SomeNumber 128.0))))))) Nothing)) Nothing)])))) Nothing)})
+  , testType "REAL (WITH COMPONENTS {mantissa (-16777215..16777215),base (2),exponent (-125..128) } )" $ Just (Type {type_id = Real, subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (MultipleTypeConstaints [NamedConstraint (Identifier "mantissa") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue (-1.6777215e7)))) (Closed (Value (RealValue 1.6777215e7))))))) Nothing)) Nothing),NamedConstraint (Identifier "base") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (RealValue 2.0))))) Nothing)) Nothing),NamedConstraint (Identifier "exponent") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (RealValue (-125.0)))) (Closed (Value (RealValue 128.0))))))) Nothing)) Nothing)])))) Nothing)}) -- TODO: components are really integer. Need to introduce associated types throughout the parser
   , testAmbiguousValue "10.0" realValue  (Just (RealValue 10.0)) $ Just (SomeNumber (10.0))
   , testAmbiguousValue "-10.0" realValue (Just (RealValue (-10.0))) $ Just (SomeNumber (-10.0))
   , testAmbiguousValue "10" realValue  (Just (RealValue 10.0)) $ Just (SomeNumber 10)
@@ -203,8 +203,8 @@ realTests =
 
 -- Clause 21
 bitStringTests =
-  [ testType "BIT STRING (SIZE (12))" $ Just (Type {type_id = BitString [], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeNumber 12.0))))) Nothing))))) Nothing)})
-  , testType "BIT STRING {sunday(0), monday (1), tuesday(2),wednesday(3), thursday(4), friday(5),saturday(6) } (SIZE (0..7))" $ Just (Type {type_id = BitString [NamedNumber (Identifier "sunday") 0,NamedNumber (Identifier "monday") 1,NamedNumber (Identifier "tuesday") 2,NamedNumber (Identifier "wednesday") 3,NamedNumber (Identifier "thursday") 4,NamedNumber (Identifier "friday") 5,NamedNumber (Identifier "saturday") 6], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeNumber 0.0))) (Closed (Value (SomeNumber 7.0))))))) Nothing))))) Nothing)})
+  [ testType "BIT STRING (SIZE (12))" $ Just (Type {type_id = BitString [], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 12))))) Nothing))))) Nothing)})
+  , testType "BIT STRING {sunday(0), monday (1), tuesday(2),wednesday(3), thursday(4), friday(5),saturday(6) } (SIZE (0..7))" $ Just (Type {type_id = BitString [NamedNumber (Identifier "sunday") 0,NamedNumber (Identifier "monday") 1,NamedNumber (Identifier "tuesday") 2,NamedNumber (Identifier "wednesday") 3,NamedNumber (Identifier "thursday") 4,NamedNumber (Identifier "friday") 5,NamedNumber (Identifier "saturday") 6], subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 7))))))) Nothing))))) Nothing)})
   , testValue "'100110100100001110110'B" bitStringValue $ Just (BinaryString (BinString 'B' "100110100100001110110"))
   , testValue "'0123456789ABCDEF'H" bitStringValue $ Just (HexString (BinString 'H' "0123456789ABCDEF"))
   , testValue "'0000 0001 0010'B" bitStringValue $ Just (BinaryString (BinString 'B' "000000010010"))
@@ -215,7 +215,7 @@ bitStringTests =
 
 -- Clause 22
 octetStringTests =
-  [ testType "OCTET STRING (SIZE (12))" $ Just (Type {type_id = OctetString, subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeNumber 12.0))))) Nothing))))) Nothing)})
+  [ testType "OCTET STRING (SIZE (12))" $ Just (Type {type_id = OctetString, subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 12))))) Nothing))))) Nothing)})
   , testValue "'100110100100001110110'B" bitStringValue $ Just (BinaryString (BinString 'B' "100110100100001110110"))
   , testValue "'3FE2EBAD471005'H" bitStringValue $ Just (HexString (BinString 'H' "3FE2EBAD471005"))
   , testValue "CONTAINING 10.0" bitStringValue $ Just (Containing (SomeNumber 10.0))
