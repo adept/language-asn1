@@ -14,33 +14,52 @@ coverage analysis)
 
 Implementation status
 =====================
-X.680-0207: DONE, medium test coverage
-X.681-0207: DONE, poor test coverage
+X.680-0207: DONE, medium test coverage. Restricted character strings
+            are done sloppily
+X.681-0207: DONE, poor test coverage. "WITH SYNTAX" is not implemented.
 X.682-0207: partially done, completeness not evaluated
 X.683-0207: partially done, completeness not evaluated
 Tests: partially done, see comments in Testsuite.hs for status
 Test code coverage:
- 89% expressions used (4288/4766)
+ 88% expressions used (4682/5279)
  60% boolean coverage (3/5)
       60% guards (3/5), 2 always True
- 45% alternatives used (30/66)
- 33% local declarations used (32/95)
- 31% top-level declarations used (305/956)
+     100% 'if' conditions (0/0)
+     100% qualifiers (0/0)
+ 42% alternatives used (29/68)
+ 33% local declarations used (32/96)
+ 28% top-level declarations used (271/958)
 
+Parser uses information about types when it is immediately available.
+For example, when parsing value assignments ("var SomeType ::= val"),
+parser will accept only valid values of type "SomeType". Such
+type-dependency is also used when parsing "DEFAULT value" constructs
+and constraints.
 
-Parser performs no validation/semantical analysis: for example, values
-of enumerated/choice/sequences are not checked against respective
-types. 
+Other than that, parser performs no validation/semantical analysis:
+* Values of enumerated/choice/sequences are not checked against
+  respective types. 
+* References to types are not followed to find out the real type
+* Associates sequence types of REAL, EMBEDDED-PDV and others are not
+  taken into account
+* Type constraints are not taken into account when parsing values
 
-Also, all ambiguous values (see below) are not resolved to
-their more definitive forms. In order to do so, one would have to do a
-multi-pass parsing, or move to GLR parsing with happy or uu-parsinglib
-suite (this is actually under consideration).
+In cases when no typing context is available, some values could not be
+definitively attributed to particular type. In this case, parser will
+produce so-called ambiguous values:
+  * SomeNumber Double -- for values that could be either Integer or Real
+  * SomeNamedValueList ComponentValueList -- for SequenceRealValue,
+    SequenceValue, SequenceOfValue (named values), SetValue,
+    SetOfValue (named values) 
+  * SomeValueList [Value] -- for IdentifierListBitString,
+    SequenceOfValue (values only), SetOfValue (values only)
+  * SomeIdentifiedValue Identifier -- for Integer or Enumerated
+  * SomeOIDLikeValue OID -- for OID or RELATIVE-OID
 
-Type-dependent value parsing (as done in ValueAssignment) have to be
-introduced everywhere possible, especially in subtyping constraints.
-Prime suspects for modification: "valueOptionality" and "constraint".
-
+Even when module does not import external types, those values are not
+resolved to their more definitive forms. In order to do so, one would
+have to do a multi-pass parsing, or move to GLR parsing with happy or
+uu-parsinglib suite (this is actually under consideration).
 
 Implementation notes
 ====================
@@ -56,9 +75,16 @@ Parsing of the ASN1 type declaration is handled by the parser
 For each type there is a single value parser, used in contexts when
 type information is easily available -- for example, when parsing
 right side of ValueAssignment one should use parser for values of the
-type of the left-hand side.
+type of the left-hand side (see "valueOfType").
 
-There is also a value parser for situations when type information is
-not readily available. However, several types have common value forms, and
-this parser (called "value") could not differentiate between
-them. Read comments for builtinValue to find out about those.
+X.68[0-4] have several places that go like this "here is non-terminal
+with several alternatives. However, alternatives 1 and 4 are only
+applicable when ..., and alternatives 2 and 3 - when ..., otherwise,
+alternatives 5 and 6 are used". All those places have to be re-checked
+with care because I am not 100% sure that I have not missed one of
+those.
+
+Somethimes, I decided to postpone implementation of such complex
+rules. Those places are marker in source code as TODO.
+
+All major TODOs are marked with "TODO" in source code.
