@@ -403,13 +403,16 @@ valueAssignment = do
   return $ ValueAssignment ref t v
 
 -- Checked
-valueSetTypeAssignment = ValueSetTypeAssignment <$> typereference <*> theType <*> (symbol "::=" *> valueSet)
+valueSetTypeAssignment = do
+  tr <- typereference
+  t <- theType
+  ValueSetTypeAssignment tr t <$> (symbol "::=" *> valueSet (Just t))
   where
     -- This alternative is defined in X.680-0207, clause 15.8
-    valueSetOrAlternative = valueSet <|> parens elementSetSpecs
+    valueSetOrAlternative = valueSet Nothing <|> parens (elementSetSpecs Nothing) -- TODO: type propagation
     
 type ValueSet = ElementSets
-valueSet = braces elementSetSpecs
+valueSet t = braces $ elementSetSpecs t
 -- }} end of clause 15
 -- {{ X.680-0207, clause 16, "Definition of types and values"
 -- ConstrainedType (clause 45) is merged in other parsers: "Type Constraint" alternative is encoded here,
@@ -419,8 +422,9 @@ data Type = Type { type_id::BuiltinType
                  }
                deriving (Eq,Ord,Show, Typeable, Data)
 -- Checked
-theType = Type <$> ( builtinType <|> referencedType ) <*> optionMaybe constraint
-          <?> "Type"
+theType = do
+  t <- builtinType <|> referencedType
+  Type t <$> optionMaybe (constraint $ Just $ Type t Nothing)
 {-
 Type Clause in the X.680
 ------------------------
@@ -600,6 +604,10 @@ data Value =
   | SomeOIDLikeValue OID -- OID or RELATIVE-OID
     -- TODO: catch-all for OID-like values
   deriving (Eq,Ord,Show, Typeable, Data)
+
+-- Helper for type propagation through parser
+maybeValueOfType Nothing = value
+maybeValueOfType (Just t) = valueOfType t
 
 -- TODO: incomplete, check for "undefined"
 valueOfType (Type t _) = v t
@@ -877,7 +885,7 @@ data ValueOptionality = OptionalValue | DefaultValue Value  deriving (Eq,Ord,Sho
 -- Checked, X.680-0207
 valueOptionality t = optionMaybe $
   choice [ OptionalValue <$ reserved "OPTIONAL"
-         , DefaultValue <$> ( reserved "DEFAULT" *> if t == Nothing then value else valueOfType (fromJust t))
+         , DefaultValue <$> ( reserved "DEFAULT" *> maybeValueOfType t)
          ] 
 
 -- Checked
@@ -902,8 +910,9 @@ setOrSequenceOfType = do
     constructor = ( SetOf <$ reserved "SET" ) <|> ( SequenceOf <$ reserved "SEQUENCE")
     setSeqConstraint =
       choice [ -- Form of SIZE constraint without enclosing "(" ")" for backward compatibility
-               flip Constraint Nothing . ClosedSet False . Singleton . Subtype <$> sizeConstraint 
-             , constraint
+               flip Constraint Nothing . ClosedSet False . Singleton . Subtype <$> sizeConstraint
+             , constraint Nothing
+               -- TODO: how to break dependency loop here and propagate types?
              ]
 
 -- Checked      
@@ -1108,55 +1117,55 @@ objectDescriptorValue = ObjectDescriptorValue <$> cstring
 -- {{ X.680-0207, clause 45, "Constraints"
 -- constrainedType parser is merged into theType and parsers for SetOf/SequenceOf
 data Constraint = Constraint ElementSets (Maybe ExceptionIdentification) deriving (Eq,Ord,Show, Typeable, Data)
-constraint = parens ( Constraint <$> constraintSpec <*> exceptionSpec )
-onlySubtypeConstraint = parens ( Constraint <$> subtypeConstraint <*> exceptionSpec )
+constraint t = parens ( Constraint <$> constraintSpec t <*> exceptionSpec )
+onlySubtypeConstraint t = parens ( Constraint <$> subtypeConstraint t <*> exceptionSpec )
 
-constraintSpec = subtypeConstraint {- TODO: <|> generalConstraint -}
+constraintSpec t = subtypeConstraint t {- TODO: <|> generalConstraint -}
 
-subtypeConstraint = elementSetSpecs
+subtypeConstraint t = elementSetSpecs t
 -- }} end of clause 45
 -- {{ X.680-0207, clause 46, "Element sets"
 data ElementSets = 
   ClosedSet Bool ElementSet -- extendable or not
   | ExtendableSet ElementSet
   | SetRange ElementSet ElementSet deriving (Eq,Ord,Show, Typeable, Data)
-elementSetSpecs = 
-  choice [ try $ SetRange <$> elementSetSpec <*> (comma *> symbol "..." *> comma *> elementSetSpec)
-         , try $ ClosedSet True <$> (elementSetSpec <* comma <* symbol "...")
-         , ClosedSet False <$> elementSetSpec
+elementSetSpecs t = 
+  choice [ try $ SetRange <$> elementSetSpec t <*> (comma *> symbol "..." *> comma *> elementSetSpec t)
+         , try $ ClosedSet True <$> (elementSetSpec t <* comma <* symbol "...")
+         , ClosedSet False <$> elementSetSpec t
          ]
   
 data ElementSet = AllExcept Exclusions 
                 | Union [[Intersection]] 
                 | Singleton Elements  -- special form of single-element union for better readability
                 deriving (Eq,Ord,Show, Typeable, Data)
-elementSetSpec =
-  choice [ AllExcept <$> ( reserved "ALL" *> exclusions )
-         , mkUnion <$> unions
+elementSetSpec t =
+  choice [ AllExcept <$> ( reserved "ALL" *> exclusions t )
+         , mkUnion <$> unions t
          ]
   where
     mkUnion ([[Intersection es Nothing]]) = Singleton es
     mkUnion s = Union s
 
-unions = intersections `sepBy1` unionMark
+unions t = (intersections t) `sepBy1` unionMark
 
-intersections = intersectionElements `sepBy1` intersectionMark
+intersections t = (intersectionElements t) `sepBy1` intersectionMark
 
 data Intersection = Intersection Elements (Maybe Exclusions) deriving (Eq,Ord,Show, Typeable, Data)
-intersectionElements = Intersection <$> elements <*> optionMaybe exclusions
+intersectionElements t = Intersection <$> elements t <*> optionMaybe (exclusions t)
 
 type Exclusions = Elements
-exclusions = reserved "EXCEPT" *> elements
+exclusions t = reserved "EXCEPT" *> elements t
 
 unionMark = ( () <$ symbol "|" ) <|> reserved "UNION"
 intersectionMark = ( () <$ symbol "^" ) <|> reserved "INTERSECTION"
 
 data Elements = Subset ElementSet | Subtype SubtypeElements | ObjSet ObjectSetElements
   deriving (Eq,Ord,Show, Typeable, Data)
-elements =
-  choice [ Subset <$> parens elementSetSpec
-         , try $ Subtype <$> subtypeElements
-         , ObjSet <$> objectSetElements
+elements t =
+  choice [ Subset <$> parens (elementSetSpec t)
+         , try $ Subtype <$> (subtypeElements t)
+         , ObjSet <$> objectSetElements -- TODO: propagate type here as well?
          ]
 -- }} end of clause 46
 -- {{ X.680-0207, clause 47, "Subtype elements"
@@ -1176,51 +1185,52 @@ data SubtypeElements =
 
 -- TODO: TypeConstraint and ContainedSubtype without "INCLUDES" are not distinguishable without context!
 -- therefore typeConstraint is not implemented
-subtypeElements =
-  choice [ try $ valueRange
-         , permittedAlphabet
+subtypeElements t =
+  choice [ try $ valueRange t
+         , permittedAlphabet t
          , sizeConstraint
-         , innerTypeConstraints
-         , containedSubtype           
-         , SingleValue <$> value
+         , innerTypeConstraints t
+         , try $ containedSubtype
+         , SingleValue <$> maybeValueOfType t
          ]
   
 containedSubtype = ContainedSubtype <$> ( optional (reserved "INCLUDES") *>  theType )
 
 data ValueRangeEndpoint = Closed ValueRangeEndValue | Open ValueRangeEndValue deriving (Eq,Ord,Show, Typeable, Data)
 data ValueRangeEndValue = MinValue | MaxValue | Value Value deriving (Eq,Ord,Show, Typeable, Data)
-valueRange = ValueRange <$> lowerEndpoint <*> ( symbol ".." *> upperEndpoint )
-lowerEndpoint = 
-  choice [ try $ Open <$> ( lowerEndValue <* symbol "<" )
-         , Closed <$> lowerEndValue 
+valueRange t = ValueRange <$> lowerEndpoint t <*> ( symbol ".." *> upperEndpoint t )
+lowerEndpoint t = 
+  choice [ try $ Open <$> ( lowerEndValue t <* symbol "<" )
+         , Closed <$> lowerEndValue t
          ]
-upperEndpoint =
-  choice [ Open <$> ( symbol "<" *> upperEndValue  )
-         , Closed <$> upperEndValue
+upperEndpoint t =
+  choice [ Open <$> ( symbol "<" *> upperEndValue t )
+         , Closed <$> upperEndValue t
          ]
-lowerEndValue = (MinValue <$ reserved "MIN") <|> (Value <$> value)
-upperEndValue = (MaxValue <$ reserved "MAX") <|> (Value <$> value)
+lowerEndValue t = (MinValue <$ reserved "MIN") <|> (Value <$> maybeValueOfType t)
+upperEndValue t = (MaxValue <$ reserved "MAX") <|> (Value <$> maybeValueOfType t)
 
-sizeConstraint = SizeConstraint <$> ( reserved "SIZE" *> onlySubtypeConstraint )
+sizeConstraint = SizeConstraint <$> ( reserved "SIZE" *> onlySubtypeConstraint sizeConstraintType)
+  where sizeConstraintType = parseASN1 theType "INTEGER (0..MAX)"
 
-permittedAlphabet = PermittedAlphabet <$> ( reserved "FROM" *> onlySubtypeConstraint )
+permittedAlphabet t = PermittedAlphabet <$> ( reserved "FROM" *> onlySubtypeConstraint t )
 
-innerTypeConstraints = do
+innerTypeConstraints t = do
   reserved "WITH" 
-  choice [ MultipleTypeConstaints <$> ( reserved "COMPONENTS" *> multipleTypeConstraints )
-         , SingleTypeConstraint <$> ( reserved "COMPONENT" *> constraint )
+  choice [ MultipleTypeConstaints <$> ( reserved "COMPONENTS" *> multipleTypeConstraints t )
+         , SingleTypeConstraint <$> ( reserved "COMPONENT" *> constraint t )
          ]
 
-multipleTypeConstraints = braces(  optional (symbol "..." >> symbol ",")  >> typeConstraints )
+multipleTypeConstraints t = braces(  optional (symbol "..." >> symbol ",")  >> typeConstraints t )
 
 type TypeConstraints = [NamedConstraint]
-typeConstraints = commaSep1 namedConstraint
+typeConstraints t = commaSep1 (namedConstraint t)
 
 data NamedConstraint = NamedConstraint Identifier ComponentConstraint  deriving (Eq,Ord,Show, Typeable, Data)
-namedConstraint = NamedConstraint <$> identifier <*> componentConstraint
+namedConstraint t = NamedConstraint <$> identifier <*> componentConstraint t
 
 data ComponentConstraint = ComponentConstraint (Maybe Constraint) (Maybe PresenceConstraint) deriving (Eq,Ord,Show, Typeable, Data)
-componentConstraint = ComponentConstraint <$> optionMaybe constraint <*> optionMaybe presenceConstraint
+componentConstraint t = ComponentConstraint <$> optionMaybe (constraint t) <*> optionMaybe presenceConstraint
 
 data PresenceConstraint = Present
                         | Absent
@@ -1393,15 +1403,18 @@ fixedTypeValueField = do
 
 variableTypeValueField = VariableTypeValueField <$> valuefieldreference <*> fieldName <*> valueOptionality Nothing -- TODO: can add type context here?
 
-fixedTypeValueSetField = FixedTypeValueSetField <$> valuesetfieldreference <*> theType <*> valueSetOptionality
+fixedTypeValueSetField = do
+  vsfr <- valuesetfieldreference
+  t <- theType
+  FixedTypeValueSetField vsfr t <$> valueSetOptionality (Just t)
   
-valueSetOptionality =
+valueSetOptionality t =
   optionMaybe $
   choice [ OptionalValueSet <$ reserved "OPTIONAL"
-         , DefaultValueSet <$> ( reserved "DEFAULT" *> valueSet )
+         , DefaultValueSet <$> ( reserved "DEFAULT" *> valueSet t )
          ] 
   
-variableTypeValueSetField = VariableTypeValueSetField <$> valuesetfieldreference <*> fieldName <*> valueSetOptionality
+variableTypeValueSetField = VariableTypeValueSetField <$> valuesetfieldreference <*> fieldName <*> valueSetOptionality Nothing -- TODO: type propagation
 
 objectField = ObjectField <$> objectfieldreference <*> definedObjectClass <*> objectOptionality
   
@@ -1470,7 +1483,7 @@ data FieldSetting =
 fieldSetting = 
   choice $ map try [ TypeFieldSetting <$> typefieldreference <*> theType
                    , ValueFieldSetting <$> valuefieldreference <*> value
-                   , ValueSetFieldSetting <$> valuesetfieldreference <*> valueSet
+                   , ValueSetFieldSetting <$> valuesetfieldreference <*> valueSet Nothing -- TODO: type propagation
                    , ObjectFieldSetting <$> objectfieldreference <*> object
                    , ObjectSetFieldSetting <$> objectsetfieldreference <*> objectSet
                    ]
@@ -1488,11 +1501,11 @@ data ObjectSet =
   | ObjectSetExtendableInTheMiddle ElementSet ElementSet
   deriving (Eq,Ord,Show, Typeable, Data)
 objectSetSpec =
-  choice [ try $ ObjectSetExtendableAtStart <$> ( symbol "..." *> comma *> elementSetSpec )
+  choice [ try $ ObjectSetExtendableAtStart <$> ( symbol "..." *> comma *> elementSetSpec Nothing ) -- TODO: type propagation
          , EmptyExtendableObjectSet <$ (symbol "...")
-         , try $ ObjectSetExtendableInTheMiddle <$> elementSetSpec <*> ( comma *> symbol "..." *> comma *> elementSetSpec )
-         , try $ ObjectSetExtendableAtEnd <$> elementSetSpec <* comma <* symbol "..."
-         , ObjectSet <$>  elementSetSpec
+         , try $ ObjectSetExtendableInTheMiddle <$> elementSetSpec Nothing <*> ( comma *> symbol "..." *> comma *> elementSetSpec Nothing ) -- TODO: type propagation
+         , try $ ObjectSetExtendableAtEnd <$> elementSetSpec Nothing <* comma <* symbol "..." -- TODO: type propagation
+         , ObjectSet <$>  elementSetSpec Nothing -- TODO: type propagation
          ]
 
 data ObjectSetElements = 
