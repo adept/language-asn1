@@ -50,21 +50,21 @@ Module {
         } ),
       TypeAssignment (TypeReference "SecurityParmIndex") (Type {
         type_id = OctetString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 4))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "SequenceNum") (Type {
         type_id = OctetString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 4))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "AuthData") (Type {
         type_id = OctetString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 12))) (Closed (Value (SomeIntegerNumber 32))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 12))) (Closed (Value (SignedNumber 32))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "Message") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "version") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
@@ -113,7 +113,7 @@ Module {
           } ),
         NamedType (Identifier "mtpAddress") (Type {
           type_id = OctetString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 2))) (Closed (Value (SomeIntegerNumber 4))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 2))) (Closed (Value (SignedNumber 4))))))) Nothing))))) Nothing)
           } )] Nothing Nothing),
         subtype = Nothing
         } ),
@@ -128,7 +128,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "portNumber") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ]),
@@ -138,14 +138,14 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "address") (Type {
             type_id = OctetString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 4))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "portNumber") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ]),
@@ -155,14 +155,14 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "address") (Type {
             type_id = OctetString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 16))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 16))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "portNumber") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ]),
@@ -170,7 +170,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "PathName") (Type {
         type_id = IA5String,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 64))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 64))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "Transaction") (Type {
         type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "transactionRequest") (Type {
@@ -193,7 +193,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "TransactionId") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 4294967295))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
         } ),
       TypeAssignment (TypeReference "TransactionRequest") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
@@ -302,7 +302,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "ErrorCode") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
         } ),
       TypeAssignment (TypeReference "ErrorText") (Type {
         type_id = IA5String,
@@ -310,7 +310,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "ContextID") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 4294967295))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
         } ),
       TypeAssignment (TypeReference "ActionRequest") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
@@ -384,7 +384,7 @@ Module {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "priority") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 15))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 15))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -947,7 +947,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "WildcardField") (Type {
         type_id = OctetString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 1))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 1))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "TerminationID") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
@@ -963,7 +963,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "id") (Type {
             type_id = OctetString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 8))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 8))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ] Nothing Nothing),
@@ -1126,11 +1126,11 @@ Module {
         } ),
       TypeAssignment (TypeReference "Name") (Type {
         type_id = OctetString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 2))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 2))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "PkgdName") (Type {
         type_id = OctetString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 4))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "Relation") (Type {
         type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "greaterThan") 0),
@@ -1232,7 +1232,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "StreamID") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
         } ),
       TypeAssignment (TypeReference "EventsDescriptor") (Type {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
@@ -1464,7 +1464,7 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "id") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
@@ -1505,7 +1505,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "duration") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -1589,7 +1589,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "RequestID") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 4294967295))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
         } ),
       TypeAssignment (TypeReference "ModemDescriptor") (Type {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
@@ -1658,21 +1658,21 @@ Module {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "startTimer") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "shortTimer") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "longTimer") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -1703,7 +1703,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "serviceChangeVersion") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -1724,7 +1724,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "serviceChangeDelay") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 4294967295))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -1754,7 +1754,7 @@ Module {
       TypeAssignment (TypeReference "ServiceChangeAddress") (Type {
         type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "portNumber") (Type {
           type_id = TheInteger [],
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
           } ),
         NamedType (Identifier "ip4Address") (Type {
           type_id = LocalTypeReference (TypeReference "IP4Address"),
@@ -1774,7 +1774,7 @@ Module {
           } ),
         NamedType (Identifier "mtpAddress") (Type {
           type_id = OctetString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 2))) (Closed (Value (SomeIntegerNumber 4))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 2))) (Closed (Value (SignedNumber 4))))))) Nothing))))) Nothing)
           } )] Nothing Nothing),
         subtype = Nothing
         } ),
@@ -1796,7 +1796,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "serviceChangeVersion") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
@@ -1829,7 +1829,7 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "profileName") (Type {
             type_id = IA5String,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 67))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 67))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ]),
@@ -1853,7 +1853,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "packageVersion") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 99))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
             } ),
           element_presence = Nothing
           } ] Nothing Nothing),
@@ -1911,7 +1911,7 @@ Module {
           } ),
         NamedType (Identifier "experimental") (Type {
           type_id = IA5String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 8))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 8))))) Nothing))))) Nothing)
           } )] Nothing Nothing),
         subtype = Nothing
         } ),
@@ -1919,28 +1919,28 @@ Module {
         type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
           element_type = NamedType (Identifier "t35CountryCode1") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 255))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "t35CountryCode2") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 255))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "t35Extension") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 255))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "manufacturerCode") (Type {
             type_id = TheInteger [],
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIntegerNumber 65535))))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
             } ),
           element_presence = Nothing
           } ] Nothing Nothing),
@@ -1950,14 +1950,14 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "date") (Type {
             type_id = IA5String,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 8))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 8))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "time") (Type {
             type_id = IA5String,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 8))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 8))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ]),

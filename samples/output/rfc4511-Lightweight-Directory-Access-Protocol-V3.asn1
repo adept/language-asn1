@@ -123,7 +123,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "MessageID") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "maxInt")))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "maxInt",
@@ -200,7 +200,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "Attribute") (Type {
         type_id = LocalTypeReference (TypeReference "PartialAttribute"),
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (MultipleTypeConstaints [NamedConstraint (Identifier "vals") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) Nothing)])))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (MultipleTypeConstaints [NamedConstraint (Identifier "vals") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) Nothing)])))) Nothing)
         } ),
       TypeAssignment (TypeReference "MatchingRuleId") (Type {
         type_id = LocalTypeReference (TypeReference "LDAPString"),
@@ -279,7 +279,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Referral") (Type {
-        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "uri") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "uri") (Type {
           type_id = LocalTypeReference (TypeReference "URI"),
           subtype = Nothing
           } ))),
@@ -325,7 +325,7 @@ Module {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "version") (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 127))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 127))))))) Nothing)
               } ),
             element_presence = Nothing
             } ,
@@ -439,14 +439,14 @@ Module {
           NamedTypeComponent {
             element_type = NamedType (Identifier "sizeLimit") (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "maxInt")))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
               } ),
             element_presence = Nothing
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "timeLimit") (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "maxInt")))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
               } ),
             element_presence = Nothing
             } ,
@@ -485,7 +485,7 @@ Module {
       TypeAssignment (TypeReference "Filter") (Type {
         type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "and") (Type {
           type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
-            type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "filter") (Type {
+            type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "filter") (Type {
               type_id = LocalTypeReference (TypeReference "Filter"),
               subtype = Nothing
               } ))),
@@ -495,7 +495,7 @@ Module {
           } ),
         NamedType (Identifier "or") (Type {
           type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
-            type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "filter") (Type {
+            type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "filter") (Type {
               type_id = LocalTypeReference (TypeReference "Filter"),
               subtype = Nothing
               } ))),
@@ -571,7 +571,7 @@ Module {
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "substrings") (Type {
-            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "substring") (Type {
+            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "substring") (Type {
               type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "initial") (Type {
                 type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
                   type_id = LocalTypeReference (TypeReference "AssertionValue"),
@@ -673,7 +673,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "SearchResultReference") (Type {
         type_id = Tagged (Tag (Just Application) (ClassNumber 19)) Nothing (Type {
-          type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "uri") (Type {
+          type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "uri") (Type {
             type_id = LocalTypeReference (TypeReference "URI"),
             subtype = Nothing
             } ))),

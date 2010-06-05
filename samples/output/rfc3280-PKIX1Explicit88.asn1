@@ -180,7 +180,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 41)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 41.0)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-surname",
@@ -188,7 +188,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 4)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 4.0)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-givenName",
@@ -196,7 +196,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 42)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 42.0)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-initials",
@@ -204,7 +204,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 43)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 43.0)]
         } ,
       ValueAssignment {
         value_ref = ValueReference "id-at-generationQualifier",
@@ -212,28 +212,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 44)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 44.0)]
         } ,
       TypeAssignment (TypeReference "X520name") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -243,28 +243,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 3)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 3.0)]
         } ,
       TypeAssignment (TypeReference "X520CommonName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -274,28 +274,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 7)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 7.0)]
         } ,
       TypeAssignment (TypeReference "X520LocalityName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -305,28 +305,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 8)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 8.0)]
         } ,
       TypeAssignment (TypeReference "X520StateOrProvinceName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -336,28 +336,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 10)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 10.0)]
         } ,
       TypeAssignment (TypeReference "X520OrganizationName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -367,28 +367,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 11)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 11.0)]
         } ,
       TypeAssignment (TypeReference "X520OrganizationalUnitName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -398,28 +398,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 12)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 12.0)]
         } ,
       TypeAssignment (TypeReference "X520Title") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -429,7 +429,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 46)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 46.0)]
         } ,
       TypeAssignment (TypeReference "X520dnQualifier") (Type {
         type_id = PrintableString,
@@ -441,11 +441,11 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 6)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 6.0)]
         } ,
       TypeAssignment (TypeReference "X520countryName") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SomeIntegerNumber 2))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 2))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "id-at-serialNumber",
@@ -453,11 +453,11 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 5)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 5.0)]
         } ,
       TypeAssignment (TypeReference "X520SerialNumber") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-serial-number")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-serial-number")))))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "id-at-pseudonym",
@@ -465,28 +465,28 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "id-at") (SomeIntegerNumber 65)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 65.0)]
         } ,
       TypeAssignment (TypeReference "X520Pseudonym") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -496,7 +496,7 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = OID [ObjIdNumber 0,
+        assigned_value = SomeOIDLikeValue [ObjIdNumber 0,
         ObjIdNumber 9,
         ObjIdNumber 2342,
         ObjIdNumber 19200300,
@@ -527,11 +527,11 @@ Module {
           type_id = LocalTypeReference (TypeReference "AttributeType"),
           subtype = Nothing
           } ,
-        assigned_value = SequenceRealValue [NamedValue (Identifier "pkcs-9") (SomeIntegerNumber 1)]
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "pkcs-9") (SomeNumber 1.0)]
         } ,
       TypeAssignment (TypeReference "EmailAddress") (Type {
         type_id = IA5String,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-emailaddress-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-emailaddress-length")))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "Name") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "rdnSequence") (Type {
@@ -552,7 +552,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "RelativeDistinguishedName") (Type {
-        type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "AttributeTypeAndValue"),
           subtype = Nothing
           } )),
@@ -561,23 +561,23 @@ Module {
       TypeAssignment (TypeReference "DirectoryString") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
           type_id = TeletexString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printableString") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "universalString") (Type {
           type_id = UniversalString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "utf8String") (Type {
           type_id = UTF8String,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "bmpString") (Type {
           type_id = BMPString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -750,7 +750,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "Extensions") (Type {
-        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "Extension"),
           subtype = Nothing
           } )),
@@ -1028,11 +1028,11 @@ Module {
         type_id = Tagged (Tag (Just Application) (ClassNumber 2)) Nothing (Type {
           type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numeric") (Type {
             type_id = NumericString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
             } ),
           NamedType (Identifier "printable") (Type {
             type_id = PrintableString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
             } )]),
           subtype = Nothing
           } ),
@@ -1044,37 +1044,37 @@ Module {
         } ),
       TypeAssignment (TypeReference "X121Address") (Type {
         type_id = NumericString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-x121-address-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-x121-address-length")))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "TerminalIdentifier") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-terminal-id-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-terminal-id-length")))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "PrivateDomainName") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numeric") (Type {
           type_id = NumericString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printable") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "OrganizationName") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name-length")))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "NumericUserIdentifier") (Type {
         type_id = NumericString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-numeric-user-id-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-numeric-user-id-length")))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "PersonalName") (Type {
         type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "surname") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
               type_id = PrintableString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-surname-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-surname-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1084,7 +1084,7 @@ Module {
           element_type = NamedType (Identifier "given-name") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
               type_id = PrintableString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-given-name-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-given-name-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1094,7 +1094,7 @@ Module {
           element_type = NamedType (Identifier "initials") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
               type_id = PrintableString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-initials-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-initials-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1104,7 +1104,7 @@ Module {
           element_type = NamedType (Identifier "generation-qualifier") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Implicit) (Type {
               type_id = PrintableString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-generation-qualifier-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-generation-qualifier-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1113,7 +1113,7 @@ Module {
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "OrganizationalUnitNames") (Type {
-        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-units")))))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-units")))))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "OrganizationalUnitName"),
           subtype = Nothing
           } )),
@@ -1121,10 +1121,10 @@ Module {
         } ),
       TypeAssignment (TypeReference "OrganizationalUnitName") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name-length")))))))) Nothing))))) Nothing)
         } ),
       TypeAssignment (TypeReference "BuiltInDomainDefinedAttributes") (Type {
-        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "BuiltInDomainDefinedAttribute"),
           subtype = Nothing
           } )),
@@ -1134,21 +1134,21 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
             type_id = PrintableString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-type-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-type-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "value") (Type {
             type_id = PrintableString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-value-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-value-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ]),
         subtype = Nothing
         } ),
       TypeAssignment (TypeReference "ExtensionAttributes") (Type {
-        type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-extension-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-extension-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "ExtensionAttribute"),
           subtype = Nothing
           } )),
@@ -1159,7 +1159,7 @@ Module {
           element_type = NamedType (Identifier "extension-attribute-type") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-extension-attributes")))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-extension-attributes")))))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1187,7 +1187,7 @@ Module {
         } ,
       TypeAssignment (TypeReference "CommonName") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name-length")))))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "teletex-common-name",
@@ -1199,7 +1199,7 @@ Module {
         } ,
       TypeAssignment (TypeReference "TeletexCommonName") (Type {
         type_id = TeletexString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-common-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name-length")))))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "teletex-organization-name",
@@ -1211,7 +1211,7 @@ Module {
         } ,
       TypeAssignment (TypeReference "TeletexOrganizationName") (Type {
         type_id = TeletexString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organization-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name-length")))))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "teletex-personal-name",
@@ -1226,7 +1226,7 @@ Module {
           element_type = NamedType (Identifier "surname") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
               type_id = TeletexString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-surname-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-surname-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1236,7 +1236,7 @@ Module {
           element_type = NamedType (Identifier "given-name") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
               type_id = TeletexString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-given-name-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-given-name-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1246,7 +1246,7 @@ Module {
           element_type = NamedType (Identifier "initials") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
               type_id = TeletexString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-initials-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-initials-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1256,7 +1256,7 @@ Module {
           element_type = NamedType (Identifier "generation-qualifier") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Implicit) (Type {
               type_id = TeletexString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-generation-qualifier-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-generation-qualifier-length")))))))) Nothing))))) Nothing)
               } ),
             subtype = Nothing
             } ),
@@ -1273,7 +1273,7 @@ Module {
         assigned_value = SignedNumber 5
         } ,
       TypeAssignment (TypeReference "TeletexOrganizationalUnitNames") (Type {
-        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-units")))))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-units")))))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "TeletexOrganizationalUnitName"),
           subtype = Nothing
           } )),
@@ -1281,7 +1281,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "TeletexOrganizationalUnitName") (Type {
         type_id = TeletexString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-organizational-unit-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name-length")))))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "pds-name",
@@ -1293,7 +1293,7 @@ Module {
         } ,
       TypeAssignment (TypeReference "PDSName") (Type {
         type_id = PrintableString,
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pds-name-length")))))))) Nothing))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-name-length")))))))) Nothing))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "physical-delivery-country-name",
@@ -1325,11 +1325,11 @@ Module {
       TypeAssignment (TypeReference "PostalCode") (Type {
         type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numeric-code") (Type {
           type_id = NumericString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-postal-code-length")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-postal-code-length")))))))) Nothing))))) Nothing)
           } ),
         NamedType (Identifier "printable-code") (Type {
           type_id = PrintableString,
-          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-postal-code-length")))))))) Nothing))))) Nothing)
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-postal-code-length")))))))) Nothing))))) Nothing)
           } )]),
         subtype = Nothing
         } ),
@@ -1416,9 +1416,9 @@ Module {
       TypeAssignment (TypeReference "UnformattedPostalAddress") (Type {
         type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "printable-address") (Type {
-            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pds-physical-address-lines")))))))) Nothing))))) Nothing)) (Left (Type {
+            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-physical-address-lines")))))))) Nothing))))) Nothing)) (Left (Type {
               type_id = PrintableString,
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
               } )),
             subtype = Nothing
             } ),
@@ -1427,7 +1427,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "teletex-string") (Type {
             type_id = TeletexString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-unformatted-address-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-unformatted-address-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ]),
@@ -1497,14 +1497,14 @@ Module {
         type_id = Set (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "printable-string") (Type {
             type_id = PrintableString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "teletex-string") (Type {
             type_id = TeletexString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Just OptionalValue
           } ]),
@@ -1524,7 +1524,7 @@ Module {
             element_type = NamedType (Identifier "number") (Type {
               type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
                 type_id = NumericString,
-                subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-e163-4-number-length")))))))) Nothing))))) Nothing)
+                subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-e163-4-number-length")))))))) Nothing))))) Nothing)
                 } ),
               subtype = Nothing
               } ),
@@ -1534,7 +1534,7 @@ Module {
             element_type = NamedType (Identifier "sub-address") (Type {
               type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
                 type_id = NumericString,
-                subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-e163-4-sub-address-length")))))))) Nothing))))) Nothing)
+                subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-e163-4-sub-address-length")))))))) Nothing))))) Nothing)
                 } ),
               subtype = Nothing
               } ),
@@ -1585,7 +1585,7 @@ Module {
         NamedTypeComponent {
           element_type = NamedType (Identifier "nAddresses") (Type {
             type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Explicit) (Type {
-              type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+              type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
                 type_id = OctetString,
                 subtype = Nothing
                 } )),
@@ -1612,7 +1612,7 @@ Module {
         NamedNumber (Identifier "g4-facsimile") 6,
         NamedNumber (Identifier "ia5-terminal") 7,
         NamedNumber (Identifier "videotex") 8],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-integer-options")))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-integer-options")))))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "teletex-domain-defined-attributes",
@@ -1623,7 +1623,7 @@ Module {
         assigned_value = SignedNumber 6
         } ,
       TypeAssignment (TypeReference "TeletexDomainDefinedAttributes") (Type {
-        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
           type_id = LocalTypeReference (TypeReference "TeletexDomainDefinedAttribute"),
           subtype = Nothing
           } )),
@@ -1633,14 +1633,14 @@ Module {
         type_id = Sequence (ComponentTypeList [NamedTypeComponent {
           element_type = NamedType (Identifier "type") (Type {
             type_id = TeletexString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-type-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-type-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ,
         NamedTypeComponent {
           element_type = NamedType (Identifier "value") (Type {
             type_id = TeletexString,
-            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIdentifiedValue (Identifier "ub-domain-defined-attribute-value-length")))))))) Nothing))))) Nothing)
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-value-length")))))))) Nothing))))) Nothing)
             } ),
           element_presence = Nothing
           } ]),

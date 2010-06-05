@@ -115,7 +115,7 @@ Module {
         } ),
       TypeAssignment (TypeReference "MessageID") (Type {
         type_id = TheInteger [],
-        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "maxInt")))))))) Nothing)
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
         } ),
       ValueAssignment {
         value_ref = ValueReference "maxInt",
@@ -324,7 +324,7 @@ Module {
           type_id = Sequence (ComponentTypeList [NamedTypeComponent {
             element_type = NamedType (Identifier "version") (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 1))) (Closed (Value (SomeIntegerNumber 127))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 127))))))) Nothing)
               } ),
             element_presence = Nothing
             } ,
@@ -438,14 +438,14 @@ Module {
           NamedTypeComponent {
             element_type = NamedType (Identifier "sizeLimit") (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "maxInt")))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
               } ),
             element_presence = Nothing
             } ,
           NamedTypeComponent {
             element_type = NamedType (Identifier "timeLimit") (Type {
               type_id = TheInteger [],
-              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SomeIntegerNumber 0))) (Closed (Value (SomeIdentifiedValue (Identifier "maxInt")))))))) Nothing)
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
               } ),
             element_presence = Nothing
             } ,
