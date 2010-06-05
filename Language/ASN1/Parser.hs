@@ -118,12 +118,10 @@ newtype Identifier = Identifier String deriving (Eq,Ord,Show, Typeable, Data)
 _identifier = lcaseFirstIdent
 identifier = Identifier <$> _identifier
 
--- TODO: distinguished from identifier only by context - check this
 newtype ValueReference = ValueReference String deriving (Eq,Ord,Show, Typeable, Data)
 valuereference = ValueReference <$> _identifier
 _valuereference = _identifier
 
--- TODO: distinguished from typereference only by context - check this
 data ModuleReference = ModuleReference String deriving (Eq,Ord,Show, Typeable, Data)
 modulereference = ModuleReference <$> _typereference
 
@@ -317,7 +315,8 @@ assignedIdentifier =
 
 data Symbol = TypeReferenceSymbol TypeReference
             | ValueReferenceSymbol ValueReference
-            -- TODO: it is impossible to distinguish TypeReference and ValueReference syntactically
+              -- TODO: it is impossible to distinguish TypeReference and ValueReference syntactically.
+              -- What kind of context is needed to resolve this?
             | ObjectClassReferenceSymbol ObjectClassReference
             | ObjectReferenceSymbol ObjectReference
             | ObjectSetReferenceSymbol ObjectSetReference
@@ -602,7 +601,6 @@ data Value =
   | SomeValueList [Value] -- IdentifierListBitString, SequenceOfValue (values only), SetOfValue (values only)
   | SomeIdentifiedValue Identifier -- Integer or Enumerated
   | SomeOIDLikeValue OID -- OID or RELATIVE-OID
-    -- TODO: catch-all for OID-like values
   deriving (Eq,Ord,Show, Typeable, Data)
 
 -- Helper for type propagation through parser
