@@ -1564,5 +1564,5 @@ instanceOfValue = InstanceOfValue <$> componentValueList
 -- }} end of annex C
 
 -- Local Variables: 
--- outline-regexp:"-- [{]\+"
+-- outline-regexp:"-- {{"
 -- End:
