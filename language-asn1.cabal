@@ -1,60 +1,72 @@
-Name:           language-asn1
-Version:        0.5
-Cabal-Version:  >= 1.2.3
-Build-Type:     Simple
-License:        BSD3
-License-File:   LICENSE
-Copyright:      LICENSE
-Author:         Dmitry Astapov <dastapov@gmail.com>
-Maintainer:     Dmitry Astapov <dastapov@gmail.com>
-Stability:      experimental
-Homepage:       http://patch-tag.com/r/adept/language-asn1
-Synopsis:       Parsing of ASN1 definitions
-Description:    Language.ASN1 is a haskell library for the analysis of ASN.1 code.
-                It features an almost-complete, somewhat tested parser for large subset of
-                X.680-0207 -- X.683-0207 standards
-Category:       Language
-Tested-With:    GHC==6.10.4, GHC==6.12.1
+cabal-version: 1.12
 
-Extra-Source-Files: LICENSE README TestASN1Parser.hs
-  samples/LDAP_simplified.asn1 samples/rfc3280-PKIX1Explicit88.asn1 samples/rfc3280-PKIX1Implicit88.asn1
-  samples/rfc3525-MEDIA-GATEWAY-CONTROL.asn1 samples/rfc4511-Lightweight-Directory-Access-Protocol-V3.asn1
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: 4bfdb2938ae7bcc00a0ee76ffdd287aa744da1be14f4db893e28227e5cd719dc
 
-Flag splitBase
-  Description: Choose the new smaller, split-up base package.
+name:           language-asn1
+version:        0.6
+synopsis:       Parsing of ASN1 definitions
+description:    Language.ASN1 is a haskell library for the analysis of ASN.1 code. It features an almost-complete, somewhat tested parser for large subset of X.680-0207 -- X.683-0207 standards
+category:       Language
+stability:      beta
+homepage:       https://github.com/adept/language-asn1
+author:         Dmitry Astapov <dastapov@gmail.com>
+maintainer:     Dmitry Astapov <dastapov@gmail.com>
+license:        BSD3
+license-file:   LICENSE
+tested-with:    GHC==6.10.4, GHC==6.12.1, GHC==8.0.2, GHC==8.2.2, GHC==8.4.4, GHC==8.6.5, GHC==8.8.3
+build-type:     Simple
+extra-source-files:
+    LICENSE
+    README
+    samples/LDAP_simplified.asn1
+    samples/rfc3280-PKIX1Explicit88.asn1
+    samples/rfc3280-PKIX1Implicit88.asn1
+    samples/rfc3525-MEDIA-GATEWAY-CONTROL.asn1
+    samples/rfc4511-Lightweight-Directory-Access-Protocol-V3.asn1
 
-flag test
-  Description: Build testsuite and code coverage tests
-  Default: False
+library
+  exposed-modules:
+      Language.ASN1.Parser
+  other-modules:
+      Paths_language_asn1
+  hs-source-dirs:
+      ./.
+  build-depends:
+      base >=3 && <5
+    , parsec >=3.0.0
+    , syb
+  default-language: Haskell2010
 
-Library
-  if flag(splitBase)
-    Build-Depends:       base >= 3 && < 5, parsec >= 3.0.0, syb
-  else
-    Build-Depends:       base >= 2 && < 3
-  if impl(ghc >= 6.10)
-    build-depends: base >= 4
+executable dump-asn1-ast
+  main-is: dump-asn1-ast.hs
+  other-modules:
+      Paths_language_asn1
+  hs-source-dirs:
+      bin
+  build-depends:
+      base >=3 && <5
+    , language-asn1
+    , parsec >=3.0.0
+    , syb
+  default-language: Haskell2010
 
-  Extensions: DeriveDataTypeable
-
-  Hs-Source-Dirs: .
-  Exposed-Modules:
-    Language.ASN1.Parser
-
-Executable  LanguageASN1Testsuite
-  Hs-Source-Dirs: .
-  Main-Is:       Testsuite.hs
-  if flag(test)
-    GHC-Options: -fhpc
-    Build-Depends: base >=3 && <=5, HUnit, test-framework, test-framework-hunit, parsec >= 3.0.0, syb
-  else
-    Buildable: False
-
-Executable  TestASN1Parser
-  Hs-Source-Dirs: .
-  Main-Is:       TestASN1Parser.hs
-  if flag(test)
-    GHC-Options: -fhpc
-    Build-Depends: base >=3 && <=5, parsec >= 3.0.0, syb
-  else
-    Buildable: False
+test-suite LanguageASN1Testsuite
+  type: exitcode-stdio-1.0
+  main-is: Testsuite.hs
+  other-modules:
+      Paths_language_asn1
+  hs-source-dirs:
+      tests
+  build-depends:
+      HUnit
+    , base >=3 && <5
+    , language-asn1
+    , parsec >=3.0.0
+    , syb
+    , test-framework
+    , test-framework-hunit
+  default-language: Haskell2010

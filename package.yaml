@@ -1,0 +1,51 @@
+name:           language-asn1
+version:        0.6
+build-type:     Simple
+license:        BSD3
+license-file:   LICENSE
+author:         Dmitry Astapov <dastapov@gmail.com>
+maintainer:     Dmitry Astapov <dastapov@gmail.com>
+stability:      beta
+homepage:       https://github.com/adept/language-asn1
+synopsis:       Parsing of ASN1 definitions
+description:    Language.ASN1 is a haskell library for the analysis of ASN.1 code.
+                It features an almost-complete, somewhat tested parser for large subset of
+                X.680-0207 -- X.683-0207 standards
+category:       Language
+tested-with:    GHC==6.10.4, GHC==6.12.1, GHC==8.0.2, GHC==8.2.2, GHC==8.4.4, GHC==8.6.5, GHC==8.8.3
+
+extra-source-files:
+  - LICENSE
+  - README
+  - samples/LDAP_simplified.asn1
+  - samples/rfc3280-PKIX1Explicit88.asn1
+  - samples/rfc3280-PKIX1Implicit88.asn1
+  - samples/rfc3525-MEDIA-GATEWAY-CONTROL.asn1
+  - samples/rfc4511-Lightweight-Directory-Access-Protocol-V3.asn1
+
+dependencies:
+  - base >= 3 && < 5
+  - parsec >= 3.0.0
+  - syb
+
+library:
+  source-dirs: .
+  exposed-modules:
+    - Language.ASN1.Parser
+
+tests:
+  LanguageASN1Testsuite:
+    source-dirs: tests
+    main: Testsuite.hs
+    dependencies:
+      - HUnit
+      - test-framework
+      - test-framework-hunit
+      - language-asn1
+
+executables:
+  dump-asn1-ast:
+    source-dirs: bin
+    main: dump-asn1-ast.hs
+    dependencies:
+      - language-asn1

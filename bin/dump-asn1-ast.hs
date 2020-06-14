@@ -21,14 +21,14 @@ assignedTypeName _ = []
 main = do
   args <- getArgs
   case args of
-    [] -> error "Give me ASN.1 file to parse and ASN1 type name to construct data type for"
+    [] -> error "Give me ASN.1 file to parse"
     [file] -> parseAndDumpTypes file
 
 parseAndDumpTypes file =
   do ms <- parseASN1FromFileOrDie file
      let m = head ms
      putStrLn "============="
-     putStrLn "Parsed module"
+     putStrLn "First parsed module"
      putStrLn $ showTerm m
      putStrLn "==========================="
      putStrLn "Types defined in the module"
