@@ -1,0 +1,2082 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "MEDIA-GATEWAY-CONTROL") Nothing,
+    default_tag_type = AutomaticTags,
+    extensibility_implied = False,
+    module_body = Just (ModuleBody {
+      module_exports = ExportsAll,
+      module_imports = ImportsNone,
+      module_assignments = [TypeAssignment (TypeReference "MegacoMessage") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "authHeader") (Type {
+            type_id = LocalTypeReference (TypeReference "AuthenticationHeader"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "mess") (Type {
+            type_id = LocalTypeReference (TypeReference "Message"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuthenticationHeader") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "secParmIndex") (Type {
+            type_id = LocalTypeReference (TypeReference "SecurityParmIndex"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "seqNum") (Type {
+            type_id = LocalTypeReference (TypeReference "SequenceNum"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "ad") (Type {
+            type_id = LocalTypeReference (TypeReference "AuthData"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SecurityParmIndex") (Type {
+        type_id = OctetString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "SequenceNum") (Type {
+        type_id = OctetString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "AuthData") (Type {
+        type_id = OctetString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 12))) (Closed (Value (SignedNumber 32))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "Message") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "version") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "mId") (Type {
+            type_id = LocalTypeReference (TypeReference "MId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "messageBody") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "messageError") (Type {
+              type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "transactions") (Type {
+              type_id = SequenceOf Nothing (Left (Type {
+                type_id = LocalTypeReference (TypeReference "Transaction"),
+                subtype = Nothing
+                } )),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "MId") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "ip4Address") (Type {
+          type_id = LocalTypeReference (TypeReference "IP4Address"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "ip6Address") (Type {
+          type_id = LocalTypeReference (TypeReference "IP6Address"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "domainName") (Type {
+          type_id = LocalTypeReference (TypeReference "DomainName"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "deviceName") (Type {
+          type_id = LocalTypeReference (TypeReference "PathName"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "mtpAddress") (Type {
+          type_id = OctetString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 2))) (Closed (Value (SignedNumber 4))))))) Nothing))))) Nothing)
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DomainName") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = IA5String,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "portNumber") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "IP4Address") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "address") (Type {
+            type_id = OctetString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "portNumber") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "IP6Address") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "address") (Type {
+            type_id = OctetString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 16))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "portNumber") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PathName") (Type {
+        type_id = IA5String,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 64))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "Transaction") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "transactionRequest") (Type {
+          type_id = LocalTypeReference (TypeReference "TransactionRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "transactionPending") (Type {
+          type_id = LocalTypeReference (TypeReference "TransactionPending"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "transactionReply") (Type {
+          type_id = LocalTypeReference (TypeReference "TransactionReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "transactionResponseAck") (Type {
+          type_id = LocalTypeReference (TypeReference "TransactionResponseAck"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TransactionId") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "TransactionRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "transactionId") (Type {
+            type_id = LocalTypeReference (TypeReference "TransactionId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "actions") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "ActionRequest"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TransactionPending") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "transactionId") (Type {
+            type_id = LocalTypeReference (TypeReference "TransactionId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TransactionReply") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "transactionId") (Type {
+            type_id = LocalTypeReference (TypeReference "TransactionId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "immAckRequired") (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "transactionResult") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "transactionError") (Type {
+              type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "actionReplies") (Type {
+              type_id = SequenceOf Nothing (Left (Type {
+                type_id = LocalTypeReference (TypeReference "ActionReply"),
+                subtype = Nothing
+                } )),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TransactionResponseAck") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "TransactionAck"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TransactionAck") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "firstAck") (Type {
+            type_id = LocalTypeReference (TypeReference "TransactionId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "lastAck") (Type {
+            type_id = LocalTypeReference (TypeReference "TransactionId"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ErrorDescriptor") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "errorCode") (Type {
+            type_id = LocalTypeReference (TypeReference "ErrorCode"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "errorText") (Type {
+            type_id = LocalTypeReference (TypeReference "ErrorText"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ErrorCode") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "ErrorText") (Type {
+        type_id = IA5String,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ContextID") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "ActionRequest") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "contextId") (Type {
+            type_id = LocalTypeReference (TypeReference "ContextID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "contextRequest") (Type {
+            type_id = LocalTypeReference (TypeReference "ContextRequest"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "contextAttrAuditReq") (Type {
+            type_id = LocalTypeReference (TypeReference "ContextAttrAuditRequest"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "commandRequests") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "CommandRequest"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ActionReply") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "contextId") (Type {
+            type_id = LocalTypeReference (TypeReference "ContextID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "errorDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "contextReply") (Type {
+            type_id = LocalTypeReference (TypeReference "ContextRequest"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "commandReply") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "CommandReply"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ContextRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "priority") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 15))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "emergency") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "topologyReq") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "TopologyRequest"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ContextAttrAuditRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "topology") (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "emergency") (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "priority") (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CommandRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "command") (Type {
+            type_id = LocalTypeReference (TypeReference "Command"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "optional") (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "wildcardReturn") (Type {
+            type_id = Null,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Command") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "addReq") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "moveReq") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "modReq") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "subtractReq") (Type {
+          type_id = LocalTypeReference (TypeReference "SubtractRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "auditCapRequest") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "auditValueRequest") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "notifyReq") (Type {
+          type_id = LocalTypeReference (TypeReference "NotifyRequest"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "serviceChangeReq") (Type {
+          type_id = LocalTypeReference (TypeReference "ServiceChangeRequest"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CommandReply") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "addReply") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmsReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "moveReply") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmsReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "modReply") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmsReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "subtractReply") (Type {
+          type_id = LocalTypeReference (TypeReference "AmmsReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "auditCapReply") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "auditValueReply") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "notifyReply") (Type {
+          type_id = LocalTypeReference (TypeReference "NotifyReply"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "serviceChangeReply") (Type {
+          type_id = LocalTypeReference (TypeReference "ServiceChangeReply"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TopologyRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationFrom") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationTo") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "topologyDirection") (Type {
+            type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "bothway") 0),
+            EnumerationItemNumber (NamedNumber (Identifier "isolate") 1),
+            EnumerationItemNumber (NamedNumber (Identifier "oneway") 2)],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AmmRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "descriptors") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "AmmDescriptor"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AmmDescriptor") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "mediaDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "MediaDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "modemDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "ModemDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "muxDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "MuxDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "eventsDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "EventsDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "eventBufferDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "EventBufferDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "signalsDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "SignalsDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "digitMapDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "DigitMapDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "auditDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditDescriptor"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AmmsReply") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationAudit") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationAudit"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SubtractRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "auditDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "AuditDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuditRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "auditDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "AuditDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuditReply") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "contextAuditResult") (Type {
+          type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "error") (Type {
+          type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "auditResult") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditResult"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuditResult") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationAuditResult") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationAudit"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TerminationAudit") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "AuditReturnParameter"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuditReturnParameter") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "errorDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "mediaDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "MediaDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "modemDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "ModemDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "muxDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "MuxDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "eventsDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "EventsDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "eventBufferDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "EventBufferDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "signalsDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "SignalsDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "digitMapDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "DigitMapDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "observedEventsDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "ObservedEventsDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "statisticsDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "StatisticsDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "packagesDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "PackagesDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "emptyDescriptors") (Type {
+          type_id = LocalTypeReference (TypeReference "AuditDescriptor"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuditDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "auditToken") (Type {
+            type_id = BitString [NamedNumber (Identifier "muxToken") 0,
+            NamedNumber (Identifier "modemToken") 1,
+            NamedNumber (Identifier "mediaToken") 2,
+            NamedNumber (Identifier "eventsToken") 3,
+            NamedNumber (Identifier "signalsToken") 4,
+            NamedNumber (Identifier "digitMapToken") 5,
+            NamedNumber (Identifier "statsToken") 6,
+            NamedNumber (Identifier "observedEventsToken") 7,
+            NamedNumber (Identifier "packagesToken") 8,
+            NamedNumber (Identifier "eventBufferToken") 9],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NotifyRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "observedEventsDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "ObservedEventsDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "errorDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NotifyReply") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "errorDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ObservedEventsDescriptor") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "requestId") (Type {
+            type_id = LocalTypeReference (TypeReference "RequestID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "observedEventLst") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "ObservedEvent"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ObservedEvent") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "eventName") (Type {
+            type_id = LocalTypeReference (TypeReference "EventName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streamID") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventParList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "EventParameter"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "timeNotation") (Type {
+            type_id = LocalTypeReference (TypeReference "TimeNotation"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EventName") (Type {
+        type_id = LocalTypeReference (TypeReference "PkgdName"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EventParameter") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "eventParameterName") (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = LocalTypeReference (TypeReference "Value"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extraInfo") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "relation") (Type {
+              type_id = LocalTypeReference (TypeReference "Relation"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "range") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "sublist") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeRequest") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeParms") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeParm"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeReply") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "terminationID") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationIDList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeResult") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeResult"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeResult") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "errorDescriptor") (Type {
+          type_id = LocalTypeReference (TypeReference "ErrorDescriptor"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "serviceChangeResParms") (Type {
+          type_id = LocalTypeReference (TypeReference "ServiceChangeResParm"),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "WildcardField") (Type {
+        type_id = OctetString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 1))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "TerminationID") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "wildcard") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "WildcardField"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "id") (Type {
+            type_id = OctetString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 8))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TerminationIDList") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "TerminationID"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "MediaDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "termStateDescr") (Type {
+            type_id = LocalTypeReference (TypeReference "TerminationStateDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streams") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "oneStream") (Type {
+              type_id = LocalTypeReference (TypeReference "StreamParms"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "multiStream") (Type {
+              type_id = SequenceOf Nothing (Left (Type {
+                type_id = LocalTypeReference (TypeReference "StreamDescriptor"),
+                subtype = Nothing
+                } )),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "StreamDescriptor") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "streamID") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streamParms") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamParms"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "StreamParms") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "localControlDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "LocalControlDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "localDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "LocalRemoteDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "remoteDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "LocalRemoteDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "LocalControlDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "streamMode") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamMode"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "reserveValue") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "reserveGroup") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "propertyParms") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "PropertyParm"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "StreamMode") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "sendOnly") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "recvOnly") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "sendRecv") 2),
+        EnumerationItemNumber (NamedNumber (Identifier "inactive") 3),
+        EnumerationItemNumber (NamedNumber (Identifier "loopBack") 4)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PropertyParm") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "PkgdName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = OctetString,
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extraInfo") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "relation") (Type {
+              type_id = LocalTypeReference (TypeReference "Relation"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "range") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "sublist") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Name") (Type {
+        type_id = OctetString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 2))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "PkgdName") (Type {
+        type_id = OctetString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 4))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "Relation") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "greaterThan") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "smallerThan") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "unequalTo") 2)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "LocalRemoteDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "propGrps") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "PropertyGroup"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PropertyGroup") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "PropertyParm"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TerminationStateDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "propertyParms") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "PropertyParm"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventBufferControl") (Type {
+            type_id = LocalTypeReference (TypeReference "EventBufferControl"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceState") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceState"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EventBufferControl") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "off") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "lockStep") 1)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceState") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "test") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "outOfSvc") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "inSvc") 2)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "MuxDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "muxType") (Type {
+            type_id = LocalTypeReference (TypeReference "MuxType"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "termList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "TerminationID"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "nonStandardData") (Type {
+            type_id = LocalTypeReference (TypeReference "NonStandardData"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "MuxType") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "h221") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "h223") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "h226") 2),
+        EnumerationItemNumber (NamedNumber (Identifier "v76") 3)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "StreamID") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "EventsDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "requestID") (Type {
+            type_id = LocalTypeReference (TypeReference "RequestID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "RequestedEvent"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "RequestedEvent") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "pkgdName") (Type {
+            type_id = LocalTypeReference (TypeReference "PkgdName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streamID") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventAction") (Type {
+            type_id = LocalTypeReference (TypeReference "RequestedActions"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "evParList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "EventParameter"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "RequestedActions") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "keepActive") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventDM") (Type {
+            type_id = LocalTypeReference (TypeReference "EventDM"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "secondEvent") (Type {
+            type_id = LocalTypeReference (TypeReference "SecondEventsDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signalsDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "SignalsDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EventDM") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "digitMapName") (Type {
+          type_id = LocalTypeReference (TypeReference "DigitMapName"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "digitMapValue") (Type {
+          type_id = LocalTypeReference (TypeReference "DigitMapValue"),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SecondEventsDescriptor") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "requestID") (Type {
+            type_id = LocalTypeReference (TypeReference "RequestID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "SecondRequestedEvent"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SecondRequestedEvent") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "pkgdName") (Type {
+            type_id = LocalTypeReference (TypeReference "PkgdName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streamID") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventAction") (Type {
+            type_id = LocalTypeReference (TypeReference "SecondRequestedActions"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "evParList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "EventParameter"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SecondRequestedActions") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "keepActive") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventDM") (Type {
+            type_id = LocalTypeReference (TypeReference "EventDM"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signalsDescriptor") (Type {
+            type_id = LocalTypeReference (TypeReference "SignalsDescriptor"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EventBufferDescriptor") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "EventSpec"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EventSpec") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "eventName") (Type {
+            type_id = LocalTypeReference (TypeReference "EventName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streamID") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventParList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "EventParameter"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SignalsDescriptor") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "SignalRequest"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SignalRequest") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "signal") (Type {
+          type_id = LocalTypeReference (TypeReference "Signal"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "seqSigList") (Type {
+          type_id = LocalTypeReference (TypeReference "SeqSigList"),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SeqSigList") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "id") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signalList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Signal"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Signal") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "signalName") (Type {
+            type_id = LocalTypeReference (TypeReference "SignalName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "streamID") (Type {
+            type_id = LocalTypeReference (TypeReference "StreamID"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "sigType") (Type {
+            type_id = LocalTypeReference (TypeReference "SignalType"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "duration") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "notifyCompletion") (Type {
+            type_id = LocalTypeReference (TypeReference "NotifyCompletion"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "keepActive") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "sigParList") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "SigParameter"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SignalType") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "brief") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "onOff") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "timeOut") 2)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SignalName") (Type {
+        type_id = LocalTypeReference (TypeReference "PkgdName"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NotifyCompletion") (Type {
+        type_id = BitString [NamedNumber (Identifier "onTimeOut") 0,
+        NamedNumber (Identifier "onInterruptByEvent") 1,
+        NamedNumber (Identifier "onInterruptByNewSignalDescr") 2,
+        NamedNumber (Identifier "otherReason") 3],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SigParameter") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "sigParameterName") (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = LocalTypeReference (TypeReference "Value"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extraInfo") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "relation") (Type {
+              type_id = LocalTypeReference (TypeReference "Relation"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "range") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "sublist") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "RequestID") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "ModemDescriptor") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "mtl") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "ModemType"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "mpl") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "PropertyParm"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "nonStandardData") (Type {
+            type_id = LocalTypeReference (TypeReference "NonStandardData"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ModemType") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "v18") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "v22") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "v22bis") 2),
+        EnumerationItemNumber (NamedNumber (Identifier "v32") 3),
+        EnumerationItemNumber (NamedNumber (Identifier "v32bis") 4),
+        EnumerationItemNumber (NamedNumber (Identifier "v34") 5),
+        EnumerationItemNumber (NamedNumber (Identifier "v90") 6),
+        EnumerationItemNumber (NamedNumber (Identifier "v91") 7),
+        EnumerationItemNumber (NamedNumber (Identifier "synchISDN") 8)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DigitMapDescriptor") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "digitMapName") (Type {
+            type_id = LocalTypeReference (TypeReference "DigitMapName"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "digitMapValue") (Type {
+            type_id = LocalTypeReference (TypeReference "DigitMapValue"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DigitMapName") (Type {
+        type_id = LocalTypeReference (TypeReference "Name"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DigitMapValue") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "startTimer") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "shortTimer") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "longTimer") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "digitMapBody") (Type {
+            type_id = IA5String,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeParm") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeMethod") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeMethod"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeAddress") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeAddress"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeVersion") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeProfile") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeProfile"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeReason") (Type {
+            type_id = LocalTypeReference (TypeReference "Value"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeDelay") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 4294967295))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeMgcId") (Type {
+            type_id = LocalTypeReference (TypeReference "MId"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "timeStamp") (Type {
+            type_id = LocalTypeReference (TypeReference "TimeNotation"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "nonStandardData") (Type {
+            type_id = LocalTypeReference (TypeReference "NonStandardData"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeAddress") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "portNumber") (Type {
+          type_id = TheInteger [],
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+          } ),
+        NamedType (Identifier "ip4Address") (Type {
+          type_id = LocalTypeReference (TypeReference "IP4Address"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "ip6Address") (Type {
+          type_id = LocalTypeReference (TypeReference "IP6Address"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "domainName") (Type {
+          type_id = LocalTypeReference (TypeReference "DomainName"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "deviceName") (Type {
+          type_id = LocalTypeReference (TypeReference "PathName"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "mtpAddress") (Type {
+          type_id = OctetString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 2))) (Closed (Value (SignedNumber 4))))))) Nothing))))) Nothing)
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeResParm") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeMgcId") (Type {
+            type_id = LocalTypeReference (TypeReference "MId"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeAddress") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeAddress"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeVersion") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serviceChangeProfile") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceChangeProfile"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "timestamp") (Type {
+            type_id = LocalTypeReference (TypeReference "TimeNotation"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeMethod") (Type {
+        type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "failover") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "forced") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "graceful") 2),
+        EnumerationItemNumber (NamedNumber (Identifier "restart") 3),
+        EnumerationItemNumber (NamedNumber (Identifier "disconnected") 4),
+        EnumerationItemNumber (NamedNumber (Identifier "handOff") 5)] Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ServiceChangeProfile") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "profileName") (Type {
+            type_id = IA5String,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 67))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PackagesDescriptor") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "PackagesItem"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PackagesItem") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "packageName") (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "packageVersion") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 99))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "StatisticsDescriptor") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "StatisticsParameter"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "StatisticsParameter") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "statName") (Type {
+            type_id = LocalTypeReference (TypeReference "PkgdName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "statValue") (Type {
+            type_id = LocalTypeReference (TypeReference "Value"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NonStandardData") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "nonStandardIdentifier") (Type {
+            type_id = LocalTypeReference (TypeReference "NonStandardIdentifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "data") (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NonStandardIdentifier") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "object") (Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "h221NonStandard") (Type {
+          type_id = LocalTypeReference (TypeReference "H221NonStandard"),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "experimental") (Type {
+          type_id = IA5String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 8))))) Nothing))))) Nothing)
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "H221NonStandard") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "t35CountryCode1") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "t35CountryCode2") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "t35Extension") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "manufacturerCode") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 65535))))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TimeNotation") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "date") (Type {
+            type_id = IA5String,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 8))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "time") (Type {
+            type_id = IA5String,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 8))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Value") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = OctetString,
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } )]
+      } )
+    } 
+===========================
+Types defined in the module
+MegacoMessage
+AuthenticationHeader
+SecurityParmIndex
+SequenceNum
+AuthData
+Message
+MId
+DomainName
+IP4Address
+IP6Address
+PathName
+Transaction
+TransactionId
+TransactionRequest
+TransactionPending
+TransactionReply
+TransactionResponseAck
+TransactionAck
+ErrorDescriptor
+ErrorCode
+ErrorText
+ContextID
+ActionRequest
+ActionReply
+ContextRequest
+ContextAttrAuditRequest
+CommandRequest
+Command
+CommandReply
+TopologyRequest
+AmmRequest
+AmmDescriptor
+AmmsReply
+SubtractRequest
+AuditRequest
+AuditReply
+AuditResult
+TerminationAudit
+AuditReturnParameter
+AuditDescriptor
+NotifyRequest
+NotifyReply
+ObservedEventsDescriptor
+ObservedEvent
+EventName
+EventParameter
+ServiceChangeRequest
+ServiceChangeReply
+ServiceChangeResult
+WildcardField
+TerminationID
+TerminationIDList
+MediaDescriptor
+StreamDescriptor
+StreamParms
+LocalControlDescriptor
+StreamMode
+PropertyParm
+Name
+PkgdName
+Relation
+LocalRemoteDescriptor
+PropertyGroup
+TerminationStateDescriptor
+EventBufferControl
+ServiceState
+MuxDescriptor
+MuxType
+StreamID
+EventsDescriptor
+RequestedEvent
+RequestedActions
+EventDM
+SecondEventsDescriptor
+SecondRequestedEvent
+SecondRequestedActions
+EventBufferDescriptor
+EventSpec
+SignalsDescriptor
+SignalRequest
+SeqSigList
+Signal
+SignalType
+SignalName
+NotifyCompletion
+SigParameter
+RequestID
+ModemDescriptor
+ModemType
+DigitMapDescriptor
+DigitMapName
+DigitMapValue
+ServiceChangeParm
+ServiceChangeAddress
+ServiceChangeResParm
+ServiceChangeMethod
+ServiceChangeProfile
+PackagesDescriptor
+PackagesItem
+StatisticsDescriptor
+StatisticsParameter
+NonStandardData
+NonStandardIdentifier
+H221NonStandard
+TimeNotation
+Value

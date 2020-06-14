@@ -1,0 +1,994 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "Lightweight-Directory-Access-Protocol-V3") (Just [DefinitiveOIDNumber 1,
+    DefinitiveOIDNumber 3,
+    DefinitiveOIDNumber 6,
+    DefinitiveOIDNumber 1,
+    DefinitiveOIDNumber 1,
+    DefinitiveOIDNumber 18]),
+    default_tag_type = ImplicitTags,
+    extensibility_implied = True,
+    module_body = Just (ModuleBody {
+      module_exports = ExportsAll,
+      module_imports = ImportsNone,
+      module_assignments = [TypeAssignment (TypeReference "LDAPMessage") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "messageID") (Type {
+            type_id = LocalTypeReference (TypeReference "MessageID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "protocolOp") (Type {
+            type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "bindRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "BindRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "bindResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "BindResponse"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "unbindRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "UnbindRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "searchRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "SearchRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "searchResEntry") (Type {
+              type_id = LocalTypeReference (TypeReference "SearchResultEntry"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "searchResDone") (Type {
+              type_id = LocalTypeReference (TypeReference "SearchResultDone"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "searchResRef") (Type {
+              type_id = LocalTypeReference (TypeReference "SearchResultReference"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "modifyRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "ModifyRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "modifyResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "ModifyResponse"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "addRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "AddRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "addResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "AddResponse"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "delRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "DelRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "delResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "DelResponse"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "modDNRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "ModifyDNRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "modDNResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "ModifyDNResponse"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "compareRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "CompareRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "compareResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "CompareResponse"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "abandonRequest") (Type {
+              type_id = LocalTypeReference (TypeReference "AbandonRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "extendedReq") (Type {
+              type_id = LocalTypeReference (TypeReference "ExtendedRequest"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "extendedResp") (Type {
+              type_id = LocalTypeReference (TypeReference "ExtendedResponse"),
+              subtype = Nothing
+              } )] Nothing (Just [ExtensionAdditionAlternativesType (NamedType (Identifier "intermediateResponse") (Type {
+              type_id = LocalTypeReference (TypeReference "IntermediateResponse"),
+              subtype = Nothing
+              } ))])),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "controls") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "Controls"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "MessageID") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "maxInt",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 2147483647
+        } ,
+      TypeAssignment (TypeReference "LDAPString") (Type {
+        type_id = OctetString,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "LDAPOID") (Type {
+        type_id = OctetString,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "LDAPDN") (Type {
+        type_id = LocalTypeReference (TypeReference "LDAPString"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "RelativeLDAPDN") (Type {
+        type_id = LocalTypeReference (TypeReference "LDAPString"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeDescription") (Type {
+        type_id = LocalTypeReference (TypeReference "LDAPString"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeValue") (Type {
+        type_id = OctetString,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeValueAssertion") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "attributeDesc") (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeDescription"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "assertionValue") (Type {
+            type_id = LocalTypeReference (TypeReference "AssertionValue"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AssertionValue") (Type {
+        type_id = OctetString,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PartialAttribute") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeDescription"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "vals") (Type {
+            type_id = SetOf Nothing (Right (NamedType (Identifier "value") (Type {
+              type_id = LocalTypeReference (TypeReference "AttributeValue"),
+              subtype = Nothing
+              } ))),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Attribute") (Type {
+        type_id = LocalTypeReference (TypeReference "PartialAttribute"),
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (MultipleTypeConstaints [NamedConstraint (Identifier "vals") (ComponentConstraint (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) Nothing)])))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "MatchingRuleId") (Type {
+        type_id = LocalTypeReference (TypeReference "LDAPString"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "LDAPResult") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "resultCode") (Type {
+            type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "success") 0),
+            EnumerationItemNumber (NamedNumber (Identifier "operationsError") 1),
+            EnumerationItemNumber (NamedNumber (Identifier "protocolError") 2),
+            EnumerationItemNumber (NamedNumber (Identifier "timeLimitExceeded") 3),
+            EnumerationItemNumber (NamedNumber (Identifier "sizeLimitExceeded") 4),
+            EnumerationItemNumber (NamedNumber (Identifier "compareFalse") 5),
+            EnumerationItemNumber (NamedNumber (Identifier "compareTrue") 6),
+            EnumerationItemNumber (NamedNumber (Identifier "authMethodNotSupported") 7),
+            EnumerationItemNumber (NamedNumber (Identifier "strongerAuthRequired") 8),
+            EnumerationItemNumber (NamedNumber (Identifier "referral") 10),
+            EnumerationItemNumber (NamedNumber (Identifier "adminLimitExceeded") 11),
+            EnumerationItemNumber (NamedNumber (Identifier "unavailableCriticalExtension") 12),
+            EnumerationItemNumber (NamedNumber (Identifier "confidentialityRequired") 13),
+            EnumerationItemNumber (NamedNumber (Identifier "saslBindInProgress") 14),
+            EnumerationItemNumber (NamedNumber (Identifier "noSuchAttribute") 16),
+            EnumerationItemNumber (NamedNumber (Identifier "undefinedAttributeType") 17),
+            EnumerationItemNumber (NamedNumber (Identifier "inappropriateMatching") 18),
+            EnumerationItemNumber (NamedNumber (Identifier "constraintViolation") 19),
+            EnumerationItemNumber (NamedNumber (Identifier "attributeOrValueExists") 20),
+            EnumerationItemNumber (NamedNumber (Identifier "invalidAttributeSyntax") 21),
+            EnumerationItemNumber (NamedNumber (Identifier "noSuchObject") 32),
+            EnumerationItemNumber (NamedNumber (Identifier "aliasProblem") 33),
+            EnumerationItemNumber (NamedNumber (Identifier "invalidDNSyntax") 34),
+            EnumerationItemNumber (NamedNumber (Identifier "aliasDereferencingProblem") 36),
+            EnumerationItemNumber (NamedNumber (Identifier "inappropriateAuthentication") 48),
+            EnumerationItemNumber (NamedNumber (Identifier "invalidCredentials") 49),
+            EnumerationItemNumber (NamedNumber (Identifier "insufficientAccessRights") 50),
+            EnumerationItemNumber (NamedNumber (Identifier "busy") 51),
+            EnumerationItemNumber (NamedNumber (Identifier "unavailable") 52),
+            EnumerationItemNumber (NamedNumber (Identifier "unwillingToPerform") 53),
+            EnumerationItemNumber (NamedNumber (Identifier "loopDetect") 54),
+            EnumerationItemNumber (NamedNumber (Identifier "namingViolation") 64),
+            EnumerationItemNumber (NamedNumber (Identifier "objectClassViolation") 65),
+            EnumerationItemNumber (NamedNumber (Identifier "notAllowedOnNonLeaf") 66),
+            EnumerationItemNumber (NamedNumber (Identifier "notAllowedOnRDN") 67),
+            EnumerationItemNumber (NamedNumber (Identifier "entryAlreadyExists") 68),
+            EnumerationItemNumber (NamedNumber (Identifier "objectClassModsProhibited") 69),
+            EnumerationItemNumber (NamedNumber (Identifier "affectsMultipleDSAs") 71),
+            EnumerationItemNumber (NamedNumber (Identifier "other") 80)] Nothing,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "matchedDN") (Type {
+            type_id = LocalTypeReference (TypeReference "LDAPDN"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "diagnosticMessage") (Type {
+            type_id = LocalTypeReference (TypeReference "LDAPString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "referral") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "Referral"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Referral") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "uri") (Type {
+          type_id = LocalTypeReference (TypeReference "URI"),
+          subtype = Nothing
+          } ))),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "URI") (Type {
+        type_id = LocalTypeReference (TypeReference "LDAPString"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Controls") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "control") (Type {
+          type_id = LocalTypeReference (TypeReference "Control"),
+          subtype = Nothing
+          } ))),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Control") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "controlType") (Type {
+            type_id = LocalTypeReference (TypeReference "LDAPOID"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "criticality") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "controlValue") (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "BindRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 0)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "version") (Type {
+              type_id = TheInteger [],
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 127))))))) Nothing)
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "name") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "authentication") (Type {
+              type_id = LocalTypeReference (TypeReference "AuthenticationChoice"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AuthenticationChoice") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "simple") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "sasl") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "SaslCredentials"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SaslCredentials") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "mechanism") (Type {
+            type_id = LocalTypeReference (TypeReference "LDAPString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "credentials") (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "BindResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 1)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [ComponentsOf (Type {
+            type_id = LocalTypeReference (TypeReference "LDAPResult"),
+            subtype = Nothing
+            } ),
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "serverSaslCreds") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 7)) Nothing (Type {
+                type_id = OctetString,
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "UnbindRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 2)) Nothing (Type {
+          type_id = Null,
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SearchRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 3)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "baseObject") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "scope") (Type {
+              type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "baseObject") 0),
+              EnumerationItemNumber (NamedNumber (Identifier "singleLevel") 1),
+              EnumerationItemNumber (NamedNumber (Identifier "wholeSubtree") 2)] Nothing,
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "derefAliases") (Type {
+              type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "neverDerefAliases") 0),
+              EnumerationItemNumber (NamedNumber (Identifier "derefInSearching") 1),
+              EnumerationItemNumber (NamedNumber (Identifier "derefFindingBaseObj") 2),
+              EnumerationItemNumber (NamedNumber (Identifier "derefAlways") 3)],
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "sizeLimit") (Type {
+              type_id = TheInteger [],
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "timeLimit") (Type {
+              type_id = TheInteger [],
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "maxInt")))))))) Nothing)
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "typesOnly") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "filter") (Type {
+              type_id = LocalTypeReference (TypeReference "Filter"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "attributes") (Type {
+              type_id = LocalTypeReference (TypeReference "AttributeSelection"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeSelection") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "selector") (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPString"),
+          subtype = Nothing
+          } ))),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Filter") (Type {
+        type_id = Choice (AlternativeTypeListWithExtension [NamedType (Identifier "and") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+            type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "filter") (Type {
+              type_id = LocalTypeReference (TypeReference "Filter"),
+              subtype = Nothing
+              } ))),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "or") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+            type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "filter") (Type {
+              type_id = LocalTypeReference (TypeReference "Filter"),
+              subtype = Nothing
+              } ))),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "not") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "Filter"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "equalityMatch") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "substrings") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "SubstringFilter"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "greaterOrEqual") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "lessOrEqual") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 6)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "present") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 7)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeDescription"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "approxMatch") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 8)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "extensibleMatch") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 9)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "MatchingRuleAssertion"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )] Nothing Nothing),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SubstringFilter") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeDescription"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "substrings") (Type {
+            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "substring") (Type {
+              type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "initial") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+                  type_id = LocalTypeReference (TypeReference "AssertionValue"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              NamedType (Identifier "any") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+                  type_id = LocalTypeReference (TypeReference "AssertionValue"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              NamedType (Identifier "final") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+                  type_id = LocalTypeReference (TypeReference "AssertionValue"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } )]),
+              subtype = Nothing
+              } ))),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "MatchingRuleAssertion") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "matchingRule") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "MatchingRuleId"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "AttributeDescription"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "matchValue") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "AssertionValue"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "dnAttributes") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SearchResultEntry") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 4)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "objectName") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "attributes") (Type {
+              type_id = LocalTypeReference (TypeReference "PartialAttributeList"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PartialAttributeList") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "partialAttribute") (Type {
+          type_id = LocalTypeReference (TypeReference "PartialAttribute"),
+          subtype = Nothing
+          } ))),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SearchResultReference") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 19)) Nothing (Type {
+          type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Right (NamedType (Identifier "uri") (Type {
+            type_id = LocalTypeReference (TypeReference "URI"),
+            subtype = Nothing
+            } ))),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SearchResultDone") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 5)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPResult"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ModifyRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 6)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "object") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "changes") (Type {
+              type_id = SequenceOf Nothing (Right (NamedType (Identifier "change") (Type {
+                type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                  element_type = NamedType (Identifier "operation") (Type {
+                    type_id = EnumerationWithException [EnumerationItemNumber (NamedNumber (Identifier "add") 0),
+                    EnumerationItemNumber (NamedNumber (Identifier "delete") 1),
+                    EnumerationItemNumber (NamedNumber (Identifier "replace") 2)] Nothing,
+                    subtype = Nothing
+                    } ),
+                  element_presence = Nothing
+                  } ,
+                NamedTypeComponent {
+                  element_type = NamedType (Identifier "modification") (Type {
+                    type_id = LocalTypeReference (TypeReference "PartialAttribute"),
+                    subtype = Nothing
+                    } ),
+                  element_presence = Nothing
+                  } ]),
+                subtype = Nothing
+                } ))),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ModifyResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 7)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPResult"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AddRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 8)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "entry") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "attributes") (Type {
+              type_id = LocalTypeReference (TypeReference "AttributeList"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeList") (Type {
+        type_id = SequenceOf Nothing (Right (NamedType (Identifier "attribute") (Type {
+          type_id = LocalTypeReference (TypeReference "Attribute"),
+          subtype = Nothing
+          } ))),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AddResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 9)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPResult"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DelRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 10)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPDN"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DelResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 11)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPResult"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ModifyDNRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 12)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "entry") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "newrdn") (Type {
+              type_id = LocalTypeReference (TypeReference "RelativeLDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "deleteoldrdn") (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "newSuperior") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+                type_id = LocalTypeReference (TypeReference "LDAPDN"),
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ModifyDNResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 13)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPResult"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CompareRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 14)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "entry") (Type {
+              type_id = LocalTypeReference (TypeReference "LDAPDN"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "ava") (Type {
+              type_id = LocalTypeReference (TypeReference "AttributeValueAssertion"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CompareResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 15)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "LDAPResult"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AbandonRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 16)) Nothing (Type {
+          type_id = LocalTypeReference (TypeReference "MessageID"),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ExtendedRequest") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 23)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "requestName") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+                type_id = LocalTypeReference (TypeReference "LDAPOID"),
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "requestValue") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+                type_id = OctetString,
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ExtendedResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 24)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [ComponentsOf (Type {
+            type_id = LocalTypeReference (TypeReference "LDAPResult"),
+            subtype = Nothing
+            } ),
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "responseName") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 10)) Nothing (Type {
+                type_id = LocalTypeReference (TypeReference "LDAPOID"),
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "responseValue") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 11)) Nothing (Type {
+                type_id = OctetString,
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "IntermediateResponse") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 25)) Nothing (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "responseName") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+                type_id = LocalTypeReference (TypeReference "LDAPOID"),
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "responseValue") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+                type_id = OctetString,
+                subtype = Nothing
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } )]
+      } )
+    } 
+===========================
+Types defined in the module
+LDAPMessage
+MessageID
+LDAPString
+LDAPOID
+LDAPDN
+RelativeLDAPDN
+AttributeDescription
+AttributeValue
+AttributeValueAssertion
+AssertionValue
+PartialAttribute
+Attribute
+MatchingRuleId
+LDAPResult
+Referral
+URI
+Controls
+Control
+BindRequest
+AuthenticationChoice
+SaslCredentials
+BindResponse
+UnbindRequest
+SearchRequest
+AttributeSelection
+Filter
+SubstringFilter
+MatchingRuleAssertion
+SearchResultEntry
+PartialAttributeList
+SearchResultReference
+SearchResultDone
+ModifyRequest
+ModifyResponse
+AddRequest
+AttributeList
+AddResponse
+DelRequest
+DelResponse
+ModifyDNRequest
+ModifyDNResponse
+CompareRequest
+CompareResponse
+AbandonRequest
+ExtendedRequest
+ExtendedResponse
+IntermediateResponse

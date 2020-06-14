@@ -1,0 +1,27 @@
+MMS-Environment-1 { iso standard 9506 part(2) mms-environment-version1(4)}
+DEFINITIONS ::= BEGIN
+
+-- The editor of this html document does not guarantee correctnes of the syntax.
+-- Precise definition can be found in the standard 9506-2:1999
+
+
+EXPORTS
+ApplicationReference,
+AuthenticationValue;
+
+IMPORTS
+AP-title,
+AP-invocation-id,
+AE-qualifier,
+AE-invocation-id,
+AuthenticationValue
+FROM ISO-8650-ACSE-1 { iso standard 8650 abstract-syntax(2) acse-pdi(1)};
+
+ApplicationReference ::= SEQUENCE {
+ap-title [0] ISO-8650-ACSE-1.AP-title OPTIONAL,
+ap-invocation-id [1] ISO-8650-ACSE-1.AP-invocation-id OPTIONAL,
+ae-qualifier [2] ISO-8650-ACSE-1.AE-qualifier OPTIONAL,
+ae-invocation-id [3] ISO-8650-ACSE-1.AE-invocation-id OPTIONAL
+}
+
+END

@@ -1,0 +1,2194 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "MMS-CIS-Module-1") (Just [DefinitiveOIDName (Identifier "iso"),
+    DefinitiveOIDName (Identifier "standard"),
+    DefinitiveOIDNumber 9506,
+    DefinitiveOIDNamedNumber (Identifier "part") 2,
+    DefinitiveOIDNamedNumber (Identifier "mms-file-record-version1") 6]),
+    default_tag_type = ExplicitTags,
+    extensibility_implied = False,
+    module_body = Just (ModuleBody {
+      module_exports = ExportsAll,
+      module_imports = Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "ApplicationReference")] (GlobalModuleReference (ModuleReference "MMS-Environment-1") (Just (AssignedIdentifierOID [ObjIdName (Identifier "iso"),
+      ObjIdName (Identifier "standard"),
+      ObjIdNumber 9506,
+      ObjIdNamedNumber (NamedNumber (Identifier "part") 2),
+      ObjIdNamedNumber (NamedNumber (Identifier "mms-environment-version1") 4)]))),
+      SymbolsFromModule [TypeReferenceSymbol (TypeReference "AccessCondition"),
+      TypeReferenceSymbol (TypeReference "AdditionalCBBOptions"),
+      TypeReferenceSymbol (TypeReference "AdditionalSupportOptions"),
+      TypeReferenceSymbol (TypeReference "Address"),
+      TypeReferenceSymbol (TypeReference "AlarmAckRule"),
+      TypeReferenceSymbol (TypeReference "Control-State"),
+      TypeReferenceSymbol (TypeReference "DomainState"),
+      TypeReferenceSymbol (TypeReference "EC-Class"),
+      TypeReferenceSymbol (TypeReference "EC-State"),
+      TypeReferenceSymbol (TypeReference "EE-Duration"),
+      TypeReferenceSymbol (TypeReference "EE-Class"),
+      TypeReferenceSymbol (TypeReference "LogicalStatus"),
+      TypeReferenceSymbol (TypeReference "Modifier"),
+      TypeReferenceSymbol (TypeReference "ParameterSupportOptions"),
+      TypeReferenceSymbol (TypeReference "PhysicalStatus"),
+      TypeReferenceSymbol (TypeReference "Priority"),
+      TypeReferenceSymbol (TypeReference "ProgramInvocationState"),
+      TypeReferenceSymbol (TypeReference "ServiceSupportOptions"),
+      TypeReferenceSymbol (TypeReference "Severity"),
+      TypeReferenceSymbol (TypeReference "Transitions"),
+      TypeReferenceSymbol (TypeReference "TypeDescription")] (GlobalModuleReference (ModuleReference "MMS-Object-Module-1") (Just (AssignedIdentifierOID [ObjIdName (Identifier "iso"),
+      ObjIdName (Identifier "standard"),
+      ObjIdNumber 9506,
+      ObjIdNamedNumber (NamedNumber (Identifier "part") 1),
+      ObjIdNamedNumber (NamedNumber (Identifier "mms-object-model-version1") 2)]))),
+      SymbolsFromModule [TypeReferenceSymbol (TypeReference "AlternateAccess"),
+      TypeReferenceSymbol (TypeReference "ConfirmedServiceRequest"),
+      TypeReferenceSymbol (TypeReference "Data"),
+      TypeReferenceSymbol (TypeReference "Identifier"),
+      TypeReferenceSymbol (TypeReference "MMSString"),
+      TypeReferenceSymbol (TypeReference "ObjectName"),
+      TypeReferenceSymbol (TypeReference "TimeOfDay")] (GlobalModuleReference (ModuleReference "ISO-9506-MMS-1") (Just (AssignedIdentifierOID [ObjIdName (Identifier "iso"),
+      ObjIdName (Identifier "standard"),
+      ObjIdNumber 9506,
+      ObjIdNamedNumber (NamedNumber (Identifier "part") 2),
+      ObjIdNamedNumber (NamedNumber (Identifier "mms-abstract-syntax-version1") 1)])))],
+      module_assignments = [TypeAssignment (TypeReference "SCI-Information") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "partOne") (Type {
+            type_id = LocalTypeReference (TypeReference "VMD-File"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "partTwo") (Type {
+            type_id = LocalTypeReference (TypeReference "Service-and-Parameter-CBBs"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "VMD-File") (Type {
+        type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+          element_type = NamedType (Identifier "executiveFunction") (Type {
+            type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "vendorName") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "modelName") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "revision") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "abstractSyntaxes") (Type {
+            type_id = ObjectIdentifier,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "accessControl") (Type {
+            type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "logicalStatus") (Type {
+            type_id = LocalTypeReference (TypeReference "LogicalStatus"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "capabilities") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "MMSString"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "physicalStatus") (Type {
+            type_id = LocalTypeReference (TypeReference "PhysicalStatus"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "local-detail") (Type {
+            type_id = BitString [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "accessControlLists") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "domains") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Domain-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "programInvocations") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "unitControls") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Unit-Control-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "unnamedVariables") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Unnamed-Variable-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "namedVariables") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Named-Variable-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "namedVariableLists") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Named-Variable-List-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "namedTypes") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Named-Type-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "dataExchanges") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Data-Exchange-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "semaphores") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Semaphore-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "operatorStations") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Operator-Station-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventConditions") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventActions") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Event-Action-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventEnrollments") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Event-Enrollment-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventConditionLists") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Event-Condition-List-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "journals") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "Journal-instance"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ] Nothing (Just [ExtensionAdditionType (NamedTypeComponent {
+          element_type = NamedType (Identifier "selected-Program-Invocation") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "selectedProgram") (Type {
+              type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "noneSelected") (Type {
+              type_id = Null,
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } )])),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Access-Control-List-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "readAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "storeAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "writeAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "loadAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "executeAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "deleteAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "editAccessCondition") (Type {
+                  type_id = Tagged (Tag Nothing (ClassNumber 6)) Nothing (Type {
+                    type_id = LocalTypeReference (TypeReference "AccessCondition"),
+                    subtype = Nothing
+                    } ),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControlLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "domains") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Domain-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "programInvocations") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "unitControls") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Unit-Control-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "unnamedVariables") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Unnamed-Variable-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedVariables") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Variable-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedVariableLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Variable-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedTypes") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Type-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "dataExchanges") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Data-Exchange-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "semaphores") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Semaphore-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "operatorStations") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Operator-Station-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventConditions") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventActions") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Action-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventEnrollments") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Enrollment-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "journals") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Journal-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ] Nothing (Just [ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "eventConditionLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } )])),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Domain-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "capabilities") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "MMSString"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "state") (Type {
+                  type_id = LocalTypeReference (TypeReference "DomainState"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "sharable") (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "programInvocations") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedVariables") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Variable-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedVariableLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Variable-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedTypes") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Type-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventConditions") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventActions") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Action-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventEnrollments") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Enrollment-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventConditionLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Program-Invocation-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+                element_type = NamedType (Identifier "programInvocationState") (Type {
+                  type_id = LocalTypeReference (TypeReference "ProgramInvocationState"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "domains") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Domain-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "reusable") (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "monitor") (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventCondition") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventAction") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Action-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventEnrollment") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Enrollment-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "executionArgument") (Type {
+                  type_id = LocalTypeReference (TypeReference "MMSString"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ] Nothing (Just [ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "control") (Type {
+                  type_id = LocalTypeReference (TypeReference "Control-State"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ),
+              ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "controlling-Program-Invocation") (Type {
+                  type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ),
+              ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "controlled-Program-Invocations") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } )])),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Unit-Control-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "domains") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Domain-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "programInvocations") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Unnamed-Variable-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "address") (Type {
+            type_id = LocalTypeReference (TypeReference "Address"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "accessControl") (Type {
+            type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "typeDescription") (Type {
+            type_id = LocalTypeReference (TypeReference "TypeDescription"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Named-Variable-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "typeDescription") (Type {
+                  type_id = LocalTypeReference (TypeReference "TypeDescription"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "address") (Type {
+                  type_id = LocalTypeReference (TypeReference "Address"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "meaning") (Type {
+                  type_id = LocalTypeReference (TypeReference "ObjectName"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Named-Variable-List-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "listOfVariables") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Variable-List-Item-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Variable-List-Item-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "unnamedItem") (Type {
+            type_id = LocalTypeReference (TypeReference "Unnamed-Variable-instance"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "namedItem") (Type {
+            type_id = LocalTypeReference (TypeReference "Named-Variable-instance"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "alternateAccess") (Type {
+            type_id = LocalTypeReference (TypeReference "AlternateAccess"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Named-Type-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "typeDescription") (Type {
+                  type_id = LocalTypeReference (TypeReference "TypeDescription"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "meaning") (Type {
+                  type_id = LocalTypeReference (TypeReference "ObjectName"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Data-Exchange-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "request") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "TypeDescription"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "response") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "TypeDescription"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "linked") (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "programInvocation") (Type {
+                  type_id = LocalTypeReference (TypeReference "Program-Invocation-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Semaphore-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "class") (Type {
+                  type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "token") 0),
+                  EnumerationItemNumber (NamedNumber (Identifier "pool") 1)],
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "numberOfTokens") (Type {
+                  type_id = TheInteger [],
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "namedTokens") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Identifier"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventCondition") (Type {
+                  type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Operator-Station-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "Identifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "stationType") (Type {
+                  type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "entry") 0),
+                  EnumerationItemNumber (NamedNumber (Identifier "display") 1),
+                  EnumerationItemNumber (NamedNumber (Identifier "entry-display") 2)],
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Event-Condition-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "ecClass") (Type {
+                  type_id = LocalTypeReference (TypeReference "EC-Class"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "ecState") (Type {
+                  type_id = LocalTypeReference (TypeReference "EC-State"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "priority") (Type {
+                  type_id = LocalTypeReference (TypeReference "Priority"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "severity") (Type {
+                  type_id = LocalTypeReference (TypeReference "Severity"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventEnrollments") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Enrollment-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "enabled") (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "alarmSummaryReports") (Type {
+                  type_id = Boolean,
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "monitoredVariable") (Type {
+                  type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "named") (Type {
+                    type_id = LocalTypeReference (TypeReference "Named-Variable-instance"),
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "unnamed") (Type {
+                    type_id = LocalTypeReference (TypeReference "Unnamed-Variable-instance"),
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "unspecified") (Type {
+                    type_id = Null,
+                    subtype = Nothing
+                    } )]),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "evaluationInterval") (Type {
+                  type_id = TheInteger [],
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ] Nothing (Just [ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "displayEnhancement") (Type {
+                  type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "text") (Type {
+                    type_id = LocalTypeReference (TypeReference "MMSString"),
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "number") (Type {
+                    type_id = TheInteger [],
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "none") (Type {
+                    type_id = Null,
+                    subtype = Nothing
+                    } )]),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ),
+              ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "group-Priority-Override") (Type {
+                  type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "priority") (Type {
+                    type_id = LocalTypeReference (TypeReference "Priority"),
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "undefined") (Type {
+                    type_id = Null,
+                    subtype = Nothing
+                    } )]),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ),
+              ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "referencingEventConditionLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } )])),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Event-Action-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "confirmedServiceRequest") (Type {
+                  type_id = LocalTypeReference (TypeReference "ConfirmedServiceRequest"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "modifiers") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Modifier"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventEnrollments") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Enrollment-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Event-Enrollment-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ExtensionsAtEnd [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eeClass") (Type {
+                  type_id = LocalTypeReference (TypeReference "EE-Class"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventCondition") (Type {
+                  type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "ecTransitions") (Type {
+                  type_id = LocalTypeReference (TypeReference "Transitions"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "remainingDelay") (Type {
+                  type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "time") (Type {
+                    type_id = TheInteger [],
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "forever") (Type {
+                    type_id = Null,
+                    subtype = Nothing
+                    } )]),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventAction") (Type {
+                  type_id = LocalTypeReference (TypeReference "Event-Action-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "duration") (Type {
+                  type_id = LocalTypeReference (TypeReference "EE-Duration"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "clientApplication") (Type {
+                  type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "aaRule") (Type {
+                  type_id = LocalTypeReference (TypeReference "AlarmAckRule"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ] Nothing (Just [ExtensionAdditionType (NamedTypeComponent {
+                element_type = NamedType (Identifier "displayEnhancement") (Type {
+                  type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "text") (Type {
+                    type_id = LocalTypeReference (TypeReference "MMSString"),
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "number") (Type {
+                    type_id = TheInteger [],
+                    subtype = Nothing
+                    } ),
+                  NamedType (Identifier "none") (Type {
+                    type_id = Null,
+                    subtype = Nothing
+                    } )]),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } )])),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Event-Condition-List-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventConditions") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "eventConditionLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "referencingEventConditionLists") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Event-Condition-List-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Journal-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "name") (Type {
+            type_id = LocalTypeReference (TypeReference "ObjectName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "definition") (Type {
+            type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "reference") (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } ),
+            NamedType (Identifier "details") (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "accessControl") (Type {
+                  type_id = LocalTypeReference (TypeReference "Access-Control-List-instance"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "entries") (Type {
+                  type_id = SequenceOf Nothing (Left (Type {
+                    type_id = LocalTypeReference (TypeReference "Journal-Entry-instance"),
+                    subtype = Nothing
+                    } )),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Journal-Entry-instance") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "journal") (Type {
+            type_id = LocalTypeReference (TypeReference "Journal-instance"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "entry") (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "clientApplication") (Type {
+            type_id = LocalTypeReference (TypeReference "ApplicationReference"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "timeStamp") (Type {
+            type_id = LocalTypeReference (TypeReference "TimeOfDay"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "orderOfReceipt") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "informationType") (Type {
+            type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "annotation") 0),
+            EnumerationItemNumber (NamedNumber (Identifier "event-data") 1),
+            EnumerationItemNumber (NamedNumber (Identifier "data") 2)],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "textComment") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (SignedNumber 255))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "eventTransitionRecord") (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "name") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+                  type_id = LocalTypeReference (TypeReference "ObjectName"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "currentState") (Type {
+                type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+                  type_id = LocalTypeReference (TypeReference "EC-State"),
+                  subtype = Nothing
+                  } ),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "journalVariables") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "variableTag") (Type {
+                  type_id = LocalTypeReference (TypeReference "MMSString"),
+                  subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 32))))))) Nothing))))) Nothing)
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "valueSpecification") (Type {
+                  type_id = LocalTypeReference (TypeReference "Data"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ]),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Service-and-Parameter-CBBs") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "services-Client") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceSupportOptions"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "services-Server") (Type {
+            type_id = LocalTypeReference (TypeReference "ServiceSupportOptions"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "parameters") (Type {
+            type_id = LocalTypeReference (TypeReference "ParameterSupportOptions"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "nest") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extendedServices-Client") (Type {
+            type_id = LocalTypeReference (TypeReference "AdditionalSupportOptions"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extendedServices-Server") (Type {
+            type_id = LocalTypeReference (TypeReference "AdditionalSupportOptions"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extendedParameters") (Type {
+            type_id = LocalTypeReference (TypeReference "AdditionalCBBOptions"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "generalManagement") (Type {
+            type_id = LocalTypeReference (TypeReference "GeneralManagementParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "vMDSupport") (Type {
+            type_id = LocalTypeReference (TypeReference "VMDSupportParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "domainManagement") (Type {
+            type_id = LocalTypeReference (TypeReference "DomainManagementParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "programInvocation") (Type {
+            type_id = LocalTypeReference (TypeReference "ProgramInvocationManagementParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "variableAccess") (Type {
+            type_id = LocalTypeReference (TypeReference "VariableAccessParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "dataParameters") (Type {
+            type_id = LocalTypeReference (TypeReference "DataParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "semaphoreManagement") (Type {
+            type_id = LocalTypeReference (TypeReference "SemaphoreManagementParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "operatorCommunication") (Type {
+            type_id = LocalTypeReference (TypeReference "OperatorCommunicationParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "errors") (Type {
+            type_id = LocalTypeReference (TypeReference "ErrorParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "fileManagement") (Type {
+            type_id = LocalTypeReference (TypeReference "FileManagementParameters"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "GeneralManagementParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "localDetail") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "supportForTime") (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "timeOfDay") (Type {
+                type_id = Boolean,
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "timeSequence") (Type {
+                type_id = Boolean,
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "granularityOfTime") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "VMDSupportParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "localDetail") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extendedDerivation") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DomainManagementParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "loadDataOctet") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "loadDataSyntax") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "maxUploads") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ProgramInvocationManagementParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "executionArgMaxSize") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "executionArgParseRules") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "executionArgSyntaxes") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = ObjectIdentifier,
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "programLoction") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "stepMode") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "VariableAccessParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "uninterruptibleAccess") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "singleMode") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "unnamedMode") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DataParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "bit-string") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "integer") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "unsigned") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "floating-point") (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "total") (Type {
+                type_id = TheInteger [],
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "exponent") (Type {
+                type_id = TheInteger [],
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "octet-string") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "visible-string") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "binary-time") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "bcd") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "mmsString") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SemaphoreManagementParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "algorithm") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "OperatorCommunicationParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "input-time-out") (Type {
+            type_id = TheInteger [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ErrorParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "additionalCode") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "additionalDetial") (Type {
+            type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+              element_type = NamedType (Identifier "size") (Type {
+                type_id = TheInteger [],
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ,
+            NamedTypeComponent {
+              element_type = NamedType (Identifier "syntax") (Type {
+                type_id = LocalTypeReference (TypeReference "MMSString"),
+                subtype = Nothing
+                } ),
+              element_presence = Nothing
+              } ]),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "FileManagementParameters") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "fileName") (Type {
+            type_id = LocalTypeReference (TypeReference "MMSString"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } )]
+      } )
+    } 
+===========================
+Types defined in the module
+SCI-Information
+VMD-File
+Access-Control-List-instance
+Domain-instance
+Program-Invocation-instance
+Unit-Control-instance
+Unnamed-Variable-instance
+Named-Variable-instance
+Named-Variable-List-instance
+Variable-List-Item-instance
+Named-Type-instance
+Data-Exchange-instance
+Semaphore-instance
+Operator-Station-instance
+Event-Condition-instance
+Event-Action-instance
+Event-Enrollment-instance
+Event-Condition-List-instance
+Journal-instance
+Journal-Entry-instance
+Service-and-Parameter-CBBs
+GeneralManagementParameters
+VMDSupportParameters
+DomainManagementParameters
+ProgramInvocationManagementParameters
+VariableAccessParameters
+DataParameters
+SemaphoreManagementParameters
+OperatorCommunicationParameters
+ErrorParameters
+FileManagementParameters

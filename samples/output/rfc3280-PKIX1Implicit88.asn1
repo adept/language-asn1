@@ -1,0 +1,1094 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "PKIX1Implicit88") (Just [DefinitiveOIDNamedNumber (Identifier "iso") 1,
+    DefinitiveOIDNamedNumber (Identifier "identified-organization") 3,
+    DefinitiveOIDNamedNumber (Identifier "dod") 6,
+    DefinitiveOIDNamedNumber (Identifier "internet") 1,
+    DefinitiveOIDNamedNumber (Identifier "security") 5,
+    DefinitiveOIDNamedNumber (Identifier "mechanisms") 5,
+    DefinitiveOIDNamedNumber (Identifier "pkix") 7,
+    DefinitiveOIDNamedNumber (Identifier "id-mod") 0,
+    DefinitiveOIDNamedNumber (Identifier "id-pkix1-implicit") 19]),
+    default_tag_type = ImplicitTags,
+    extensibility_implied = False,
+    module_body = Just (ModuleBody {
+      module_exports = ExportsAll,
+      module_imports = Imports [SymbolsFromModule [ObjectReferenceSymbol (ObjectReference "id-pe"),
+      ObjectReferenceSymbol (ObjectReference "id-kp"),
+      ObjectReferenceSymbol (ObjectReference "id-qt-unotice"),
+      ObjectReferenceSymbol (ObjectReference "id-qt-cps"),
+      TypeReferenceSymbol (TypeReference "ORAddress"),
+      TypeReferenceSymbol (TypeReference "Name"),
+      TypeReferenceSymbol (TypeReference "RelativeDistinguishedName"),
+      TypeReferenceSymbol (TypeReference "CertificateSerialNumber"),
+      TypeReferenceSymbol (TypeReference "Attribute"),
+      TypeReferenceSymbol (TypeReference "DirectoryString")] (GlobalModuleReference (ModuleReference "PKIX1Explicit88") (Just (AssignedIdentifierOID [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
+      ObjIdNamedNumber (NamedNumber (Identifier "identified-organization") 3),
+      ObjIdNamedNumber (NamedNumber (Identifier "dod") 6),
+      ObjIdNamedNumber (NamedNumber (Identifier "internet") 1),
+      ObjIdNamedNumber (NamedNumber (Identifier "security") 5),
+      ObjIdNamedNumber (NamedNumber (Identifier "mechanisms") 5),
+      ObjIdNamedNumber (NamedNumber (Identifier "pkix") 7),
+      ObjIdNamedNumber (NamedNumber (Identifier "id-mod") 0),
+      ObjIdNamedNumber (NamedNumber (Identifier "id-pkix1-explicit") 18)])))],
+      module_assignments = [ValueAssignment {
+        value_ref = ValueReference "id-ce",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-ccitt") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "ds") 5),
+        ObjIdNumber 29]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-authorityKeyIdentifier",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 35]
+        } ,
+      TypeAssignment (TypeReference "AuthorityKeyIdentifier") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "keyIdentifier") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "KeyIdentifier"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "authorityCertIssuer") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "GeneralNames"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "authorityCertSerialNumber") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "CertificateSerialNumber"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "KeyIdentifier") (Type {
+        type_id = OctetString,
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-subjectKeyIdentifier",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 14]
+        } ,
+      TypeAssignment (TypeReference "SubjectKeyIdentifier") (Type {
+        type_id = LocalTypeReference (TypeReference "KeyIdentifier"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-keyUsage",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 15]
+        } ,
+      TypeAssignment (TypeReference "KeyUsage") (Type {
+        type_id = BitString [NamedNumber (Identifier "digitalSignature") 0,
+        NamedNumber (Identifier "nonRepudiation") 1,
+        NamedNumber (Identifier "keyEncipherment") 2,
+        NamedNumber (Identifier "dataEncipherment") 3,
+        NamedNumber (Identifier "keyAgreement") 4,
+        NamedNumber (Identifier "keyCertSign") 5,
+        NamedNumber (Identifier "cRLSign") 6,
+        NamedNumber (Identifier "encipherOnly") 7,
+        NamedNumber (Identifier "decipherOnly") 8],
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-privateKeyUsagePeriod",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 16]
+        } ,
+      TypeAssignment (TypeReference "PrivateKeyUsagePeriod") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "notBefore") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = GeneralizedTime,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "notAfter") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = GeneralizedTime,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-certificatePolicies",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 32]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "anyPolicy",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce-certificatePolicies")),
+        ObjIdNumber 0]
+        } ,
+      TypeAssignment (TypeReference "CertificatePolicies") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "PolicyInformation"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PolicyInformation") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "policyIdentifier") (Type {
+            type_id = LocalTypeReference (TypeReference "CertPolicyId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "policyQualifiers") (Type {
+            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+              type_id = LocalTypeReference (TypeReference "PolicyQualifierInfo"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CertPolicyId") (Type {
+        type_id = ObjectIdentifier,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PolicyQualifierInfo") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "policyQualifierId") (Type {
+            type_id = LocalTypeReference (TypeReference "PolicyQualifierId"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "qualifier") (Type {
+            type_id = Any (Just (Identifier "policyQualifierId")),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PolicyQualifierId") (Type {
+        type_id = ObjectIdentifier,
+        subtype = Just (Constraint (ClosedSet False (Union [[Intersection (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "id-qt-cps"))))) Nothing],
+        [Intersection (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "id-qt-unotice"))))) Nothing]])) Nothing)
+        } ),
+      TypeAssignment (TypeReference "CPSuri") (Type {
+        type_id = IA5String,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "UserNotice") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "noticeRef") (Type {
+            type_id = LocalTypeReference (TypeReference "NoticeReference"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "explicitText") (Type {
+            type_id = LocalTypeReference (TypeReference "DisplayText"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NoticeReference") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "organization") (Type {
+            type_id = LocalTypeReference (TypeReference "DisplayText"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "noticeNumbers") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = TheInteger [],
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DisplayText") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "ia5String") (Type {
+          type_id = IA5String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 200))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "visibleString") (Type {
+          type_id = VisibleString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 200))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 200))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (SignedNumber 200))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-policyMappings",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 33]
+        } ,
+      TypeAssignment (TypeReference "PolicyMappings") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "issuerDomainPolicy") (Type {
+              type_id = LocalTypeReference (TypeReference "CertPolicyId"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "subjectDomainPolicy") (Type {
+              type_id = LocalTypeReference (TypeReference "CertPolicyId"),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ]),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-subjectAltName",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 17]
+        } ,
+      TypeAssignment (TypeReference "SubjectAltName") (Type {
+        type_id = LocalTypeReference (TypeReference "GeneralNames"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "GeneralNames") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "GeneralName"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "GeneralName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "otherName") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "AnotherName"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "rfc822Name") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+            type_id = IA5String,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "dNSName") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+            type_id = IA5String,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "x400Address") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "ORAddress"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "directoryName") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "ediPartyName") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "EDIPartyName"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "uniformResourceIdentifier") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 6)) Nothing (Type {
+            type_id = IA5String,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "iPAddress") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 7)) Nothing (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "registeredID") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 8)) Nothing (Type {
+            type_id = ObjectIdentifier,
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AnotherName") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type-id") (Type {
+            type_id = ObjectIdentifier,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Explicit) (Type {
+              type_id = Any (Just (Identifier "type-id")),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "EDIPartyName") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "nameAssigner") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "DirectoryString"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "partyName") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "DirectoryString"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-issuerAltName",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 18]
+        } ,
+      TypeAssignment (TypeReference "IssuerAltName") (Type {
+        type_id = LocalTypeReference (TypeReference "GeneralNames"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-subjectDirectoryAttributes",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 9]
+        } ,
+      TypeAssignment (TypeReference "SubjectDirectoryAttributes") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "Attribute"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-basicConstraints",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 19]
+        } ,
+      TypeAssignment (TypeReference "BasicConstraints") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "cA") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "pathLenConstraint") (Type {
+            type_id = TheInteger [],
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed MaxValue))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-nameConstraints",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 30]
+        } ,
+      TypeAssignment (TypeReference "NameConstraints") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "permittedSubtrees") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "GeneralSubtrees"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "excludedSubtrees") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "GeneralSubtrees"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "GeneralSubtrees") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "GeneralSubtree"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "GeneralSubtree") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "base") (Type {
+            type_id = LocalTypeReference (TypeReference "GeneralName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "minimum") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "BaseDistance"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (SomeNumber 0.0))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "maximum") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "BaseDistance"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "BaseDistance") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed MaxValue))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-policyConstraints",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 36]
+        } ,
+      TypeAssignment (TypeReference "PolicyConstraints") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "requireExplicitPolicy") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "SkipCerts"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "inhibitPolicyMapping") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "SkipCerts"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SkipCerts") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed MaxValue))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-cRLDistributionPoints",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 31]
+        } ,
+      TypeAssignment (TypeReference "CRLDistributionPoints") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "DistributionPoint"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DistributionPoint") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "distributionPoint") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "DistributionPointName"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "reasons") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "ReasonFlags"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "cRLIssuer") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "GeneralNames"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DistributionPointName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "fullName") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "GeneralNames"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "nameRelativeToCRLIssuer") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+            type_id = LocalTypeReference (TypeReference "RelativeDistinguishedName"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ReasonFlags") (Type {
+        type_id = BitString [NamedNumber (Identifier "unused") 0,
+        NamedNumber (Identifier "keyCompromise") 1,
+        NamedNumber (Identifier "cACompromise") 2,
+        NamedNumber (Identifier "affiliationChanged") 3,
+        NamedNumber (Identifier "superseded") 4,
+        NamedNumber (Identifier "cessationOfOperation") 5,
+        NamedNumber (Identifier "certificateHold") 6,
+        NamedNumber (Identifier "privilegeWithdrawn") 7,
+        NamedNumber (Identifier "aACompromise") 8],
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-extKeyUsage",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 37]
+        } ,
+      TypeAssignment (TypeReference "ExtKeyUsageSyntax") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "KeyPurposeId"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "KeyPurposeId") (Type {
+        type_id = ObjectIdentifier,
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "anyExtendedKeyUsage",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce-extKeyUsage")),
+        ObjIdNumber 0]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp-serverAuth",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-kp")),
+        ObjIdNumber 1]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp-clientAuth",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-kp")),
+        ObjIdNumber 2]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp-codeSigning",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-kp")),
+        ObjIdNumber 3]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp-emailProtection",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-kp")),
+        ObjIdNumber 4]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp-timeStamping",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-kp")),
+        ObjIdNumber 8]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp-OCSPSigning",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-kp")),
+        ObjIdNumber 9]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-inhibitAnyPolicy",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 54]
+        } ,
+      TypeAssignment (TypeReference "InhibitAnyPolicy") (Type {
+        type_id = LocalTypeReference (TypeReference "SkipCerts"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-freshestCRL",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 46]
+        } ,
+      TypeAssignment (TypeReference "FreshestCRL") (Type {
+        type_id = LocalTypeReference (TypeReference "CRLDistributionPoints"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-pe-authorityInfoAccess",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pe")),
+        ObjIdNumber 1]
+        } ,
+      TypeAssignment (TypeReference "AuthorityInfoAccessSyntax") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "AccessDescription"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AccessDescription") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "accessMethod") (Type {
+            type_id = ObjectIdentifier,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "accessLocation") (Type {
+            type_id = LocalTypeReference (TypeReference "GeneralName"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-pe-subjectInfoAccess",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pe")),
+        ObjIdNumber 11]
+        } ,
+      TypeAssignment (TypeReference "SubjectInfoAccessSyntax") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "AccessDescription"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-cRLNumber",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 20]
+        } ,
+      TypeAssignment (TypeReference "CRLNumber") (Type {
+        type_id = TheInteger [],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed MaxValue))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-issuingDistributionPoint",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 28]
+        } ,
+      TypeAssignment (TypeReference "IssuingDistributionPoint") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "distributionPoint") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "DistributionPointName"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlyContainsUserCerts") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlyContainsCACerts") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlySomeReasons") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "ReasonFlags"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "indirectCRL") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 4)) Nothing (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "onlyContainsAttributeCerts") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 5)) Nothing (Type {
+              type_id = Boolean,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-deltaCRLIndicator",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 27]
+        } ,
+      TypeAssignment (TypeReference "BaseCRLNumber") (Type {
+        type_id = LocalTypeReference (TypeReference "CRLNumber"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-cRLReasons",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 21]
+        } ,
+      TypeAssignment (TypeReference "CRLReason") (Type {
+        type_id = SimpleEnumeration [EnumerationItemNumber (NamedNumber (Identifier "unspecified") 0),
+        EnumerationItemNumber (NamedNumber (Identifier "keyCompromise") 1),
+        EnumerationItemNumber (NamedNumber (Identifier "cACompromise") 2),
+        EnumerationItemNumber (NamedNumber (Identifier "affiliationChanged") 3),
+        EnumerationItemNumber (NamedNumber (Identifier "superseded") 4),
+        EnumerationItemNumber (NamedNumber (Identifier "cessationOfOperation") 5),
+        EnumerationItemNumber (NamedNumber (Identifier "certificateHold") 6),
+        EnumerationItemNumber (NamedNumber (Identifier "removeFromCRL") 8),
+        EnumerationItemNumber (NamedNumber (Identifier "privilegeWithdrawn") 9),
+        EnumerationItemNumber (NamedNumber (Identifier "aACompromise") 10)],
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-certificateIssuer",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 29]
+        } ,
+      TypeAssignment (TypeReference "CertificateIssuer") (Type {
+        type_id = LocalTypeReference (TypeReference "GeneralNames"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-holdInstructionCode",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 23]
+        } ,
+      TypeAssignment (TypeReference "HoldInstructionCode") (Type {
+        type_id = ObjectIdentifier,
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "holdInstruction",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-itu-t") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "member-body") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "us") 840),
+        ObjIdNamedNumber (NamedNumber (Identifier "x9cm") 10040),
+        ObjIdNumber 2]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-holdinstruction-none",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "holdInstruction")),
+        ObjIdNumber 1]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-holdinstruction-callissuer",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "holdInstruction")),
+        ObjIdNumber 2]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-holdinstruction-reject",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "holdInstruction")),
+        ObjIdNumber 3]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ce-invalidityDate",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ce")),
+        ObjIdNumber 24]
+        } ,
+      TypeAssignment (TypeReference "InvalidityDate") (Type {
+        type_id = GeneralizedTime,
+        subtype = Nothing
+        } )]
+      } )
+    } 
+===========================
+Types defined in the module
+AuthorityKeyIdentifier
+KeyIdentifier
+SubjectKeyIdentifier
+KeyUsage
+PrivateKeyUsagePeriod
+CertificatePolicies
+PolicyInformation
+CertPolicyId
+PolicyQualifierInfo
+PolicyQualifierId
+CPSuri
+UserNotice
+NoticeReference
+DisplayText
+PolicyMappings
+SubjectAltName
+GeneralNames
+GeneralName
+AnotherName
+EDIPartyName
+IssuerAltName
+SubjectDirectoryAttributes
+BasicConstraints
+NameConstraints
+GeneralSubtrees
+GeneralSubtree
+BaseDistance
+PolicyConstraints
+SkipCerts
+CRLDistributionPoints
+DistributionPoint
+DistributionPointName
+ReasonFlags
+ExtKeyUsageSyntax
+KeyPurposeId
+InhibitAnyPolicy
+FreshestCRL
+AuthorityInfoAccessSyntax
+AccessDescription
+SubjectInfoAccessSyntax
+CRLNumber
+IssuingDistributionPoint
+BaseCRLNumber
+CRLReason
+CertificateIssuer
+HoldInstructionCode
+InvalidityDate

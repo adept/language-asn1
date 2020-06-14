@@ -1,0 +1,2027 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "PKIX1Explicit88") (Just [DefinitiveOIDNamedNumber (Identifier "iso") 1,
+    DefinitiveOIDNamedNumber (Identifier "identified-organization") 3,
+    DefinitiveOIDNamedNumber (Identifier "dod") 6,
+    DefinitiveOIDNamedNumber (Identifier "internet") 1,
+    DefinitiveOIDNamedNumber (Identifier "security") 5,
+    DefinitiveOIDNamedNumber (Identifier "mechanisms") 5,
+    DefinitiveOIDNamedNumber (Identifier "pkix") 7,
+    DefinitiveOIDNamedNumber (Identifier "id-mod") 0,
+    DefinitiveOIDNamedNumber (Identifier "id-pkix1-explicit") 18]),
+    default_tag_type = ExplicitTags,
+    extensibility_implied = False,
+    module_body = Just (ModuleBody {
+      module_exports = ExportsAll,
+      module_imports = ImportsNone,
+      module_assignments = [ValueAssignment {
+        value_ref = ValueReference "id-pkix",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
+        ObjIdNamedNumber (NamedNumber (Identifier "identified-organization") 3),
+        ObjIdNamedNumber (NamedNumber (Identifier "dod") 6),
+        ObjIdNamedNumber (NamedNumber (Identifier "internet") 1),
+        ObjIdNamedNumber (NamedNumber (Identifier "security") 5),
+        ObjIdNamedNumber (NamedNumber (Identifier "mechanisms") 5),
+        ObjIdNamedNumber (NamedNumber (Identifier "pkix") 7)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-pe",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        ObjIdNumber 1]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-qt",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        ObjIdNumber 2]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-kp",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        ObjIdNumber 3]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ad",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-pkix")),
+        ObjIdNumber 48]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-qt-cps",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-qt")),
+        ObjIdNumber 1]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-qt-unotice",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-qt")),
+        ObjIdNumber 2]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ad-ocsp",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        ObjIdNumber 1]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ad-caIssuers",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        ObjIdNumber 2]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ad-timeStamping",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        ObjIdNumber 3]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-ad-caRepository",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdDefinedValue (LocalValueReference (ValueReference "id-ad")),
+        ObjIdNumber 5]
+        } ,
+      TypeAssignment (TypeReference "Attribute") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeType"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "values") (Type {
+            type_id = SetOf Nothing (Left (Type {
+              type_id = LocalTypeReference (TypeReference "AttributeValue"),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeType") (Type {
+        type_id = ObjectIdentifier,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeValue") (Type {
+        type_id = Any Nothing,
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AttributeTypeAndValue") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeType"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = LocalTypeReference (TypeReference "AttributeValue"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "joint-iso-ccitt") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "ds") 5),
+        ObjIdNumber 4]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-at-name",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 41.0)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-at-surname",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 4.0)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-at-givenName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 42.0)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-at-initials",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 43.0)]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-at-generationQualifier",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 44.0)]
+        } ,
+      TypeAssignment (TypeReference "X520name") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-name")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-commonName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 3.0)]
+        } ,
+      TypeAssignment (TypeReference "X520CommonName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-localityName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 7.0)]
+        } ,
+      TypeAssignment (TypeReference "X520LocalityName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-locality-name")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-stateOrProvinceName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 8.0)]
+        } ,
+      TypeAssignment (TypeReference "X520StateOrProvinceName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-state-name")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-organizationName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 10.0)]
+        } ,
+      TypeAssignment (TypeReference "X520OrganizationName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-organizationalUnitName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 11.0)]
+        } ,
+      TypeAssignment (TypeReference "X520OrganizationalUnitName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-title",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 12.0)]
+        } ,
+      TypeAssignment (TypeReference "X520Title") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-title")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-dnQualifier",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 46.0)]
+        } ,
+      TypeAssignment (TypeReference "X520dnQualifier") (Type {
+        type_id = PrintableString,
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-countryName",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 6.0)]
+        } ,
+      TypeAssignment (TypeReference "X520countryName") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (SingleValue (SignedNumber 2))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-serialNumber",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 5.0)]
+        } ,
+      TypeAssignment (TypeReference "X520SerialNumber") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-serial-number")))))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-at-pseudonym",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "id-at") (SomeNumber 65.0)]
+        } ,
+      TypeAssignment (TypeReference "X520Pseudonym") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pseudonym")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "id-domainComponent",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeOIDLikeValue [ObjIdNumber 0,
+        ObjIdNumber 9,
+        ObjIdNumber 2342,
+        ObjIdNumber 19200300,
+        ObjIdNumber 100,
+        ObjIdNumber 1,
+        ObjIdNumber 25]
+        } ,
+      TypeAssignment (TypeReference "DomainComponent") (Type {
+        type_id = IA5String,
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "pkcs-9",
+        value_ref_type = Type {
+          type_id = ObjectIdentifier,
+          subtype = Nothing
+          } ,
+        assigned_value = OID [ObjIdNamedNumber (NamedNumber (Identifier "iso") 1),
+        ObjIdNamedNumber (NamedNumber (Identifier "member-body") 2),
+        ObjIdNamedNumber (NamedNumber (Identifier "us") 840),
+        ObjIdNamedNumber (NamedNumber (Identifier "rsadsi") 113549),
+        ObjIdNamedNumber (NamedNumber (Identifier "pkcs") 1),
+        ObjIdNumber 9]
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "id-emailAddress",
+        value_ref_type = Type {
+          type_id = LocalTypeReference (TypeReference "AttributeType"),
+          subtype = Nothing
+          } ,
+        assigned_value = SomeNamedValueList [NamedValue (Identifier "pkcs-9") (SomeNumber 1.0)]
+        } ,
+      TypeAssignment (TypeReference "EmailAddress") (Type {
+        type_id = IA5String,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-emailaddress-length")))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "Name") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "rdnSequence") (Type {
+          type_id = LocalTypeReference (TypeReference "RDNSequence"),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "RDNSequence") (Type {
+        type_id = SequenceOf Nothing (Left (Type {
+          type_id = LocalTypeReference (TypeReference "RelativeDistinguishedName"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DistinguishedName") (Type {
+        type_id = LocalTypeReference (TypeReference "RDNSequence"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "RelativeDistinguishedName") (Type {
+        type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "AttributeTypeAndValue"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "DirectoryString") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "teletexString") (Type {
+          type_id = TeletexString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printableString") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "universalString") (Type {
+          type_id = UniversalString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "utf8String") (Type {
+          type_id = UTF8String,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "bmpString") (Type {
+          type_id = BMPString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Certificate") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "tbsCertificate") (Type {
+            type_id = LocalTypeReference (TypeReference "TBSCertificate"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signatureAlgorithm") (Type {
+            type_id = LocalTypeReference (TypeReference "AlgorithmIdentifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signature") (Type {
+            type_id = BitString [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TBSCertificate") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "version") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "Version"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (SomeIdentifiedValue (Identifier "v1")))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "serialNumber") (Type {
+            type_id = LocalTypeReference (TypeReference "CertificateSerialNumber"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signature") (Type {
+            type_id = LocalTypeReference (TypeReference "AlgorithmIdentifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "issuer") (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "validity") (Type {
+            type_id = LocalTypeReference (TypeReference "Validity"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "subject") (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "subjectPublicKeyInfo") (Type {
+            type_id = LocalTypeReference (TypeReference "SubjectPublicKeyInfo"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "issuerUniqueID") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "UniqueIdentifier"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "subjectUniqueID") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "UniqueIdentifier"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extensions") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "Extensions"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Version") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "v1") 0,
+        NamedNumber (Identifier "v2") 1,
+        NamedNumber (Identifier "v3") 2],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CertificateSerialNumber") (Type {
+        type_id = TheInteger [],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Validity") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "notBefore") (Type {
+            type_id = LocalTypeReference (TypeReference "Time"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "notAfter") (Type {
+            type_id = LocalTypeReference (TypeReference "Time"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Time") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "utcTime") (Type {
+          type_id = UTCTime,
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "generalTime") (Type {
+          type_id = GeneralizedTime,
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "UniqueIdentifier") (Type {
+        type_id = BitString [],
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "SubjectPublicKeyInfo") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "algorithm") (Type {
+            type_id = LocalTypeReference (TypeReference "AlgorithmIdentifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "subjectPublicKey") (Type {
+            type_id = BitString [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Extensions") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "Extension"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "Extension") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "extnID") (Type {
+            type_id = ObjectIdentifier,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "critical") (Type {
+            type_id = Boolean,
+            subtype = Nothing
+            } ),
+          element_presence = Just (DefaultValue (BooleanValue False))
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extnValue") (Type {
+            type_id = OctetString,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CertificateList") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "tbsCertList") (Type {
+            type_id = LocalTypeReference (TypeReference "TBSCertList"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signatureAlgorithm") (Type {
+            type_id = LocalTypeReference (TypeReference "AlgorithmIdentifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signature") (Type {
+            type_id = BitString [],
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TBSCertList") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "version") (Type {
+            type_id = LocalTypeReference (TypeReference "Version"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "signature") (Type {
+            type_id = LocalTypeReference (TypeReference "AlgorithmIdentifier"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "issuer") (Type {
+            type_id = LocalTypeReference (TypeReference "Name"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "thisUpdate") (Type {
+            type_id = LocalTypeReference (TypeReference "Time"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "nextUpdate") (Type {
+            type_id = LocalTypeReference (TypeReference "Time"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "revokedCertificates") (Type {
+            type_id = SequenceOf Nothing (Left (Type {
+              type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+                element_type = NamedType (Identifier "userCertificate") (Type {
+                  type_id = LocalTypeReference (TypeReference "CertificateSerialNumber"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "revocationDate") (Type {
+                  type_id = LocalTypeReference (TypeReference "Time"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Nothing
+                } ,
+              NamedTypeComponent {
+                element_type = NamedType (Identifier "crlEntryExtensions") (Type {
+                  type_id = LocalTypeReference (TypeReference "Extensions"),
+                  subtype = Nothing
+                  } ),
+                element_presence = Just OptionalValue
+                } ]),
+              subtype = Nothing
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "crlExtensions") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "Extensions"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AlgorithmIdentifier") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "algorithm") (Type {
+            type_id = ObjectIdentifier,
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "parameters") (Type {
+            type_id = Any (Just (Identifier "algorithm")),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ORAddress") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "built-in-standard-attributes") (Type {
+            type_id = LocalTypeReference (TypeReference "BuiltInStandardAttributes"),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "built-in-domain-defined-attributes") (Type {
+            type_id = LocalTypeReference (TypeReference "BuiltInDomainDefinedAttributes"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extension-attributes") (Type {
+            type_id = LocalTypeReference (TypeReference "ExtensionAttributes"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "BuiltInStandardAttributes") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "country-name") (Type {
+            type_id = LocalTypeReference (TypeReference "CountryName"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "administration-domain-name") (Type {
+            type_id = LocalTypeReference (TypeReference "AdministrationDomainName"),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "network-address") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "NetworkAddress"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "terminal-identifier") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "TerminalIdentifier"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "private-domain-name") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+              type_id = LocalTypeReference (TypeReference "PrivateDomainName"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "organization-name") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "OrganizationName"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "numeric-user-identifier") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 4)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "NumericUserIdentifier"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "personal-name") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 5)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "PersonalName"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "organizational-unit-names") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 6)) (Just Implicit) (Type {
+              type_id = LocalTypeReference (TypeReference "OrganizationalUnitNames"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "CountryName") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 1)) Nothing (Type {
+          type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "x121-dcc-code") (Type {
+            type_id = NumericString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "ub-country-name-numeric-length"))))))) Nothing))))) Nothing)
+            } ),
+          NamedType (Identifier "iso-3166-alpha2-code") (Type {
+            type_id = PrintableString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "ub-country-name-alpha-length"))))))) Nothing))))) Nothing)
+            } )]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "AdministrationDomainName") (Type {
+        type_id = Tagged (Tag (Just Application) (ClassNumber 2)) Nothing (Type {
+          type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numeric") (Type {
+            type_id = NumericString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+            } ),
+          NamedType (Identifier "printable") (Type {
+            type_id = PrintableString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+            } )]),
+          subtype = Nothing
+          } ),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "NetworkAddress") (Type {
+        type_id = LocalTypeReference (TypeReference "X121Address"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "X121Address") (Type {
+        type_id = NumericString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-x121-address-length")))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "TerminalIdentifier") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-terminal-id-length")))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "PrivateDomainName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numeric") (Type {
+          type_id = NumericString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printable") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-name-length")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "OrganizationName") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "NumericUserIdentifier") (Type {
+        type_id = NumericString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-numeric-user-id-length")))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "PersonalName") (Type {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "surname") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+              type_id = PrintableString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-surname-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "given-name") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+              type_id = PrintableString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-given-name-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "initials") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
+              type_id = PrintableString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-initials-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "generation-qualifier") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Implicit) (Type {
+              type_id = PrintableString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-generation-qualifier-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "OrganizationalUnitNames") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-units")))))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "OrganizationalUnitName"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "OrganizationalUnitName") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      TypeAssignment (TypeReference "BuiltInDomainDefinedAttributes") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "BuiltInDomainDefinedAttribute"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "BuiltInDomainDefinedAttribute") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = PrintableString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-type-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = PrintableString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-value-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ExtensionAttributes") (Type {
+        type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-extension-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "ExtensionAttribute"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "ExtensionAttribute") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "extension-attribute-type") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+              type_id = TheInteger [],
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-extension-attributes")))))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "extension-attribute-value") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = Any (Just (Identifier "extension-attribute-type")),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "common-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 1
+        } ,
+      TypeAssignment (TypeReference "CommonName") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "teletex-common-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 2
+        } ,
+      TypeAssignment (TypeReference "TeletexCommonName") (Type {
+        type_id = TeletexString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-common-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "teletex-organization-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 3
+        } ,
+      TypeAssignment (TypeReference "TeletexOrganizationName") (Type {
+        type_id = TeletexString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organization-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "teletex-personal-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 4
+        } ,
+      TypeAssignment (TypeReference "TeletexPersonalName") (Type {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "surname") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+              type_id = TeletexString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-surname-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "given-name") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+              type_id = TeletexString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-given-name-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "initials") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Implicit) (Type {
+              type_id = TeletexString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-initials-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "generation-qualifier") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Implicit) (Type {
+              type_id = TeletexString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-generation-qualifier-length")))))))) Nothing))))) Nothing)
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "teletex-organizational-unit-names",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 5
+        } ,
+      TypeAssignment (TypeReference "TeletexOrganizationalUnitNames") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-units")))))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "TeletexOrganizationalUnitName"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TeletexOrganizationalUnitName") (Type {
+        type_id = TeletexString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-organizational-unit-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "pds-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 7
+        } ,
+      TypeAssignment (TypeReference "PDSName") (Type {
+        type_id = PrintableString,
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-name-length")))))))) Nothing))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "physical-delivery-country-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 8
+        } ,
+      TypeAssignment (TypeReference "PhysicalDeliveryCountryName") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "x121-dcc-code") (Type {
+          type_id = NumericString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "ub-country-name-numeric-length"))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "iso-3166-alpha2-code") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (ObjSet (ObjectElement (ObjDefinedObject (LocalObjectReference (ObjectReference "ub-country-name-alpha-length"))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "postal-code",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 9
+        } ,
+      TypeAssignment (TypeReference "PostalCode") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "numeric-code") (Type {
+          type_id = NumericString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-postal-code-length")))))))) Nothing))))) Nothing)
+          } ),
+        NamedType (Identifier "printable-code") (Type {
+          type_id = PrintableString,
+          subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-postal-code-length")))))))) Nothing))))) Nothing)
+          } )]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "physical-delivery-office-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 10
+        } ,
+      TypeAssignment (TypeReference "PhysicalDeliveryOfficeName") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "physical-delivery-office-number",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 11
+        } ,
+      TypeAssignment (TypeReference "PhysicalDeliveryOfficeNumber") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "extension-OR-address-components",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 12
+        } ,
+      TypeAssignment (TypeReference "ExtensionORAddressComponents") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "physical-delivery-personal-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 13
+        } ,
+      TypeAssignment (TypeReference "PhysicalDeliveryPersonalName") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "physical-delivery-organization-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 14
+        } ,
+      TypeAssignment (TypeReference "PhysicalDeliveryOrganizationName") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "extension-physical-delivery-address-components",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 15
+        } ,
+      TypeAssignment (TypeReference "ExtensionPhysicalDeliveryAddressComponents") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "unformatted-postal-address",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 16
+        } ,
+      TypeAssignment (TypeReference "UnformattedPostalAddress") (Type {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "printable-address") (Type {
+            type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-physical-address-lines")))))))) Nothing))))) Nothing)) (Left (Type {
+              type_id = PrintableString,
+              subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
+              } )),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "teletex-string") (Type {
+            type_id = TeletexString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-unformatted-address-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "street-address",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 17
+        } ,
+      TypeAssignment (TypeReference "StreetAddress") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "post-office-box-address",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 18
+        } ,
+      TypeAssignment (TypeReference "PostOfficeBoxAddress") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "poste-restante-address",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 19
+        } ,
+      TypeAssignment (TypeReference "PosteRestanteAddress") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "unique-postal-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 20
+        } ,
+      TypeAssignment (TypeReference "UniquePostalName") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "local-postal-attributes",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 21
+        } ,
+      TypeAssignment (TypeReference "LocalPostalAttributes") (Type {
+        type_id = LocalTypeReference (TypeReference "PDSParameter"),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PDSParameter") (Type {
+        type_id = Set (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "printable-string") (Type {
+            type_id = PrintableString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "teletex-string") (Type {
+            type_id = TeletexString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-pds-parameter-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "extended-network-address",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 22
+        } ,
+      TypeAssignment (TypeReference "ExtendedNetworkAddress") (Type {
+        type_id = Choice (SimpleAlternativeTypeList [NamedType (Identifier "e163-4-address") (Type {
+          type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+            element_type = NamedType (Identifier "number") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+                type_id = NumericString,
+                subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-e163-4-number-length")))))))) Nothing))))) Nothing)
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Nothing
+            } ,
+          NamedTypeComponent {
+            element_type = NamedType (Identifier "sub-address") (Type {
+              type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Implicit) (Type {
+                type_id = NumericString,
+                subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-e163-4-sub-address-length")))))))) Nothing))))) Nothing)
+                } ),
+              subtype = Nothing
+              } ),
+            element_presence = Just OptionalValue
+            } ]),
+          subtype = Nothing
+          } ),
+        NamedType (Identifier "psap-address") (Type {
+          type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Implicit) (Type {
+            type_id = LocalTypeReference (TypeReference "PresentationAddress"),
+            subtype = Nothing
+            } ),
+          subtype = Nothing
+          } )]),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "PresentationAddress") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "pSelector") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) (Just Explicit) (Type {
+              type_id = OctetString,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "sSelector") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) (Just Explicit) (Type {
+              type_id = OctetString,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "tSelector") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) (Just Explicit) (Type {
+              type_id = OctetString,
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "nAddresses") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) (Just Explicit) (Type {
+              type_id = SetOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed MaxValue))))) Nothing))))) Nothing)) (Left (Type {
+                type_id = OctetString,
+                subtype = Nothing
+                } )),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "terminal-type",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 23
+        } ,
+      TypeAssignment (TypeReference "TerminalType") (Type {
+        type_id = TheInteger [NamedNumber (Identifier "telex") 3,
+        NamedNumber (Identifier "teletex") 4,
+        NamedNumber (Identifier "g3-facsimile") 5,
+        NamedNumber (Identifier "g4-facsimile") 6,
+        NamedNumber (Identifier "ia5-terminal") 7,
+        NamedNumber (Identifier "videotex") 8],
+        subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 0))) (Closed (Value (IdentifiedNumber (Identifier "ub-integer-options")))))))) Nothing)
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "teletex-domain-defined-attributes",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 6
+        } ,
+      TypeAssignment (TypeReference "TeletexDomainDefinedAttributes") (Type {
+        type_id = SequenceOf (Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attributes")))))))) Nothing))))) Nothing)) (Left (Type {
+          type_id = LocalTypeReference (TypeReference "TeletexDomainDefinedAttribute"),
+          subtype = Nothing
+          } )),
+        subtype = Nothing
+        } ),
+      TypeAssignment (TypeReference "TeletexDomainDefinedAttribute") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "type") (Type {
+            type_id = TeletexString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-type-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "value") (Type {
+            type_id = TeletexString,
+            subtype = Just (Constraint (ClosedSet False (Singleton (Subtype (SizeConstraint (Constraint (ClosedSet False (Singleton (Subtype (ValueRange (Closed (Value (SignedNumber 1))) (Closed (Value (IdentifiedNumber (Identifier "ub-domain-defined-attribute-value-length")))))))) Nothing))))) Nothing)
+            } ),
+          element_presence = Nothing
+          } ]),
+        subtype = Nothing
+        } ),
+      ValueAssignment {
+        value_ref = ValueReference "ub-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 32768
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-common-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-locality-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 128
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-state-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 128
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-organization-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-organizational-unit-name",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-title",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-serial-number",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-match",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 128
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-emailaddress-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 128
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-common-name-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-country-name-alpha-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 2
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-country-name-numeric-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 3
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-domain-defined-attributes",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 4
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-domain-defined-attribute-type-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 8
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-domain-defined-attribute-value-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 128
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-domain-name-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 16
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-extension-attributes",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 256
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-e163-4-number-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 15
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-e163-4-sub-address-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 40
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-generation-qualifier-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 3
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-given-name-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 16
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-initials-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 5
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-integer-options",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 256
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-numeric-user-id-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 32
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-organization-name-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 64
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-organizational-unit-name-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 32
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-organizational-units",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 4
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-pds-name-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 16
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-pds-parameter-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 30
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-pds-physical-address-lines",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 6
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-postal-code-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 16
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-pseudonym",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 128
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-surname-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 40
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-terminal-id-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 24
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-unformatted-address-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 180
+        } ,
+      ValueAssignment {
+        value_ref = ValueReference "ub-x121-address-length",
+        value_ref_type = Type {
+          type_id = TheInteger [],
+          subtype = Nothing
+          } ,
+        assigned_value = SignedNumber 16
+        } ]
+      } )
+    } 
+===========================
+Types defined in the module
+Attribute
+AttributeType
+AttributeValue
+AttributeTypeAndValue
+X520name
+X520CommonName
+X520LocalityName
+X520StateOrProvinceName
+X520OrganizationName
+X520OrganizationalUnitName
+X520Title
+X520dnQualifier
+X520countryName
+X520SerialNumber
+X520Pseudonym
+DomainComponent
+EmailAddress
+Name
+RDNSequence
+DistinguishedName
+RelativeDistinguishedName
+DirectoryString
+Certificate
+TBSCertificate
+Version
+CertificateSerialNumber
+Validity
+Time
+UniqueIdentifier
+SubjectPublicKeyInfo
+Extensions
+Extension
+CertificateList
+TBSCertList
+AlgorithmIdentifier
+ORAddress
+BuiltInStandardAttributes
+CountryName
+AdministrationDomainName
+NetworkAddress
+X121Address
+TerminalIdentifier
+PrivateDomainName
+OrganizationName
+NumericUserIdentifier
+PersonalName
+OrganizationalUnitNames
+OrganizationalUnitName
+BuiltInDomainDefinedAttributes
+BuiltInDomainDefinedAttribute
+ExtensionAttributes
+ExtensionAttribute
+CommonName
+TeletexCommonName
+TeletexOrganizationName
+TeletexPersonalName
+TeletexOrganizationalUnitNames
+TeletexOrganizationalUnitName
+PDSName
+PhysicalDeliveryCountryName
+PostalCode
+PhysicalDeliveryOfficeName
+PhysicalDeliveryOfficeNumber
+ExtensionORAddressComponents
+PhysicalDeliveryPersonalName
+PhysicalDeliveryOrganizationName
+ExtensionPhysicalDeliveryAddressComponents
+UnformattedPostalAddress
+StreetAddress
+PostOfficeBoxAddress
+PosteRestanteAddress
+UniquePostalName
+LocalPostalAttributes
+PDSParameter
+ExtendedNetworkAddress
+PresentationAddress
+TerminalType
+TeletexDomainDefinedAttributes
+TeletexDomainDefinedAttribute

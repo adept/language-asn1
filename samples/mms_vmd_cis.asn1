@@ -1,0 +1,633 @@
+MMS-CIS-Module-1 { iso standard 9506 part(2) mms-file-record-version1(6) }
+DEFINITIONS ::= BEGIN
+
+
+-- The editor of this html document does not guarantee correctnes of the syntax.
+-- Precise definition can be found in the standard 9506-2:1999
+
+
+IMPORTS
+
+ApplicationReference
+FROM MMS-Environment-1 { iso standard 9506 part(2) mms-environment-version1(4) }
+
+AccessCondition,
+AdditionalCBBOptions,
+AdditionalSupportOptions,
+Address,
+AlarmAckRule,
+Control-State,
+DomainState,
+EC-Class,
+EC-State,
+EE-Duration,
+EE-Class,
+LogicalStatus,
+Modifier,
+ParameterSupportOptions,
+PhysicalStatus,
+Priority,
+ProgramInvocationState,
+ServiceSupportOptions,
+Severity,
+Transitions,
+TypeDescription
+FROM MMS-Object-Module-1 { iso standard 9506 part(1) mms-object-model-version1(2) }
+
+AlternateAccess,
+ConfirmedServiceRequest,
+Data,
+Identifier,
+MMSString,
+ObjectName,
+TimeOfDay
+FROM ISO-9506-MMS-1 { iso standard 9506 part(2) mms-abstract-syntax-version1(1) };
+
+SCI-Information ::= SEQUENCE {
+
+partOne VMD-File,
+partTwo Service-and-Parameter-CBBs
+}
+
+VMD-File ::= SEQUENCE {
+
+executiveFunction ApplicationReference,
+vendorName MMSString,
+modelName MMSString,
+revision MMSString,
+abstractSyntaxes OBJECT IDENTIFIER,
+-- no TRANSACTIONs,
+-- no APPLICATION-ASSOCIATIONs,
+accessControl Access-Control-List-instance,
+logicalStatus LogicalStatus,
+capabilities SEQUENCE OF MMSString,
+physicalStatus PhysicalStatus,
+local-detail BIT STRING,
+accessControlLists SEQUENCE OF Access-Control-List-instance,
+domains SEQUENCE OF Domain-instance,
+programInvocations SEQUENCE OF Program-Invocation-instance,
+unitControls SEQUENCE OF Unit-Control-instance,
+unnamedVariables SEQUENCE OF Unnamed-Variable-instance,
+namedVariables SEQUENCE OF Named-Variable-instance,
+namedVariableLists SEQUENCE OF Named-Variable-List-instance,
+namedTypes SEQUENCE OF Named-Type-instance,
+dataExchanges SEQUENCE OF Data-Exchange-instance,
+semaphores SEQUENCE OF Semaphore-instance,
+operatorStations SEQUENCE OF Operator-Station-instance,
+eventConditions SEQUENCE OF Event-Condition-instance,
+eventActions SEQUENCE OF Event-Action-instance,
+eventEnrollments SEQUENCE OF Event-Enrollment-instance,
+eventConditionLists SEQUENCE OF Event-Condition-List-instance,
+journals SEQUENCE OF Journal-instance,
+...,
+selected-Program-Invocation CHOICE {
+
+selectedProgram Program-Invocation-instance,
+noneSelected NULL
+}
+
+}
+
+Access-Control-List-instance ::= SEQUENCE {
+
+name Identifier, -- shall be unique within the VMD
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+readAccessCondition [0] AccessCondition OPTIONAL,
+storeAccessCondition [1] AccessCondition OPTIONAL,
+writeAccessCondition [2] AccessCondition OPTIONAL,
+loadAccessCondition [3] AccessCondition OPTIONAL,
+executeAccessCondition [4] AccessCondition OPTIONAL,
+deleteAccessCondition [5] AccessCondition OPTIONAL,
+editAccessCondition [6] AccessCondition OPTIONAL,
+--
+-- The following fields are used to record lists of objects placed
+-- under the control of this ACCESS-CONTROL-LIST object.
+-- They will be referred to collectively as the Controlled Object Lists
+--
+accessControlLists SEQUENCE OF Access-Control-List-instance,
+domains SEQUENCE OF Domain-instance,
+programInvocations SEQUENCE OF Program-Invocation-instance,
+unitControls SEQUENCE OF Unit-Control-instance,
+unnamedVariables SEQUENCE OF Unnamed-Variable-instance,
+namedVariables SEQUENCE OF Named-Variable-instance,
+namedVariableLists SEQUENCE OF Named-Variable-List-instance,
+namedTypes SEQUENCE OF Named-Type-instance,
+dataExchanges SEQUENCE OF Data-Exchange-instance,
+semaphores SEQUENCE OF Semaphore-instance,
+operatorStations SEQUENCE OF Operator-Station-instance,
+eventConditions SEQUENCE OF Event-Condition-instance,
+eventActions SEQUENCE OF Event-Action-instance,
+eventEnrollments SEQUENCE OF Event-Enrollment-instance,
+journals SEQUENCE OF Journal-instance,
+...,
+eventConditionLists SEQUENCE OF Event-Condition-List-instance
+}
+
+}
+
+}
+
+Domain-instance ::= SEQUENCE {
+
+name Identifier,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+capabilities SEQUENCE OF MMSString,
+state DomainState,
+-- The aAssociation is not included
+accessControl Access-Control-List-instance,
+sharable BOOLEAN,
+programInvocations SEQUENCE OF Program-Invocation-instance,
+-- uploadsInProgress is not included
+namedVariables SEQUENCE OF Named-Variable-instance,
+namedVariableLists SEQUENCE OF Named-Variable-List-instance,
+namedTypes SEQUENCE OF Named-Type-instance,
+eventConditions SEQUENCE OF Event-Condition-instance,
+eventActions SEQUENCE OF Event-Action-instance,
+eventEnrollments SEQUENCE OF Event-Enrollment-instance,
+eventConditionLists SEQUENCE OF Event-Condition-List-instance
+}
+
+}
+
+}
+
+Program-Invocation-instance ::= SEQUENCE {
+
+name Identifier,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+programInvocationState ProgramInvocationState,
+domains SEQUENCE OF Domain-instance,
+accessControl SEQUENCE OF Access-Control-List-instance,
+reusable BOOLEAN,
+monitor BOOLEAN,
+-- The following three fields shall all be present if the value of
+-- monitor is true.
+-- If present, the &name field of each object instance
+-- shall have a value equal to the
+-- &name field of this instance of the PROGRAM-INVOCATION.
+eventCondition SEQUENCE OF Event-Condition-instance OPTIONAL,
+eventAction SEQUENCE OF Event-Action-instance OPTIONAL,
+eventEnrollment SEQUENCE OF Event-Enrollment-instance OPTIONAL,
+executionArgument MMSString,
+...,
+control Control-State,
+controlling-Program-Invocation Program-Invocation-instance,
+-- The following field shall be present
+-- if and only if the value of the &control field is controlling.
+controlled-Program-Invocations SEQUENCE OF
+Program-Invocation-instance OPTIONAL
+}
+
+}
+
+}
+
+Unit-Control-instance ::= SEQUENCE {
+
+name Identifier,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+domains SEQUENCE OF Domain-instance,
+programInvocations SEQUENCE OF Program-Invocation-instance
+}
+
+}
+
+}
+
+Unnamed-Variable-instance ::= SEQUENCE {
+
+address Address,
+accessControl Access-Control-List-instance,
+typeDescription TypeDescription
+}
+
+Named-Variable-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+typeDescription TypeDescription,
+address Address OPTIONAL,
+meaning ObjectName OPTIONAL
+}
+
+}
+
+}
+
+Named-Variable-List-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+listOfVariables SEQUENCE OF Variable-List-Item-instance
+}
+
+}
+
+}
+
+Variable-List-Item-instance ::= SEQUENCE {
+
+-- one and only one of the following two lines shall appear
+unnamedItem Unnamed-Variable-instance OPTIONAL,
+namedItem Named-Variable-instance OPTIONAL,
+-- the following specification may be included
+alternateAccess AlternateAccess OPTIONAL
+}
+
+Named-Type-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+typeDescription TypeDescription,
+meaning ObjectName OPTIONAL
+}
+
+}
+
+}
+
+Data-Exchange-instance ::= SEQUENCE {
+
+name Identifier, definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+request SEQUENCE OF TypeDescription,
+response SEQUENCE OF TypeDescription,
+linked BOOLEAN,
+-- The following attribute shall appear if an only if
+-- the value of &linked is true.
+programInvocation Program-Invocation-instance OPTIONAL
+}
+
+}
+
+}
+
+Semaphore-instance ::= SEQUENCE {
+
+name Identifier,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+class ENUMERATED {
+
+token (0),
+pool (1)
+},
+
+-- If the value of &class is token, the following field shall appear
+numberOfTokens INTEGER OPTIONAL,
+-- If the value of &class is pool, the following field shall appear
+namedTokens SEQUENCE OF Identifier OPTIONAL,
+eventCondition Event-Condition-instance
+}
+
+}
+
+}
+
+Operator-Station-instance ::= SEQUENCE {
+
+name Identifier,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+stationType ENUMERATED {
+
+entry (0),
+display (1),
+entry-display (2)
+}
+
+}
+
+}
+
+}
+
+Event-Condition-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+ecClass EC-Class,
+ecState EC-State,
+priority Priority,
+severity Severity,
+eventEnrollments SEQUENCE OF Event-Enrollment-instance,
+-- The following fields shall be present
+-- if and only if the value of &ecClass is monitored.
+enabled BOOLEAN OPTIONAL,
+alarmSummaryReports BOOLEAN OPTIONAL,
+monitoredVariable CHOICE {
+
+named Named-Variable-instance,
+unnamed Unnamed-Variable-instance,
+unspecified NULL } OPTIONAL,
+evaluationInterval INTEGER OPTIONAL,
+...,
+displayEnhancement CHOICE {
+
+text MMSString,
+number INTEGER,
+none NULL
+},
+
+group-Priority-Override CHOICE {
+priority Priority,
+undefined NULL
+} OPTIONAL,
+
+referencingEventConditionLists SEQUENCE OF
+Event-Condition-List-instance
+}
+
+}
+
+}
+
+Event-Action-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+confirmedServiceRequest ConfirmedServiceRequest,
+modifiers SEQUENCE OF Modifier,
+eventEnrollments SEQUENCE OF Event-Enrollment-instance
+}
+
+}
+
+}
+
+Event-Enrollment-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+eeClass EE-Class ,
+eventCondition Event-Condition-instance,
+ecTransitions Transitions,
+-- The following parameter is present if and only if the
+-- value of &eeClass is modifier.
+remainingDelay CHOICE {
+
+time INTEGER,
+forever NULL
+} OPTIONAL,
+
+-- The remaining parameters are present if and only if the
+-- value of &eeClass is notification.
+eventAction Event-Action-instance OPTIONAL,
+duration EE-Duration OPTIONAL,
+clientApplication ApplicationReference OPTIONAL,
+aaRule AlarmAckRule OPTIONAL,
+...,
+displayEnhancement CHOICE {
+
+text MMSString,
+number INTEGER,
+none NULL
+}
+
+}
+
+}
+
+}
+
+Event-Condition-List-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+eventConditions SEQUENCE OF Event-Condition-instance,
+eventConditionLists SEQUENCE OF Event-Condition-List-instance,
+referencingEventConditionLists SEQUENCE OF
+Event-Condition-List-instance
+
+}
+
+}
+
+}
+
+Journal-instance ::= SEQUENCE {
+
+name ObjectName,
+definition CHOICE {
+
+reference OBJECT IDENTIFIER,
+details SEQUENCE {
+
+accessControl Access-Control-List-instance,
+entries SEQUENCE OF Journal-Entry-instance
+}
+
+}
+
+}
+
+Journal-Entry-instance ::= SEQUENCE {
+
+journal Journal-instance,
+entry OCTET STRING,
+clientApplication ApplicationReference,
+timeStamp TimeOfDay,
+orderOfReceipt INTEGER,
+informationType ENUMERATED {
+
+annotation (0),
+event-data (1),
+data (2) },
+-- The following attribute shall appear if and only if the
+-- value of &informationType is annotation.
+textComment MMSString(SIZE (0..255)) OPTIONAL,
+--The following attribute shall appear if and only if the
+-- value of &informationType is event-data.
+eventTransitionRecord SEQUENCE {
+
+name [0] ObjectName,
+currentState [1] IMPLICIT EC-State
+} OPTIONAL,
+
+-- The following attribute shall appear if and only if the
+-- value of &informationType is data or event-data.
+journalVariables SEQUENCE OF SEQUENCE {
+variableTag MMSString(SIZE(1..32)),
+valueSpecification Data
+} OPTIONAL
+
+}
+
+Service-and-Parameter-CBBs ::= SEQUENCE {
+
+services-Client ServiceSupportOptions,
+services-Server ServiceSupportOptions,
+parameters ParameterSupportOptions,
+nest INTEGER,
+extendedServices-Client AdditionalSupportOptions,
+extendedServices-Server AdditionalSupportOptions,
+extendedParameters AdditionalCBBOptions,
+generalManagement GeneralManagementParameters,
+vMDSupport VMDSupportParameters,
+domainManagement DomainManagementParameters,
+programInvocation ProgramInvocationManagementParameters,
+variableAccess VariableAccessParameters,
+dataParameters DataParameters,
+semaphoreManagement SemaphoreManagementParameters,
+operatorCommunication OperatorCommunicationParameters,
+errors ErrorParameters,
+fileManagement FileManagementParameters
+}
+
+GeneralManagementParameters ::= SEQUENCE {
+
+localDetail MMSString, -- semantics of the local Detail
+supportForTime SEQUENCE {
+
+timeOfDay BOOLEAN, -- true if time of Day supported
+timeSequence BOOLEAN -- true if TimeSequence is supported
+},
+
+granularityOfTime INTEGER -- smallest time interval in ms.
+}
+
+VMDSupportParameters ::= SEQUENCE {
+
+localDetail MMSString, -- semantics and parse rules
+-- for the Status parameter
+extendedDerivation MMSString -- method used to perform extended derivation
+}
+
+DomainManagementParameters ::= SEQUENCE {
+
+loadDataOctet MMSString,
+-- description of the format of Load Data if the octet string form is used
+loadDataSyntax SEQUENCE OF OBJECT IDENTIFIER,
+-- identifier of the Abstract Syntaxes used
+maxUploads INTEGER
+}
+
+ProgramInvocationManagementParameters ::= SEQUENCE {
+
+executionArgMaxSize INTEGER,
+executionArgParseRules MMSString,
+executionArgSyntaxes SEQUENCE OF OBJECT IDENTIFIER,
+programLoction MMSString,
+-- syntax of the program Location notation
+stepMode BOOLEAN
+-- if true, step Mode is supported
+}
+
+VariableAccessParameters ::= SEQUENCE {
+
+uninterruptibleAccess MMSString, -- conditions under which it is guaranteed
+singleMode BOOLEAN,
+unnamedMode BOOLEAN
+}
+
+DataParameters ::= SEQUENCE {
+
+bit-string INTEGER OPTIONAL,
+integer INTEGER OPTIONAL,
+unsigned INTEGER OPTIONAL,
+floating-point SEQUENCE {
+
+total INTEGER,
+exponent
+INTEGER } OPTIONAL,
+
+octet-string INTEGER OPTIONAL,
+visible-string INTEGER OPTIONAL,
+binary-time BOOLEAN OPTIONAL,
+bcd INTEGER OPTIONAL,
+mmsString INTEGER OPTIONAL
+}
+
+SemaphoreManagementParameters ::= SEQUENCE {
+
+algorithm MMSString
+-- method of processing the &priority field
+}
+
+OperatorCommunicationParameters ::= SEQUENCE {
+
+input-time-out INTEGER
+}
+
+ErrorParameters ::= SEQUENCE {
+
+additionalCode MMSString, -- explanation of additional codes
+additionalDetial SEQUENCE {
+
+size INTEGER, -- max size of string
+syntax MMSString -- explanation of additional Detail
+}
+
+}
+
+FileManagementParameters ::= SEQUENCE {
+
+fileName MMSString -- parse rules and syntax for File Names
+}
+
+END

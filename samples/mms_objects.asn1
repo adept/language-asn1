@@ -1,0 +1,1120 @@
+MMS-Object-Module-1 { iso standard 9506 part(1) mms-object-model-version1(2) }
+DEFINITIONS ::= BEGIN
+
+
+-- The editor of this html document does not guarantee correctnes of the syntax.
+-- Precise definition can be found in the standard 9506-1:1999
+
+EXPORTS
+AccessCondition,
+AdditionalCBBOptions,
+AdditionalSupportOptions,
+Address,
+AlarmAckRule,
+Control-State,
+DomainState,
+EC-State,
+EC-Class,
+EE-Duration,
+EE-Class,
+EventTime,
+Journal-Variable,
+LogicalStatus,
+Modifier,
+normalPriority,
+normalSeverity,
+ParameterSupportOptions,
+PhysicalStatus,
+Priority,
+ProgramInvocationState,
+Running-Mode,
+ServiceSupportOptions,
+Severity,
+Transitions,
+TypeDescription,
+ULState,
+VMDState;
+
+IMPORTS
+ApplicationReference,
+AuthenticationValue
+FROM MMS-Environment-1 { iso standard 9506 part(2) mms-environment-version1(4) }
+
+AlternateAccess,
+ConfirmedServiceRequest,
+AttachToSemaphore,
+AttachToEventCondition,
+Data,
+EE-State,
+Identifier,
+Integer8,
+Integer32,
+MMSString,
+ObjectName,
+TimeOfDay,
+TypeSpecification,
+Unsigned32,
+Unsigned8
+FROM ISO-9506-MMS-1 { iso standard 9506 part(2) mms-abstract-syntax-version1(1) };
+
+-- Part 1 - Object Model Definitions
+--
+-- Note - ASN.1 rules for interpreting the object formalism.
+--
+-- Each field has a field identifier possibly followed by a name.
+-- The field identifier begins with an '&' and is followed by a reference name,
+-- beginning with either a lower case or an upper case letter.
+--
+-- If the field identifier begins with '&' Upper case letter:
+--
+-- If there is no following name,
+-- the field identifies a type.
+-- If the following name is mixed case
+-- and begins with an upper case letter,
+-- or if the following name is upper case
+-- and the name of a Universal type,
+-- the field identifies a value set.
+-- If the following name is upper case
+-- and the name of an Object Class,
+-- the field identifies an Object Set.
+--
+-- If the field identifier begins with '&' lower case letter:
+--
+-- If the following name is upper case
+-- and the name of an Object Class,
+-- the field identifies an Object (instance).
+-- If the following name is mixed case
+-- and begins with an upper case letter,
+-- or if the following name is upper case
+-- and is the name of a Universal type,
+-- the field identifies a value.
+--
+
+
+VMD ::= CLASS {
+
+&executiveFunction ApplicationReference,
+&vendorName MMSString,
+&modelName MMSString,
+&revision MMSString,
+&AbstractSyntaxes ABSTRACT-SYNTAX,
+&EATransactions TRANSACTION,
+&Associations APPLICATION-ASSOCIATION,
+&accessControl ACCESS-CONTROL-LIST,
+&logicalStatus LogicalStatus,
+&Capabilities MMSString,
+&physicalStatus PhysicalStatus,
+&local-detail BIT STRING,
+&AccessControlLists ACCESS-CONTROL-LIST,
+&Domains DOMAIN,
+&ProgramInvocations PROGRAM-INVOCATION,
+&UnitControls UNIT-CONTROL,
+&UnnamedVariables UNNAMED-VARIABLE,
+&NamedVariables NAMED-VARIABLE,
+&NamedVariableLists NAMED-VARIABLE-LIST,
+&NamedTypes NAMED-TYPE,
+&DataExchanges DATA-EXCHANGE,
+&Semaphores SEMAPHORE,
+&OperatorStations OPERATOR-STATION,
+&EventConditions EVENT-CONDITION,
+&EventActions EVENT-ACTION,
+&EventEnrollments EVENT-ENROLLMENT,
+&EventConditionLists EVENT-CONDITION-LIST,
+&Journals JOURNAL,
+&operationState VMDState,
+&safety-Interlocks-Violated BOOLEAN,
+&any-Resource-Power-On BOOLEAN,
+&all-Resources-Calibrated BOOLEAN,
+&local-Control BOOLEAN,
+&selected-Program-Invocation PROGRAM-INVOCATION
+}
+
+LogicalStatus ::= [0] IMPLICIT INTEGER {
+
+state-changes-allowed (0),
+no-state-changes-allowed (1),
+limited-services-permitted (2),
+support-services-allowed (3)
+}
+
+PhysicalStatus ::= [1] IMPLICIT INTEGER {
+
+operational (0),
+partially-operational (1),
+inoperable (2),
+needs-commissioning (3)
+}
+
+VMDState ::= INTEGER {
+
+idle (0),
+loaded (1),
+ready (2),
+executing (3),
+motion-paused (4),
+manualInterventionRequired (5)
+}
+
+NULL-OBJECT ::= CLASS { &null NULL }
+
+null-instance NULL-OBJECT ::= { &null NULL }
+
+TRANSACTION ::= CLASS {
+
+&invokeID INTEGER,
+&Pre-excutionModifiers Modifier,
+&currentModifier CHOICE {
+modifier Modifier,
+none NULL },
+&confirmedService-Request ConfirmedServiceRequest,
+&Post-executionModifiers Modifier,
+&cancelable BOOLEAN
+}
+
+Modifier ::= SEQUENCE {
+
+modifierID INTEGER,
+modifier CHOICE {
+
+eventModifier AttachToEventCondition,
+semaphoreModifier AttachToSemaphore
+}
+
+}
+
+APPLICATION-ASSOCIATION ::= CLASS {
+
+&aaIdentifier INTEGER,
+&client ApplicationReference,
+&abstractSyntax ABSTRACT-SYNTAX,
+&authenticationValue AuthenticationValue OPTIONAL,
+-- This field represents a 'user password'
+&Transactions TRANSACTION,
+&NamedVariables NAMED-VARIABLE,
+&NamedVariableLists NAMED-VARIABLE-LIST,
+&NamedTypes NAMED-TYPE,
+&DataExchanges DATA-EXCHANGE,
+&EventConditions EVENT-CONDITION,
+&EventActions EVENT-ACTION,
+&EventEnrollments EVENT-ENROLLMENT,
+&EventConditionLists EVENT-CONDITION-LIST,
+&Journals JOURNAL,
+&services ServiceSupportOptions,
+&parameters ParameterSupportOptions,
+&nest INTEGER,
+&Ulsms ULSM,
+&extendedServices AdditionalSupportOptions,
+&extendedParameters AdditionalCBBOptions
+}
+
+ServiceSupportOptions ::= BIT STRING {
+
+status (0),
+getNameList (1),
+identify (2),
+rename (3),
+read (4),
+write (5),
+getVariableAccessAttributes (6),
+defineNamedVariable (7),
+-- bit 8 is reserved for use of a service defined in annex E
+defineScatteredAccess (8),
+-- bit 9 is reserved for use of a service defined in annex E
+getScatteredAccessAttributes (9),
+deleteVariableAccess (10),
+defineNamedVariableList (11),
+getNamedVariableListAttributes (12),
+deleteNamedVariableList (13),
+defineNamedType (14),
+getNamedTypeAttributes (15),
+deleteNamedType (16),
+input (17),
+output (18),
+takeControl (19),
+relinquishControl (20),
+defineSemaphore (21),
+deleteSemaphore (22),
+reportSemaphoreStatus (23),
+reportPoolSemaphoreStatus (24),
+reportSemaphoreEntryStatus (25),
+initiateDownloadSequence (26),
+downloadSegment (27),
+terminateDownloadSequence (28),
+initiateUploadSequence (29),
+uploadSegment (30),
+terminateUploadSequence (31),
+requestDomainDownload (32),
+requestDomainUpload (33),
+loadDomainContent (34),
+storeDomainContent (35),
+deleteDomain (36),
+getDomainAttributes (37),
+createProgramInvocation (38),
+deleteProgramInvocation (39),
+start (40),
+stop (41),
+resume (42),
+reset (43),
+kill (44),
+getProgramInvocationAttributes (45),
+obtainFile (46),
+defineEventCondition (47),
+deleteEventCondition (48),
+getEventConditionAttributes (49),
+reportEventConditionStatus (50),
+alterEventConditionMonitoring (51),
+triggerEvent (52),
+defineEventAction (53),
+deleteEventAction (54),
+getEventActionAttributes (55),
+reportEventActionStatus (56),
+defineEventEnrollment (57),
+deleteEventEnrollment (58),
+alterEventEnrollment (59),
+reportEventEnrollmentStatus (60),
+getEventEnrollmentAttributes (61),
+acknowledgeEventNotification (62),
+getAlarmSummary (63),
+getAlarmEnrollmentSummary (64),
+readJournal (65),
+writeJournal (66),
+initializeJournal (67),
+reportJournalStatus (68),
+createJournal (69),
+deleteJournal (70),
+getCapabilityList (71),
+-- bit 72 is reserved for use of a service defined in annex D
+fileOpen (72),
+-- bit 73 is reserved for use of a service defined in annex D
+fileRead (73),
+-- bit 74 is reserved for use of a service defined in annex D
+fileClose (74),
+-- bit 75 is reserved for use of a service defined in annex D
+fileRename (75),
+-- bit 76 is reserved for use of a service defined in annex D
+fileDelete (76),
+-- bit 77 is reserved for use of a service defined in annex D
+fileDirectory (77),
+unsolicitedStatus (78),
+informationReport (79),
+eventNotification (80),
+attachToEventCondition (81),
+attachToSemaphore (82),
+conclude (83),
+cancel (84),
+getDataExchangeAttributes (85),
+-- Shall not appear in minor version one
+exchangeData (86),
+-- Shall not appear in minor version one
+defineAccessControlList (87),
+-- Shall not appear in minor version one or two
+getAccessControlListAttributes (88),
+-- Shall not appear in minor version one or two
+reportAccessControlledObjects (89),
+-- Shall not appear in minor version one or two
+deleteAccessControlList (90),
+-- Shall not appear in minor version one or two
+alterAccessControl (91),
+-- Shall not appear in minor version one or two
+reconfigureProgramInvocation (92)
+}
+
+ParameterSupportOptions ::= BIT STRING {
+
+str1 (0),
+str2 (1),
+vnam (2),
+valt (3),
+vadr (4),
+-- bit 5 is reserved
+vsca (5),
+tpy (6),
+vlis (7),
+-- bit 8 is reserved
+-- bit 9 is reserved
+cei (10),
+aco (11),
+sem (12),
+csr (13),
+csnc (14),
+csplc (15),
+cspi (16) }
+
+AdditionalSupportOptions ::= BIT STRING {
+
+vMDStop (0),
+vMDReset (1),
+select (2),
+alterProgramInvocationAttributes (3),
+initiateUnitControlLoad (4),
+unitControlLoadSegment (5),
+unitControlUpload (6),
+startUnitControl (7),
+stopUnitControl (8),
+createUnitControl (9),
+addToUnitControl (10),
+removeFromUnitControl (11),
+getUnitControlAttributes (12),
+loadUnitControlFromFile (13),
+storeUnitControlToFile (14),
+deleteUnitControl (15),
+defineEventConditionList (16),
+deleteEventConditionList (17),
+addEventConditionListReference (18),
+removeEventConditionListReference (19),
+getEventConditionListAttributes (20),
+reportEventConditionListStatus (21),
+alterEventConditionListMonitoring (22) }
+
+AdditionalCBBOptions ::= BIT STRING {
+
+des (0),
+dei (1),
+recl (2) }
+
+ACCESS-CONTROL-LIST ::= CLASS {
+
+&name Identifier, -- shall be unique within the VMD
+&accessControl ACCESS-CONTROL-LIST,
+&readAccessCondition [0] AccessCondition OPTIONAL,
+&storeAccessCondition [1] AccessCondition OPTIONAL,
+&writeAccessCondition [2] AccessCondition OPTIONAL,
+&loadAccessCondition [3] AccessCondition OPTIONAL,
+&executeAccessCondition [4] AccessCondition OPTIONAL,
+&deleteAccessCondition [5] AccessCondition OPTIONAL,
+&editAccessCondition [6] AccessCondition OPTIONAL,
+--
+-- The following fields are used to record lists of objects placed
+-- under the control of this ACCESS-CONTROL-LIST object.
+-- They will be referred to collectively as the Controlled Object Lists
+--
+&AccessControlLists ACCESS-CONTROL-LIST,
+&Domains DOMAIN,
+&ProgramInvocations PROGRAM-INVOCATION,
+&UnitControls UNIT-CONTROL,
+&UnnamedVariables UNNAMED-VARIABLE OPTIONAL,
+&NamedVariables NAMED-VARIABLE,
+&NamedVariableLists NAMED-VARIABLE-LIST,
+&NamedTypes NAMED-TYPE,
+&DataExchanges DATA-EXCHANGE,
+&Semaphores SEMAPHORE,
+&OperatorStations OPERATOR-STATION,
+&EventConditions EVENT-CONDITION,
+&EventActions EVENT-ACTION,
+&EventEnrollments EVENT-ENROLLMENT,
+&Journals JOURNAL,
+&EventConditionLists EVENT-CONDITION-LIST
+}
+
+AccessCondition ::= CHOICE {
+
+never [0] IMPLICIT NULL,
+semaphore [1] ObjectName, -- Semaphore Name
+user [2] CHOICE {
+
+association ApplicationReference,
+none NULL
+},
+
+password [3] AuthenticationValue,
+joint [4] IMPLICIT SEQUENCE OF AccessCondition,
+alternate [5] IMPLICIT SEQUENCE OF AccessCondition
+}
+
+DOMAIN ::= CLASS {
+
+&name Identifier,
+-- shall be unique among the names of all Domains within the VMD
+&Capabilities MMSString,
+&state DomainState,
+&aAssociation APPLICATION-ASSOCIATION OPTIONAL,
+-- This field shall be present if and only if
+-- the &state field has a value of
+-- loading, complete, incomplete, d1, d2, d3 or d9
+&accessControl ACCESS-CONTROL-LIST,
+&sharable BOOLEAN,
+&ProgramInvocations PROGRAM-INVOCATION,
+&uploadsInProgress INTEGER,
+-- The following items reflect the Domain content
+-- All the items listed have Domain-specific names.
+&NamedVariables NAMED-VARIABLE,
+&NamedVariableLists NAMED-VARIABLE-LIST,
+&NamedTypes NAMED-TYPE,
+&EventConditions EVENT-CONDITION,
+&EventActions EVENT-ACTION,
+&EventEnrollments EVENT-ENROLLMENT,
+&EventConditionLists EVENT-CONDITION-LIST
+}
+
+DomainState ::= INTEGER {
+
+non-existent (0),
+loading (1),
+ready (2),
+in-use (3),
+complete (4),
+incomplete (5),
+d1 (7),
+d2 (8),
+d3 (9),
+d4 (10),
+d5 (11),
+d6 (12),
+d7 (13),
+d8 (14),
+d9 (15) }
+
+ULSM ::= CLASS {
+
+&ulsmID INTEGER UNIQUE,
+-- shall be unique among all ULSM's within this application association
+&domain DOMAIN,
+&ulsmState ULState
+}
+
+ULState ::= INTEGER {
+
+non-existent (0),
+uploading (1),
+uploaded (2),
+u1 (3),
+u2 (4),
+u3 (5),
+u4 (6) }
+
+PROGRAM-INVOCATION ::= CLASS {
+
+&name Identifier,
+-- shall be unique among all Program Invocations
+&programInvocationState ProgramInvocationState,
+&Domains DOMAIN,
+&accessControl ACCESS-CONTROL-LIST,
+&reusable BOOLEAN,
+&monitor BOOLEAN,
+-- The following three fields shall all be present if the value of
+-- monitor is true.
+-- If present, the &name field of each object instance
+-- shall have a value equal to the
+-- &name field of this instance of the PROGRAM-INVOCATION.
+&eventCondition EVENT-CONDITION OPTIONAL,
+&eventAction EVENT-ACTION OPTIONAL,
+&eventEnrollment EVENT-ENROLLMENT OPTIONAL,
+&executionArgument MMSString,
+&errorCode INTEGER,
+&control Control-State,
+-- The following field shall be present
+-- if and only if the value of the &control field is controlled.
+&controlling-Program-Invocation PROGRAM-INVOCATION,
+-- The following two fields shall be present
+-- if and only if the value of the &control field is controlling.
+&Controlled-Program-Invocations PROGRAM-INVOCATION OPTIONAL,
+&program-Location MMSString OPTIONAL,
+&running-Mode Running-Mode,
+-- The following field shall be present
+-- if and only if the value of the &running-Mode field is cycle-limited
+&remaining-Cycle-Count INTEGER OPTIONAL,
+-- The following field shall be present
+-- if and only if the value of the &running-Mode field is step-limited
+&remaining-Step-Count INTEGER OPTIONAL
+}
+
+ProgramInvocationState ::= INTEGER {
+
+non-existent (0),
+unrunnable (1),
+idle (2),
+running (3),
+stopped (4),
+starting (5),
+stopping (6),
+resuming (7),
+resetting (8)
+}
+
+Control-State ::= INTEGER {
+
+normal (0),
+controlling (1),
+controlled (2)
+}
+
+Running-Mode ::= INTEGER {
+
+free-run (0),
+cycle-limited (1),
+step-limited (2)
+}
+
+UNIT-CONTROL ::= CLASS {
+
+&name Identifier,
+-- Shall be unique within the VMD
+&accessControl ACCESS-CONTROL-LIST,
+&Domains DOMAIN,
+&ProgramInvocations PROGRAM-INVOCATION
+}
+
+UNNAMED-VARIABLE ::= CLASS {
+
+&address Address,
+&accessControl ACCESS-CONTROL-LIST,
+&typeDescription TypeDescription,
+&value Data,
+&accessMethod ENUMERATED {
+public (0) }
+-- The field '&accessMethod' shall have a value equal to public.
+}
+
+Address ::= CHOICE {
+
+numericAddress [0] IMPLICIT Unsigned32,
+symbolicAddress [1] MMSString,
+unconstrainedAddress [2] IMPLICIT OCTET STRING
+}
+
+NAMED-VARIABLE ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&typeDescription TypeDescription,
+&value Data,
+&accessMethod ENUMERATED {
+
+public (0),
+anythingElse (1),
+...
+},
+
+&address Address OPTIONAL,
+-- The presence of this field shall correspond to the
+-- field &access Method having a value equal to public.
+-- The absence of this field shall correspond to the
+-- field &accessMethod having a value equal to anything except public.
+--
+-- The following field shall occur
+-- if and only if the sem CBB has been negotiated.
+&meaning ObjectName OPTIONAL
+}
+
+NAMED-VARIABLE-LIST ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&listOfVariables VARIABLE-LIST-ITEM
+}
+
+VARIABLE-LIST-ITEM ::= CLASS {
+
+-- one and only one of the following two lines shall appear
+&unnamedItem UNNAMED-VARIABLE OPTIONAL,
+&namedItem NAMED-VARIABLE OPTIONAL,
+-- the following specification may be included
+&alternateAccess AlternateAccess OPTIONAL
+}
+
+NAMED-TYPE ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&typeDescription TypeDescription,
+--
+-- The following field shall occur
+-- if and only if the sem CBB has been negotiated.
+&meaning ObjectName OPTIONAL
+}
+
+TypeDescription ::= CHOICE {
+
+array [1] IMPLICIT SEQUENCE {
+
+packed [0] IMPLICIT BOOLEAN DEFAULT FALSE,
+numberOfElements [1] IMPLICIT Unsigned32,
+elementType [2] TypeSpecification
+},
+
+structure [2] IMPLICIT SEQUENCE {
+
+packed [0] IMPLICIT BOOLEAN DEFAULT FALSE,
+components [1] IMPLICIT SEQUENCE OF SEQUENCE {
+
+componentName [0] IMPLICIT Identifier OPTIONAL,
+componentType [1] TypeSpecification
+}
+
+},
+
+-- Simple Size Class
+boolean [3] IMPLICIT NULL, -- BOOLEAN
+bit-string [4] IMPLICIT Integer32, -- BIT-STRING
+integer [5] IMPLICIT Unsigned8, -- INTEGER
+unsigned [6] IMPLICIT Unsigned8, -- UNSIGNED
+floating-point [7] IMPLICIT SEQUENCE {
+
+format-width Unsigned8, -- number of bits of
+-- floating point value
+-- including sign, exponent,
+-- and fraction
+exponent-width Unsigned8 -- size of exponent in bits
+},
+
+-- [8] is reserved
+octet-string [9] IMPLICIT Integer32, -- OCTET-STRING
+visible-string [10] IMPLICIT Integer32, -- VISIBLE-STRING
+generalized-time [11] IMPLICIT NULL, -- GENERALIZED-TIME
+binary-time [12] IMPLICIT BOOLEAN, -- BINARY-TIME
+bcd [13] IMPLICIT Unsigned8, -- BCD
+objId [15] IMPLICIT NULL,
+...,
+mMSString [16] Integer32 -- MMS String
+}
+
+DATA-EXCHANGE ::= CLASS {
+
+&name Identifier,
+-- this field shall be unique among all Data Exchange objects
+&inUse BOOLEAN,
+&accessControl ACCESS-CONTROL-LIST,
+&request SEQUENCE OF TypeDescription,
+&response SEQUENCE OF TypeDescription,
+&linked BOOLEAN,
+-- The following attribute shall appear if an only if
+-- the value of &linked is true.
+&programInvocation PROGRAM-INVOCATION }
+
+SEMAPHORE ::= CLASS {
+
+&name Identifier,
+-- shall be unique among all semaphores within the VMD
+&accessControl ACCESS-CONTROL-LIST,
+&class ENUMERATED {
+
+token (0),
+pool (1)
+},
+
+-- If the value of &class is token, the following two fields shall appear
+&numberOfTokens INTEGER OPTIONAL,
+&numberOfOwnedTokens INTEGER OPTIONAL,
+-- If the value of &class is pool, the following field shall appear
+&NamedTokens NAMED-TOKEN OPTIONAL,
+&Owners SEMAPHORE-ENTRY,
+&Requesters SEMAPHORE-ENTRY,
+&eventCondition EVENT-CONDITION
+}
+
+NAMED-TOKEN ::= CLASS {
+
+&name Identifier,
+&state ENUMERATED {
+
+free (0),
+owned (1)
+}
+
+}
+
+SEMAPHORE-ENTRY ::= CLASS {
+
+&entryID INTEGER,
+-- this value shall be unique to the semaphore object
+-- that is the parent of this object
+&class ENUMERATED {
+
+simple (0),
+modifier (1)
+},
+
+&semaphore SEMAPHORE,
+&requester ApplicationReference,
+&aaIdentifier APPLICATION-ASSOCIATION,
+&invokeID TRANSACTION,
+-- The following field shall appear only if the semaphore is a pool semaphore
+&named-token NAMED-TOKEN OPTIONAL,
+&priority Priority,
+&entryState ENUMERATED {
+
+queued (0),
+owner (1),
+hung (2)
+},
+
+-- The following field shall appear only if the entryState has the value queued.
+&remainingAcqDelay CHOICE {
+
+time Unsigned32,
+forever NULL
+} OPTIONAL,
+
+-- The following field shall appear
+-- only if the entryState has the value owner or hung.
+&remainingTimeOut CHOICE {
+
+time Unsigned32,
+forever NULL
+} OPTIONAL,
+
+&abortOnTimeOut BOOLEAN,
+&relinquishIfLost BOOLEAN
+}
+
+Priority ::= Unsigned8
+
+normalPriority Priority ::= 64
+
+OPERATOR-STATION ::= CLASS {
+
+&name Identifier,
+-- shall be unique within its range of specification (VMD)
+&accessControl ACCESS-CONTROL-LIST,
+&stationType ENUMERATED {
+
+entry (0),
+display (1),
+entry-display (2)
+},
+
+-- The following field shall appear if stationType is entry or entry-display
+&inputBuffer MMSString OPTIONAL,
+-- The following field shall appear if stationType is display or entry-display
+&outputBuffers SEQUENCE OF MMSString OPTIONAL,
+&state ENUMERATED {
+
+idle (0),
+display-prompt-data (1),
+waiting-for-input (2),
+input-buffer-filled (3),
+output-buffers-filled (4)
+}
+
+}
+
+EVENT-CONDITION ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&ecClass EC-Class,
+&ecState EC-State,
+&priority Priority,
+&severity Severity,
+&EventEnrollments EVENT-ENROLLMENT,
+-- The following fields shall be present
+-- if and only if the value of &ecClass is monitored.
+&enabled BOOLEAN OPTIONAL,
+&alarmSummaryReports BOOLEAN OPTIONAL,
+&monitoredVariable CHOICE {
+
+named NAMED-VARIABLE,
+unnamed UNNAMED-VARIABLE,
+unspecified NULL-OBJECT
+} OPTIONAL,
+
+&evaluationInterval INTEGER OPTIONAL,
+&timeToActive EventTime OPTIONAL,
+&timeToIdle EventTime OPTIONAL,
+&displayEnhancement CHOICE {
+
+text MMSString,
+number INTEGER,
+none NULL
+} OPTIONAL,
+
+&group-Priority-Override CHOICE {
+
+priority Priority,
+undefined NULL
+} OPTIONAL,
+
+&ReferencingEventConditionLists EVENT-CONDITION-LIST OPTIONAL
+}
+
+EC-Class ::= INTEGER {
+
+network-triggered (0),
+monitored (1) }
+
+EC-State ::= INTEGER {
+
+disabled (0),
+idle (1),
+active (2) }
+
+Severity ::= Integer8
+
+normalSeverity Severity ::= 64
+
+EventTime ::= CHOICE {
+
+timeOfDay [0] IMPLICIT TimeOfDay,
+timeSequenceIdentifier [1] IMPLICIT Unsigned32,
+undefined [2] IMPLICIT NULL
+}
+
+EVENT-ACTION ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&confirmedServiceRequest ConfirmedServiceRequest,
+&Modifiers Modifier,
+&EventEnrollments EVENT-ENROLLMENT
+}
+
+EVENT-ENROLLMENT ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&eeClass EE-Class ,
+&eventCondition EVENT-CONDITION,
+&ecTransitions Transitions,
+&aAssociation APPLICATION-ASSOCIATION,
+-- The following two fields are present if and only if the
+-- value of &eeClass is modifier.
+&invokeID INTEGER OPTIONAL,
+&remainingDelay CHOICE {
+
+time INTEGER,
+forever NULL
+} OPTIONAL,
+
+-- All the following fields are present if and only if the
+-- value of &eeClass is notification.
+&notificationLost BOOLEAN OPTIONAL,
+&eventAction EVENT-ACTION OPTIONAL,
+&duration EE-Duration OPTIONAL,
+&clientApplication ApplicationReference OPTIONAL,
+-- The following four fields are present if and only if the
+-- value of &eeClass is notification and the value of &ecState
+-- of the Event Condition object is monitored
+&aaRule AlarmAckRule OPTIONAL,
+&timeActiveAck EventTime OPTIONAL,
+&timeIdleAck EventTime OPTIONAL,
+&ackState ENUMERATED {
+
+acked (0),
+noAckA (1),
+noAckI (2)
+} OPTIONAL,
+
+&lastState EC-State OPTIONAL,
+&displayEnhancement CHOICE {
+
+text MMSString,
+number INTEGER,
+none NULL
+} OPTIONAL
+
+}
+
+EE-Class ::= INTEGER {
+
+modifier (0),
+notification (1)
+}
+
+Transitions ::= BIT STRING {
+
+idle-to-disabled (0),
+active-to-disabled (1),
+disabled-to-idle (2),
+active-to-idle (3),
+disabled-to-active (4),
+idle-to-active (5),
+any-to-deleted (6)
+}
+
+EE-Duration ::= INTEGER {
+
+current (0),
+permanent (1)
+}
+
+AlarmAckRule ::= INTEGER {
+
+none (0),
+simple (1),
+ack-active (2),
+ack-all (3)
+}
+
+EVENT-CONDITION-LIST ::= CLASS {
+
+&name ObjectName,
+-- shall be unique within its range of specification (VMD, Domain, AA)
+&accessControl ACCESS-CONTROL-LIST,
+&EventConditions EVENT-CONDITION,
+&EventConditionLists EVENT-CONDITION-LIST,
+&ReferencingEventConditionLists EVENT-CONDITION-LIST
+}
+
+JOURNAL ::= CLASS {
+
+&name Identifier,
+-- shall be unique within the VMD
+&accessControl ACCESS-CONTROL-LIST,
+&Entries JOURNAL-ENTRY
+}
+
+JOURNAL-ENTRY ::= CLASS {
+
+&journal JOURNAL,
+&entry OCTET STRING,
+&clientApplication ApplicationReference,
+&timeStamp TimeOfDay,
+&orderOfReceipt INTEGER UNIQUE,
+&informationType ENUMERATED {
+
+annotation (0),
+event-data (1),
+data (2)
+},
+
+-- The following attribute shall appear if and only if the
+-- value of &informationType is annotation.
+&textComment MMSString(SIZE(0..255)) OPTIONAL,
+--The following attribute shall appear if and only if the
+-- value of &informationType is event-data.
+&eventTransitionRecord SEQUENCE {
+
+name [0] ObjectName,
+currentState [1] IMPLICIT EC-State
+} OPTIONAL,
+
+-- The following attribute shall appear if and only if the
+-- value of &informationType is data or event-data.
+&journalVariables SEQUENCE OF Journal-Variable OPTIONAL
+}
+
+Journal-Variable ::= SEQUENCE {
+
+variableTag MMSString(SIZE(1..32)),
+valueSpecification Data
+}
+
+
+mMSNamedVariable OBJECT IDENTIFIER ::=
+{ iso standard 9506 part(1) symbols-version1(5) named-variable(1) }
+
+mMSAccessControlList OBJECT IDENTIFIER ::=
+{ iso standard 9506 part(1) symbols-version1(5) access-control-list(2) }
+
+mMSEventCondition OBJECT IDENTIFIER ::=
+{ iso standard 9506 part(1) symbols-version1(5) event-condition(3) }
+
+m-powerProblem NAMED-VARIABLE ::= {
+&name vmd-specific: basicVMD-specific: "M_powerProblem",
+&accessControl m-ReadOnly,
+&typeDescription boolean: NULL,
+&accessMethod anythingElse,
+&value boolean: FALSE }
+
+m-ELT NAMED-VARIABLE ::= {
+&name vmd-specific: basicVMD-specific: "M_ELT",
+&accessControl m-ReadOnly,
+&typeDescription integer: 32,
+&accessMethod anythingElse,
+&value integer: 0 }
+
+m-DAYTIME NAMED-VARIABLE ::= {
+&name vmd-specific: basicVMD-specific: "M_DAYTIME",
+&accessControl m-NonDeletable,
+&typeDescription generalized-time: NULL,
+&accessMethod anythingElse,
+&value generalized-time: "199901311200" }
+
+m-Deletable ACCESS-CONTROL-LIST ::= {
+&name basic: "M_Deletable",
+&accessControl m-Never,
+&AccessControlLists { null-instance },
+&Domains { null-instance },
+&ProgramInvocations { null-instance },
+&UnitControls { null-instance },
+&NamedVariables { null-instance },
+&NamedVariableLists { null-instance },
+&NamedTypes { null-instance },
+&DataExchanges { null-instance },
+&Semaphores { null-instance },
+&OperatorStations { null-instance },
+&EventConditions { null-instance },
+&EventActions { null-instance },
+&EventEnrollments { null-instance },
+&EventConditionLists { null-instance },
+&Journals { null-instance } }
+
+m-NonDeletable ACCESS-CONTROL-LIST ::= {
+&name basic: "M_NonDeletable",
+&accessControl m-Never,
+&deleteAccessCondition never: NULL,
+&AccessControlLists { null-instance },
+&Domains { null-instance },
+&ProgramInvocations { null-instance },
+&UnitControls { null-instance },
+&NamedVariables { null-instance },
+&NamedVariableLists { null-instance },
+&NamedTypes { null-instance },
+&DataExchanges { null-instance },
+&Semaphores { null-instance },
+&OperatorStations { null-instance },
+&EventConditions { null-instance },
+&EventActions { null-instance },
+&EventEnrollments { null-instance },
+&EventConditionLists { null-instance },
+&Journals { null-instance } }
+
+m-ReadOnly ACCESS-CONTROL-LIST ::= {
+&name basic: "M_ReadOnly",
+&accessControl m-Never,
+&writeAccessCondition never: NULL,
+&deleteAccessCondition never: NULL,
+&editAccessCondition never: NULL,
+&AccessControlLists { null-instance },
+&Domains { null-instance },
+&ProgramInvocations { null-instance },
+&UnitControls { null-instance },
+&NamedVariables { null-instance },
+&NamedVariableLists { null-instance },
+&NamedTypes { null-instance },
+&DataExchanges { null-instance },
+&Semaphores { null-instance },
+&OperatorStations { null-instance },
+&EventConditions { null-instance },
+&EventActions { null-instance },
+&EventEnrollments { null-instance },
+&EventConditionLists { null-instance },
+&Journals { null-instance } }
+
+m-Never ACCESS-CONTROL-LIST ::= {
+&name basic: "M_Never",
+&accessControl m-Never,
+&deleteAccessCondition never: NULL,
+&editAccessCondition never: NULL,
+&AccessControlLists { null-instance },
+&Domains { null-instance },
+&ProgramInvocations { null-instance },
+&UnitControls { null-instance },
+&NamedVariables { null-instance },
+&NamedVariableLists { null-instance },
+&NamedTypes { null-instance },
+&DataExchanges { null-instance },
+&Semaphores { null-instance },
+&OperatorStations { null-instance },
+&EventConditions { null-instance },
+&EventActions { null-instance },
+&EventEnrollments { null-instance },
+&EventConditionLists { null-instance },
+&Journals { null-instance } }
+
+m-Violation EVENT-CONDITION ::= {
+&name vmd-specific: basicVMD-specific: "M_Violation",
+&accessControl m-Never,
+&ecClass network-triggered,
+&ecState active,
+&priority normalPriority,
+&severity normalSeverity,
+&EventEnrollments { null-instance } }
+
+END

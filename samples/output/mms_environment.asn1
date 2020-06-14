@@ -1,0 +1,70 @@
+=============
+Parsed module
+Module {
+    module_id = ModuleIdentifier (ModuleReference "MMS-Environment-1") (Just [DefinitiveOIDName (Identifier "iso"),
+    DefinitiveOIDName (Identifier "standard"),
+    DefinitiveOIDNumber 9506,
+    DefinitiveOIDNamedNumber (Identifier "part") 2,
+    DefinitiveOIDNamedNumber (Identifier "mms-environment-version1") 4]),
+    default_tag_type = ExplicitTags,
+    extensibility_implied = False,
+    module_body = Just (ModuleBody {
+      module_exports = Exports [ExportedSymbol (TypeReferenceSymbol (TypeReference "ApplicationReference")),
+      ExportedSymbol (TypeReferenceSymbol (TypeReference "AuthenticationValue"))],
+      module_imports = Imports [SymbolsFromModule [TypeReferenceSymbol (TypeReference "AP-title"),
+      TypeReferenceSymbol (TypeReference "AP-invocation-id"),
+      TypeReferenceSymbol (TypeReference "AE-qualifier"),
+      TypeReferenceSymbol (TypeReference "AE-invocation-id"),
+      TypeReferenceSymbol (TypeReference "AuthenticationValue")] (GlobalModuleReference (ModuleReference "ISO-8650-ACSE-1") (Just (AssignedIdentifierOID [ObjIdName (Identifier "iso"),
+      ObjIdName (Identifier "standard"),
+      ObjIdNumber 8650,
+      ObjIdNamedNumber (NamedNumber (Identifier "abstract-syntax") 2),
+      ObjIdNamedNumber (NamedNumber (Identifier "acse-pdi") 1)])))],
+      module_assignments = [TypeAssignment (TypeReference "ApplicationReference") (Type {
+        type_id = Sequence (ComponentTypeList [NamedTypeComponent {
+          element_type = NamedType (Identifier "ap-title") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 0)) Nothing (Type {
+              type_id = ExternalTypeReference (ModuleReference "ISO-8650-ACSE-1") (TypeReference "AP-title"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "ap-invocation-id") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 1)) Nothing (Type {
+              type_id = ExternalTypeReference (ModuleReference "ISO-8650-ACSE-1") (TypeReference "AP-invocation-id"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "ae-qualifier") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 2)) Nothing (Type {
+              type_id = ExternalTypeReference (ModuleReference "ISO-8650-ACSE-1") (TypeReference "AE-qualifier"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ,
+        NamedTypeComponent {
+          element_type = NamedType (Identifier "ae-invocation-id") (Type {
+            type_id = Tagged (Tag Nothing (ClassNumber 3)) Nothing (Type {
+              type_id = ExternalTypeReference (ModuleReference "ISO-8650-ACSE-1") (TypeReference "AE-invocation-id"),
+              subtype = Nothing
+              } ),
+            subtype = Nothing
+            } ),
+          element_presence = Just OptionalValue
+          } ]),
+        subtype = Nothing
+        } )]
+      } )
+    } 
+===========================
+Types defined in the module
+ApplicationReference
